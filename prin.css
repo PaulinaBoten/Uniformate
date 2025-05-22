@@ -1,0 +1,44 @@
+.logo {
+    display: flex;  
+    width: 100%;
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-color);
+    padding: 0px 5%;
+    background-color:#6acb50;
+    background-size: cover;
+    display: inline-block;
+    padding: 0.7rem 1.3rem;
+  }
+  .Letra{
+    color: #ffffff;
+  }
+  
+  .botones{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    color: #ffffff;
+    gap: 550px;
+  }
+  
+  
+  
+  .inicio-text{
+          font-family: "Archivo Black", sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          background-color: #6acb50;
+        }
+        
+  .contenedor{
+      display:grid;
+      align-content:center;
+      text-align: center;
+  }
+  
+  .imgbanner{
+      size: 10px; 
+      width: 200px;
+  }

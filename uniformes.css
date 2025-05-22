@@ -1,0 +1,96 @@
+.body{
+    background-color: greenyellow;
+}
+.CajaSup{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: normal;
+    flex-wrap: wrap;
+    margin: 70px;
+}
+
+
+.cajagal{
+    background-color: aqua;
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+    margin-bottom: 40px;
+}
+
+.cajacamgal{
+    background-color: rgb(255, 153, 0);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+}
+
+.cajasud{
+    background-color: rgb(255, 0, 76);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+}
+
+.cajacamsud{
+    background-color: rgb(21, 255, 0);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}
+
+.cajacha{
+    background-color: rgb(255, 0, 234);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}
+
+.cajabus{
+    background-color: rgb(255, 238, 0);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}
+.cajamedgal{
+    background-color: rgb(70, 86, 228);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}
+.cajazapgal{
+    background-color: rgb(255, 65, 106);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}
+.cajamedsud{
+    background-color: rgb(31, 197, 73);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}
+.cajazapsud{
+    background-color: rgb(153, 0, 255);
+    width: 200px;
+    height: 300px;
+    outline: 2px solid;
+    outline-color: black;
+
+}

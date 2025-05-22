@@ -1,0 +1,79 @@
+*
+{
+  margin:0%;
+  padding:0%;
+  box-sizing: border-box;
+  }
+  body{
+
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background: #98ef8f;
+
+ 
+  }
+
+.login{
+ width: 400px;
+ height: 340px;
+ background: #ffffff;
+ margin: auto;
+ margin-top: 180px;
+ box-shadow: 7px 13px 37px #7ff075;
+ padding: 20px 30px;
+}
+.login h2{
+  margin: 0;
+  text-align: center;
+  height: 40px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid;
+  font-size: 20px;
+}
+.registrar{
+ width: 100%;
+height: 40px;
+background:  #02581b;
+color: #17690d;
+margin-bottom: 16px;
+width: 100%;
+border: 1px solid #787272;
+padding: 11px 10px;
+font-size: 14px;
+font-weight: bold;
+height: 40px;
+text-align: center;
+border-bottom: 1px solid;
+color:#000;
+text-decoration: none;
+font-size: 14px;
+}
+.controls{
+width: 100%;
+border: 1px solid #787272;
+margin-bottom: 15px;
+padding: 11px 10px;
+font-size: 14px;
+font-weight: bold;
+}
+.buttons{
+width: 100%;
+height: 40px;
+background: #69ef78 ;
+color: #000000;
+margin-bottom: 16px;
+font-weight: bold;
+border: 1px solid #787272;
+}
+.login p{
+    height: 40px;
+    text-align: center;
+    border-bottom: 1px solid;
+}
+.login a{
+    color:#000;
+    text-decoration: none;
+    font-size: 14px;
+}
+.login a:hovar{
+    text-decoration: underline;
+}
