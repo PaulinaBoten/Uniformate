@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Administrador</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .note {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Ingreso Administrador</h2>
+  <form onsubmit="return validarFormulario()">
+    <input type="text" id="usuario" placeholder="Usuario" required />
+    <input type="password" id="clave" placeholder="Contraseña" required />
+    <button type="submit">Ingresar</button>
+  </form>
+  <div class="note">Acceso exclusivo para personal autorizado.</div>
+</div>
+
+<script>
+  function validarFormulario() {
+    const usuario = document.getElementById("usuario").value;
+    const clave = document.getElementById("clave").value;
+
+    // Validación simple (reemplazar con verificación real del servidor)
+    if (usuario === "admin" && clave === "1234") {
+      alert("Bienvenido Administrador");
+      // Aquí rediriges a otra página con el inventario, pedidos, etc.
+      window.location.href = "dashboard.html";
+      return false;
+    } else {
+      alert("Credenciales incorrectas");
+      return false;
+    }
+  }
+</script>
+
+</body>
+</html>
