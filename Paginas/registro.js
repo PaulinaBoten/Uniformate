@@ -33,15 +33,17 @@
         const mensaje = document.getElementById('mensaje');
 
         form.addEventListener('submit', function(e) {
+            e.preventDefault();
             const password = passwordInput.value;
             const minLength = 8;
 
+
             if (password.length < minLength) {
                 e.preventDefault(); // Detiene el envío del formulario
-                mensaje.textContent = La contraseña debe tener al menos ${minLength} caracteres para continuar.;
+                mensaje.textContent = "La contraseña debe tener al menos ${minLength} caracteres para continuar".
                 passwordInput.focus();
             } else {
                 mensaje.textContent = "";
                 alert("Contraseña válida, avanzando a la siguiente página.");
                
-        });
+        }});
