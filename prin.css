@@ -64,8 +64,8 @@
   width: 100%;
 }
 
+.Cont  {
 
-/* .contenedor {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -79,4 +79,4 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(3, 3, 3, 0.2);
     width: 300px; /* Ajusta el ancho del contenedor */
-} */
+} 

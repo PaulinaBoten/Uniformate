@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
+
+<script>
+ document.getElementById('loginForm').addEventListener('sumit', async function(params) {params.preventDefault();
+  const identificacion = 
+document.getElementById('identificacion').value;
+
+const contrasena = 
+document.getElementById('contrasena').value;
+
+const errorMsg = 
+document.getElementById('errorMsg');//asume que hay un elemento para mostrar errores
+
+let datos 
+if (identificacion=== "||contraseña ===") {errorMsg.textContent = 'Porfavor ingrese su correo y contraseña';}
+
+console.log(datos);
+if (datos.status && datos.status === 200) {sessionStorage.setItem('usuario', datos.data.tipo_usuario); window.location.href='Admin.html';}
+else {alert('no tienes acceso');
+
+}
+ });
+ </script>
+ 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -40,7 +63,7 @@
     button {
       width: 100%;
       padding: 0.8rem;
-      background: #007BFF;
+      background: #2fbc4b;
       color: white;
       border: none;
       border-radius: 8px;
@@ -49,13 +72,13 @@
     }
 
     button:hover {
-      background: #0056b3;
+      background: #1f8333;
     }
 
     .note {
       margin-top: 1rem;
       font-size: 0.9rem;
-      color: #666;
+      color: #ffffff;
       text-align: center;
     }
   </style>
