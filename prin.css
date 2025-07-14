@@ -16,12 +16,13 @@
 }
 
 .botones{
+
   display: flex;
-  width: 100%;
-  align-items: center;
-  color: #ffffff;
-  gap: 100px;
-  text-decoration: none;
+    width: 100%;
+    align-items: center;
+    color: #ffffff;
+    gap: 50px;
+
 }
 
 
@@ -78,5 +79,9 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(3, 3, 3, 0.2);
-    width: 300px; /* Ajusta el ancho del contenedor */
+    width: 30px; /* Ajusta el ancho del contenedor */
 } 
+
+.i{
+  left: 40%;
+}
