@@ -20,7 +20,7 @@
   width: 100%;
   align-items: center;
   color: #ffffff;
-  gap: 550px;
+  gap: 100px;
   text-decoration: none;
 }
 
@@ -63,3 +63,20 @@
 .fondobanner, img{
   width: 100%;
 }
+
+
+/* .contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(248, 248, 248, 0.8); /* Fondo blanco semi-transparente */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(3, 3, 3, 0.2);
+    width: 300px; /* Ajusta el ancho del contenedor */
+} */
