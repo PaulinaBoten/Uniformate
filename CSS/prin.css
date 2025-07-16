@@ -6,7 +6,7 @@
   justify-content: space-between;
   background: var(--bg-color);
   padding: 0px 5%;
-  background-color:#6acb50;
+  background-color:rgb(39, 148, 25);
   background-size: cover;
   display: inline-block;
   padding: 0.7rem 1.3rem;
@@ -23,9 +23,11 @@
     color: #ffffff;
     gap: 50px;
     a{
+      text-align: center;
+      text-decoration: none;
       border: none;
-    background: #186e0c;
-    color: #000000;
+    background: #0f5a05;
+    color: #ffffff;
     border-radius: 6px;
     font-size: 20px;
     line-height: 48px;
@@ -44,7 +46,7 @@
         font-weight: 700;
         font-size: 20px;
         font-style: normal;
-        background-color:#6acb50;
+        background-color: rgb(39, 148, 25);
         padding: 10px;
       }
 
