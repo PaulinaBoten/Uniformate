@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,6 +23,31 @@
             </div>
         </div>
     </section>
-<script src="./registro.js"></script>
+<script>
+  // Datos simulados (puedes agregar más usuarios aquí)
+  const usuarios = [
+    { email: "chochete@correo.com", password: "Chochete123" },
+    { email: "usuario2@correo.com", password: "clave456" }
+  ];
+
+  // Interceptar el envío del formulario
+  document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault(); // Evita que se envíe automáticamente
+
+    const email = e.target.Email.value;
+    const password = e.target.Contraseña.value;
+
+    const usuarioValido = usuarios.find(
+      u => u.email === email && u.password === password
+    );
+
+    if (usuarioValido) {
+      // Redirige al catálogo si el login es válido
+      window.location.href = "uniformes.html";
+    } else {
+      alert("Correo o contraseña incorrectos");
+    }
+  });
+</script>
 </body>
 </html>

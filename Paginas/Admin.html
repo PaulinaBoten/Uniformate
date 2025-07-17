@@ -1,144 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<script>
- document.getElementById('loginForm').addEventListener('sumit', async function(params) {params.preventDefault();
-  const identificacion = 
-document.getElementById('identificacion').value;
-
-const contrasena = 
-document.getElementById('contrasena').value;
-
-const errorMsg = 
-document.getElementById('errorMsg');//asume que hay un elemento para mostrar errores
-
-let datos 
-if (identificacion=== "||contraseña ===") {errorMsg.textContent = 'Porfavor ingrese su correo y contraseña';}
-
-console.log(datos);
-if (datos.status && datos.status === 200) {sessionStorage.setItem('usuario', datos.data.tipo_usuario); window.location.href='Admin.html';}
-else {alert('no tienes acceso');
-
-}
- });
- </script>
- 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" type="text/css" href="/CSS/Admin.css">
   <title>Login Administrador</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f2f2f2;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    header
-{
-  a{
-  text-decoration: none;
-  display: flex; /* Flexbox para centrar contenido */
-  align-items: center; /* Alinea verticalmente el texto */
-  justify-content: center; /* Alinea horizontalmente el texto */
-  width: 3%; 
-  height: 15%;
-  margin-left: 5%;
-  z-index: 900;
-  background: var(--bg-color);
-  padding: 11px 5%;
-  border-radius: 5px;
-  background-color: #ffffff;
-  background-size: cover;
-  box-shadow: 0px 2px 7px #0000009f;
-  color: #000; /* Color del texto */
-  font-size: 14px; /* Tamaño del texto */
-  text-align: center; /* Asegura que el texto esté centrado */
-  font-weight: bold; /* Negrita para el texto */
-  }
-}
-
-    button {
-      width: 100%;
-      padding: 0.8rem;
-      background: rgb(39, 148, 25);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: rgb(39, 148, 25);
-    }
-
-    .note {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #ffffff;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
 
-     <header>
-        <a href="/Paginas/prin.html">Regresar</a>
-         </header>
+<header>
+  <a href="/Paginas/prin.html">Regresar</a>
+</header>
 
 <div class="login-container">
   <h2>Ingreso Administrador</h2>
-  <form onsubmit="return validarFormulario()">
+  <form id="loginForm">
     <input type="text" id="usuario" placeholder="Usuario" required />
-    <input type="password" id="clave" placeholder="Contraseña" required />
+    <input type="password" id="contrasena" placeholder="Contraseña" required />
     <button type="submit">Ingresar</button>
+    <div id="errorMsg" style="color:red;"></div>
   </form>
   <div class="note">Acceso exclusivo para personal autorizado.</div>
 </div>
 
 <script>
-  function validarFormulario() {
-    const usuario = document.getElementById("usuario").value;
-    const clave = document.getElementById("clave").value;
+  const data = {
+    usuario: 'admin',
+    contrasena: '1234'
+  };
 
-    // Validación simple (reemplazar con verificación real del servidor)
-    if (usuario === "admin" && clave === "1234") {
-      alert("Bienvenido Administrador");
-      // Aquí rediriges a otra página con el inventario, pedidos, etc.
-      window.location.href = "dashboard.html";
-      return false;
-    } else {
-      alert("Credenciales incorrectas");
-      return false;
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const identificacion = document.getElementById('usuario').value;
+    const contrasena = document.getElementById('contrasena').value;
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (identificacion === '' || contrasena === '') {
+      errorMsg.textContent = 'Por favor, ingrese su usuario y contraseña.';
+      return;
     }
-  }
+
+    if (identificacion === data.usuario && contrasena === data.contrasena) {
+      // Guardar sesión si es necesario
+      sessionStorage.setItem('usuario', 'admin');
+      window.location.href = 'ad.html';
+    } else {
+      errorMsg.textContent = 'Credenciales incorrectas';
+    }
+  });
 </script>
 
 </body>
