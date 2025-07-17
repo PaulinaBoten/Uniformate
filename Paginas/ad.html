@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Panel de Administración</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f2f2f2;
+    padding: 20px;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  th {
+    background: #007BFF;
+    color: white;
+  }
+  button {
+    padding: 0.6rem 1rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #b02a37;
+  }
+</style>
+</head>
+<body>
+
+<h2 id="bienvenida">Panel de Administración</h2>
+<a href="./prin.html">
+<button onclick="cerrarSesion()">Cerrar Sesión</button>
+</a>
+
+<h3>Inventario</h3>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Producto</th>
+    <th>Cantidad</th>
+    <th>Precio</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Teclado</td>
+    <td>20</td>
+    <td>$50,000</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Mouse</td>
+    <td>35</td>
+    <td>$25,000</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Pantalla</td>
+    <td>10</td>
+    <td>$450,000</td>
+  </tr>
+</table>
+
+<h3>Pedidos Recientes</h3>
+<table>
+  <tr>
+    <th>ID Pedido</th>
+    <th>Cliente</th>
+    <th>Producto</th>
+    <th>Estado</th>
+  </tr>
+  <tr>
+    <td>101</td>
+    <td>Camila Ruiz</td>
+    <td>Teclado</td>
+    <td>Enviado</td>
+  </tr>
+  <tr>
+    <td>102</td>
+    <td>Juan Perez</td>
+    <td>Pantalla</td>
+    <td>Pendiente</td>
+  </tr>
+  <tr>
+    <td>103</td>
+    <td>Sara Lopez</td>
+    <td>Mouse</td>
+    <td>Entregado</td>
+  </tr>
+</table>
+
+<script>
+   function cerrarSesion() {
+    sessionStorage.removeItem("usuario");
+    window.location.href = "Admin.html";
+  }
+
+  // Verificación de sesión
+  const usuario = sessionStorage.getItem("usuario");
+  if (!usuario) {
+    alert("Acceso denegado. Inicie sesión primero.");
+    window.location.href = "Admin.html";
+  } else {
+    document.getElementById("bienvenida").textContent = 'Bienvenida, administradora';
+  }
+</script>
+
+</body>s
+</html>
