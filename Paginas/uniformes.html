@@ -1,10 +1,54 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIFORMATE</title>
     <link rel="stylesheet" type="text/css" href="/CSS/uniformes.css"> 
-    <body>
-         <header>
-        <a href="./prin.html">Regresar</a>
-         </header>
+
+    <!-- Font Awesome para el logo de WhatsApp -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="logo"> 
+        <div class="Letra">
+            <h1>UNIFORMATE</h1>
+        </div>
+        <nav class="botones">
+            <a href="/Paginas/prin.html">banner</a>
+            <a href="/Paginas/uniformes.html">Catalogo</a>
+            <a href="/Paginas/inicio.html">Usuarios</a>
+            <a href="/paginas/Admin.html">Administrador</a>
+        </nav>
+    </div>
 
     <div class="CajaSup">
         <div class="cajagal">Jumber</div>
@@ -19,9 +63,15 @@
         <div class="cajamedsud">Medias de Ed. Fisica</div>
     </div>
 
-    </body>
-</head>
-
-
-
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+<script>
+    if (sessionStorage.getItem("usuario") !== "true") {
+        alert("Debes iniciar sesión para acceder a esta página.");
+        window.location.href = "/Paginas/inicio.html"; // Redirige al login si no está logueado
+    }
+</script>
+</body>
 </html>
