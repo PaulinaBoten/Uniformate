@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>REGISTRO</title>
+    <link rel="stylesheet" href="/CSS/registro.css">
+</head>
+<body>
+   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        /* Botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+    </style>
+    
+
+  <div class="logo"> 
+        <div class="Letra">
+            <h1>UNIFORMATE</h1>
+        </div>
+        <nav class="botones">
+        <a href="/Paginas/cata.html">Catalogo</a>
+        <a href="/Paginas/comunicate.html">Contactanos</a>
+        <a href="/Paginas/inicio.html">Usuarios</a>
+        <a href="/paginas/Admin.html">Administrador</a>
+        </nav>
+    </div>
+        
+  <section class="form-login">
+    <div class="registro">
+      <h2>Registro</h2>
+      <form action="registro.php" method="POST">
+        <input class="controls" type="text" name="Usuario" placeholder="Usuario" required>
+        <input class="controls" type="email" name="Email" placeholder="Email" required>
+        <input class="controls" type="password" name="Contraseña" placeholder="Contraseña" required>
+        <input class="buttons" type="submit" value="Ingresar">
+      </form>
+    </div>
+  </section>
+  <script src="/registro.js"></script>
+
+  <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</body>
+</html>
