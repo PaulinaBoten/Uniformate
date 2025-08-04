@@ -72,7 +72,6 @@
  box-shadow: 7px 13px 37px rgb(39, 148, 25)5;
  padding: 20px 30px;
 }
-
 .login h2{
   margin: 0;
   text-align: center;
@@ -81,7 +80,6 @@
   border-bottom: 1px solid;
   font-size: 20px;
 }
-
 .registrar{
  width: 100%;
 height: 40px;
@@ -100,7 +98,6 @@ color:#ffffff;
 text-decoration: none;
 font-size: 14px;
 }
-
 .controls{
 width: 100%;
 border: 1px solid #787272;
@@ -109,7 +106,6 @@ padding: 11px 10px;
 font-size: 14px;
 font-weight: bold;
 }
-
 .buttons{
 width: 100%;
 height: 40px;
@@ -119,19 +115,16 @@ margin-bottom: 16px;
 font-weight: bold;
 border: 1px solid #787272;
 }
-
 .login p{
     height: 40px;
     text-align: center;
     border-bottom: 1px solid;
 }
-
 .login a{
     color:white;
     text-decoration: none;
     font-size: 14px;
 }
-
 .login a:hovar{
     text-decoration: underline;
 }
