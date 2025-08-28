@@ -59,20 +59,15 @@
 
     <section class="login">
         <div class="inicio-sesion">
-            <h2>Inicio de sesión</h2>
-            
-        <form id="loginFrom">
-
-            <form action="uniformes.html" >
-                <input class="controls" type="email" name="Email" placeholder="Correo electrónico" required>
-                <input class="controls" minlength="8" type="password" name="Contraseña" placeholder="Contraseña" required>
-                <input class="buttons" type="submit" value="Ingresar">
+            <h2>Registro</h2>
+            <form action="insertar.php" method="post">
+                Email: <input class="controls" type="email" name="email" placeholder="Correo electrónico" required><br>
+                Contraseña: <input class="controls" minlength="8" type="password" name="password" placeholder="Contraseña" required><br>
+                <input class="buttons" type="submit" value="Registrarse">
             </form>
-
-        </form>
-
         </div>
     </section>
+    
 <script>
   // Datos simulados (puedes agregar más usuarios aquí)
   const usuarios = [
