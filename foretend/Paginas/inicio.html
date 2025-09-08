@@ -6,7 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="../CSS/inicio.css">
+    <link rel="stylesheet" href="/CSS/inicio.css">
+
+    <!-- Fuentes de Google igual que en prin.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cinzel:wght@700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,34 +20,34 @@
     <style>
         /* Botón flotante de WhatsApp */
         .whatsapp-float {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  bottom: 20px;
-  right: 20px;
-  background-color: #25d366;
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  font-size: 30px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s;
-}
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
 
-.whatsapp-float img {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-}
+        .whatsapp-float img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+        }
 
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-}
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
     </style>
     
    <div class="logo"> 
@@ -50,10 +55,10 @@
             <h1>UNIFORMATE</h1>
         </div>
         <nav class="botones">
-            <a href="../Paginas/prin.html">Inicio</a>
-            <a href="../Paginas/cata.html">Catalogo</a>
-          <a href="../Paginas/comunicate.html" target="_blank">Contáctanos</a>
-            <a href="../paginas/Admin.html">Administrador</a>
+            <a href="/foretend/Paginas/prin.html">Inicio</a>
+            <a href="/foretend/Paginas/cata.html">Catalogo</a>
+            <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
+            <a href="/foretend/Paginas/Admin.html">Administrador</a>
         </nav>
     </div>
 
@@ -67,6 +72,7 @@
             </form>
         </div>
     </section>
+
 <script>
   // Datos simulados (puedes agregar más usuarios aquí)
   const usuarios = [
@@ -95,9 +101,9 @@
 </script>
 
 <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
-    <img src="/img/whatsapp-white-icon.png" alt="WhatsApp">
+    <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
     <i class="fab fa-whatsapp"></i>
-  </a>
+</a>
   
 </body>
 </html>
