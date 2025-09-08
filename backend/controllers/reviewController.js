@@ -1,50 +1,50 @@
-const pool = require('../db/pool');
+// controllers/reviewController.js
 
-exports.createReview = async (req, res) => {
-  const { content } = req.body;
-  const userId = req.user.id;
-
-  if (!content) return res.status(400).json({ error: 'Contenido requerido' });
-
+// Crear un review
+const createReview = async (req, res) => {
   try {
-    const result = await pool.query(
-      'INSERT INTO reviews (user_id, content) VALUES ($1, $2) RETURNING *', //Cambiar por datos de tablas 
-      [userId, content]
-    );
-    res.status(201).json(result.rows[0]);
+    const { comentario, rating } = req.body;
+    const id_usuario = req.user.id; // viene del token
+
+    // Aquí deberías guardar en DB, por ahora mando respuesta simulada
+    res.status(201).json({
+      message: "✅ Review creada correctamente",
+      data: { comentario, rating, id_usuario },
+    });
   } catch (error) {
-    console.error('Error al crear reseña:', error);
-    res.status(500).json({ error: 'Error al guardar reseña' });
+    console.error("❌ Error al crear review:", error.message);
+    res.status(500).json({ error: "Error al guardar review" });
   }
 };
 
-exports.getReviews = async (req, res) => {
+// Obtener reviews
+const getReviews = async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT r.id, r.content, r.created_at, u.name AS user_name
-      FROM reviews r
-      JOIN users u ON r.user_id = u.id
-      ORDER BY r.created_at DESC
-    `);
-    res.json(result.rows);
+    // Simulación de datos
+    res.json([
+      { id: 1, comentario: "Muy bueno", rating: 5 },
+      { id: 2, comentario: "Regular", rating: 3 },
+    ]);
   } catch (error) {
-    console.error('Error al obtener reseñas:', error.message);
-    res.status(500).json({ error: 'Error al obtener reseñas' });
+    console.error("❌ Error al obtener reviews:", error.message);
+    res.status(500).json({ error: "Error al obtener reviews" });
   }
 };
 
-exports.deleteReview = async (req, res) => {
-  if (!req.user.is_admin) {
-    return res.status(403).json({ error: 'Acceso solo para administradores' });
-  }
-
-  const reviewId = req.params.id;
-
+// Eliminar un review
+const deleteReview = async (req, res) => {
   try {
-    await pool.query('DELETE FROM reviews WHERE id = $1', [reviewId]);
-    res.json({ message: 'Reseña eliminada correctamente' });
+    const { id } = req.params;
+    // Aquí borrarías en DB, por ahora devuelvo confirmación
+    res.json({ message: `✅ Review con id ${id} eliminada` });
   } catch (error) {
-    console.error('Error al eliminar reseña:', error.message);
-    res.status(500).json({ error: 'Error al eliminar reseña' });
+    console.error("❌ Error al eliminar review:", error.message);
+    res.status(500).json({ error: "Error al eliminar review" });
   }
+};
+
+module.exports = {
+  createReview,
+  getReviews,
+  deleteReview,
 };

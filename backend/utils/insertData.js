@@ -1,20 +1,19 @@
 const pool = require('../db/pool');
 
-const createTables = async (req, res) => {
+const insertData = async (req, res) => {
   try {
+    // Insertar usuarios
     await pool.query(`
-      INSERT INTO users (
-        name ,
-        email ,
-        password ,
-        is_admin
-      ) VALUES()
-       
+      INSERT INTO usuarios (correo, contrasena, rol)
+      VALUES 
+      ('chochete@email.com', 'cochete123456789', 'normal'),
+      ('Ozuna@email.com', 'Ozuna12345678', 'administrador')
     `);
-    res.send('✅ Data creada correctamente');
+    
+    res.send('✅ Datos insertados correctamente');
   } catch (error) {
-    console.error('❌ Error al crear tablas:', error.message);
-    res.status(500).send('❌ Error al crear las tablas');
+    console.error('❌ Error al insertar datos:', error.message);
+    res.status(500).send('❌ Error al insertar los datos');
   }
 };
 

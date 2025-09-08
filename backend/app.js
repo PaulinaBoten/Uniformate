@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const createTables = require('./utils/createTables');
 const pool = require('./db/pool');
+const insertData = require('./utils/insertData');
 
 const app = express();
 
@@ -15,8 +16,10 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/reviews', reviewRoutes);
 
+app.get('/insert-user', insertData);
 // Ruta para crear las tablas (solo en desarrollo)
 app.get('/create-tables', createTables);
+
 
 // Ruta para probar conexión con la base de datos
 app.get('/test-db', async (req, res) => {

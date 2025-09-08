@@ -2,18 +2,19 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../db/pool');
 
+// Registro de usuario
 exports.register = async (req, res) => {
-  const { name, email, password, is_admin = false } = req.body;
+  const { correo, contrasena, rol = 'normal' } = req.body;
 
-  if (!email || !password || !name) {
-    return res.status(400).json({ error: 'Faltan campos' });
+  if (!correo || !contrasena) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
     const result = await pool.query(
-      'INSERT INTO users (name, email, password, is_admin) VALUES ($1, $2, $3, $4) RETURNING id, name, email, is_admin',
-      [name, email, hashedPassword, is_admin]
+      'INSERT INTO usuarios (correo, contrasena, rol) VALUES ($1, $2, $3) RETURNING id, correo, rol',
+      [correo, hashedPassword, rol]
     );
 
     res.status(201).json(result.rows[0]);
@@ -23,29 +24,32 @@ exports.register = async (req, res) => {
   }
 };
 
+// Login de usuario
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { correo, contrasena } = req.body;
+
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await pool.query('SELECT * FROM usuarios WHERE correo = $1', [correo]);
     if (result.rows.length === 0) return res.status(400).json({ error: 'Usuario no encontrado' });
 
     const user = result.rows[0];
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(contrasena, user.contrasena);
     if (!match) return res.status(401).json({ error: 'Contraseña incorrecta' });
 
     const token = jwt.sign(
-      { id: user.id, is_admin: user.is_admin },
+      { id: user.id, rol: user.rol },
       process.env.JWT_SECRET,
       { expiresIn: '2h' }
     );
 
     res.json({
       token,
-      user: { id: user.id, name: user.name, email: user.email, is_admin: user.is_admin },
+      user: { id: user.id, correo: user.correo, rol: user.rol },
     });
   } catch (error) {
-    console.error('Error al iniciar sesión:', error.message);
+    console.error('❌ Error al iniciar sesión:', error.message);
     res.status(500).json({ error: 'Error en el servidor' });
   }
 };
+
 
