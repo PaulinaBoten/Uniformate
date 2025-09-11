@@ -1,5 +1,5 @@
 
-ocument.getElementById('loginForm').addEventListener('submit', function(event) {
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío del formulario
 
     // Limpiar errores anteriores
