@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="/CSS/inicio.css">
+    <link rel="stylesheet" href="/foretend/Paginas/CSS/inicio.css">
 
     <!-- Fuentes de Google igual que en prin.html -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,37 +65,71 @@
     <section class="login">
         <div class="inicio-sesion">
             <h2>Inicio de sesión</h2>
-            <form action="../Paginas/uniformes.html" >
-                <input class="controls" type="email" name="Email" placeholder="Correo electrónico" required>
-                <input class="controls" minlength="8" type="password" name="Contraseña" placeholder="Contraseña" required>
+            <!-- !!! CAMBIOS AQUÍ: Añadimos un ID al formulario y a los inputs !!! -->
+            <form id="loginFormUser">
+                <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
+                <input class="controls" minlength="1" type="password" id="contrasena" placeholder="Contraseña" required>
                 <input class="buttons" type="submit" value="Ingresar">
+                <!-- Para mostrar mensajes de error o éxito al usuario -->
+                <div id="mensajeLogin" style="color:red; margin-top: 10px;"></div>
             </form>
         </div>
     </section>
 
 <script>
-  // Datos simulados (puedes agregar más usuarios aquí)
-  const usuarios = [
-    { email: "chochete@correo.com", password: "Chochete123" },
-    { email: "usuario2@correo.com", password: "clave456" }
-  ];
-
   // Interceptar el envío del formulario
-  document.querySelector("form").addEventListener("submit", function (e) {
+  document.getElementById("loginFormUser").addEventListener("submit", async function (e) {
     e.preventDefault(); // Evita que se envíe automáticamente
 
-    const email = e.target.Email.value;
-    const password = e.target.Contraseña.value;
+    // !!! CAMBIOS AQUÍ: Obtenemos los valores por ID !!!
+    const correo = document.getElementById("correo").value.trim();
+    const contrasena = document.getElementById("contrasena").value.trim();
+    const mensajeLoginDiv = document.getElementById("mensajeLogin");
 
-    const usuarioValido = usuarios.find(
-      u => u.email === email && u.password === password
-    );
+    mensajeLoginDiv.textContent = ''; // Limpiar mensajes anteriores
 
-    if (usuarioValido) {
-      // Redirige al catálogo si el login es válido
-      window.location.href = "uniformes.html";
-    } else {
-      alert("Correo o contraseña incorrectos");
+    if (!correo || !contrasena) {
+      mensajeLoginDiv.textContent = 'Por favor, ingrese su correo electrónico y contraseña.';
+      mensajeLoginDiv.style.color = 'red';
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // !!! CAMBIOS AQUÍ: Enviamos el JSON esperado por el backend !!!
+        body: JSON.stringify({ correo, contrasena })
+      });
+
+      const data = await res.json();
+      console.log(data); // Para depuración
+
+      if (res.ok) { // Si la respuesta HTTP es 2xx (éxito)
+        if (data.token && data.user) {
+          // Guardar información del usuario y token en sessionStorage
+          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('userRole', data.user.rol); // 'normal' o 'administrador'
+          sessionStorage.setItem('userId', data.user.id);
+          sessionStorage.setItem('userEmail', data.user.correo);
+
+          mensajeLoginDiv.textContent = '✅ Inicio de sesión exitoso. Redirigiendo...';
+          mensajeLoginDiv.style.color = 'green';
+          // Redirigir al usuario normal a la página de uniformes (o la que corresponda)
+          window.location.href = "uniformes.html"; // <-- ¡Asegúrate de que esta ruta sea correcta!
+        } else {
+          // Esto no debería ocurrir si el backend devuelve un token y user en caso de éxito
+          mensajeLoginDiv.textContent = 'Error inesperado en la respuesta del servidor.';
+          mensajeLoginDiv.style.color = 'red';
+        }
+      } else { // Si la respuesta HTTP no es 2xx (ej. 400, 401, 500)
+        mensajeLoginDiv.textContent = data.error || 'Error en el inicio de sesión. Verifique sus credenciales.';
+        mensajeLoginDiv.style.color = 'red';
+      }
+    } catch (error) {
+      console.error('❌ Error de conexión con el servidor:', error);
+      mensajeLoginDiv.textContent = "Error de conexión con el servidor. Intente de nuevo más tarde.";
+      mensajeLoginDiv.style.color = 'red';
     }
   });
 </script>
