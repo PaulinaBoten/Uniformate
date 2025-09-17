@@ -15,7 +15,6 @@
 <div class="login-container">
   <h2>Ingreso Administrador</h2>
   <form id="loginForm">
-    <!-- !!! CAMBIO AQUÍ: id y placeholder para reflejar "correo" !!! -->
     <input type="text" id="correo" placeholder="Correo electrónico" required />
     <input type="password" id="contrasena" placeholder="Contraseña" required />
     <button type="submit">Ingresar</button>
@@ -26,50 +25,47 @@
 
 <script>
   document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
+    event.preventDefault();
 
-    // !!! CAMBIO AQUÍ: Obtener el valor del campo 'correo' !!!
     const correo = document.getElementById('correo').value.trim();
     const contrasena = document.getElementById('contrasena').value.trim();
-    const mensajeDiv = document.getElementById('mensaje'); // Usamos el div 'mensaje'
+    const mensajeDiv = document.getElementById('mensaje');
 
-    mensajeDiv.textContent = ''; // Limpiar mensajes anteriores
+    mensajeDiv.textContent = '';
 
     if (!correo || !contrasena) {
       mensajeDiv.textContent = 'Por favor, ingrese su correo electrónico y contraseña.';
       mensajeDiv.style.color = 'red';
-      return; // Detiene la ejecución si faltan campos
+      return;
     }
 
     try {
       const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // !!! CAMBIO AQUÍ: Enviar 'correo' en el body, NO 'usuario' !!!
         body: JSON.stringify({ correo, contrasena })
       });
 
       const data = await res.json();
       console.log(data);
 
-      if (res.ok) { // Si la respuesta HTTP es 2xx (éxito)
-        // También es buena idea comprobar que 'data.user' existe antes de acceder a 'data.user.rol'
-        if (data.user && data.user.rol === 'administrador') {
+      if (res.ok) {
+        if (data.token && data.user && data.user.rol === 'administrador') {
           sessionStorage.setItem('token', data.token);
           sessionStorage.setItem('userRole', data.user.rol);
           sessionStorage.setItem('userId', data.user.id);
           sessionStorage.setItem('userEmail', data.user.correo);
 
-          mensajeDiv.textContent = '✅ Ingreso exitoso. Redirigiendo...';
+          mensajeDiv.textContent = '✅ Ingreso de administrador exitoso. Redirigiendo...';
           mensajeDiv.style.color = 'green';
-          // Redirige a la página del panel de administración, NO a la de login
-          window.location.href = 'admin-dashboard.html'; // <<< ¡¡¡ CAMBIA ESTO A TU PÁGINA REAL DE ADMINISTRACIÓN !!!
+          // !!! CAMBIO AQUÍ: Redirige a ad.html si es administrador !!!
+          window.location.href = 'ad.html';
         } else {
           // Si el login fue exitoso pero el rol no es 'administrador'
           mensajeDiv.textContent = 'Acceso denegado: Tus credenciales no corresponden a un administrador.';
           mensajeDiv.style.color = 'red';
         }
-      } else { // Si la respuesta HTTP no es 2xx (ej. 400, 401, 500)
+      } else {
         mensajeDiv.textContent = data.error || 'Error en el inicio de sesión. Verifique sus credenciales.';
         mensajeDiv.style.color = 'red';
       }

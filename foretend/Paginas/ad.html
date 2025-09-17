@@ -10,6 +10,45 @@
     background: #d3eeaf;
     padding: 20px;
   }
+
+.logo {
+  display: flex;  
+  width: 100%;
+  align-items: center;       /* centra verticalmente */
+  justify-content: space-between; /* texto izquierda y botones derecha */
+  background-color: rgb(39, 148, 25);
+  padding: 0.7rem 1.3rem;
+  box-sizing: border-box;
+  border: none;
+}
+
+.Letra h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.8rem;
+}
+
+.botones {
+  display: flex;
+  justify-content: flex-end;  /* 🔹 Alinea a la derecha */
+  align-items: center;
+  gap: 20px; /* separación entre botones */
+}
+
+.botones a {
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  background: #0f5a05;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 20px;
+  line-height: 48px;
+  padding: 0 10px;
+  width: 150px;
+  cursor: pointer;
+}
+
   h2 {
     text-align: center;
     margin-bottom: 1rem;
@@ -50,10 +89,20 @@
 </head>
 <body>
 
+  <div class="logo"> 
+  <div class="Letra">
+    <h1>ADMINISTRAD@R</h1>
+  </div>
+  <nav class="botones">
+    <a href="/foretend/Paginas/registro.html">Registros</a>
+  </nav>
+</div>
+
+
 <h2 id="bienvenida">Panel de Administración</h2>
-<a href="/foretend/Paginas/prin.html">
+<!-- El botón de cerrar sesión puede o no estar dentro del <a>, depende de tu diseño -->
 <button onclick="cerrarSesion()">Cerrar Sesión</button>
-</a>
+
 
 <h3>Inventario</h3>
 <table id="tablaInventario">
@@ -83,7 +132,7 @@
   </tr><tr>
     <td contenteditable="true">4</td>
     <td contenteditable="true">zapatos negros colegiala</td>
-    <td contenteditable="true"></td>
+    <td contenteditable="true">true"></td>
     <td contenteditable="true"></td>
   </tr><tr>
     <td contenteditable="true">5</td>
@@ -111,7 +160,6 @@
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
   </tr>
-  <!-- Puedes seguir el mismo patrón para el resto -->
 </table>
 <button onclick="guardarTabla('tablaInventario')">Guardar Cambios Inventario</button>
 <h3>Pedidos Recientes</h3>
@@ -137,30 +185,40 @@
 
 <script>
   function cerrarSesion() {
-    sessionStorage.removeItem("usuario");
-    window.location.href = "Admin.html";
+    // Elimina todas las claves de sesión relacionadas con el usuario
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userRole");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("userEmail");
+    // Redirige al login de administrador
+    window.location.href = "Admin.html"; // Asegúrate de que esta ruta es correcta
   }
 
-  // Verificación de sesión
-  const usuario = sessionStorage.getItem("usuario");
-  if (!usuario) {
-    alert("Acceso denegado. Inicie sesión primero.");
-    window.location.href = "Admin.html";
-  } else {
-    document.getElementById("bienvenida").textContent = 'Bienvenida, administradora';
-  }
+  // Verificación de sesión al cargar la página
+  window.onload = function() {
+    const userRole = sessionStorage.getItem("userRole"); // <-- ¡CAMBIO CLAVE AQUÍ!
+    
+    if (userRole !== 'administrador') { // <-- Verifica que el rol sea 'administrador'
+      alert("Acceso denegado. Inicie sesión como administrador primero.");
+      window.location.href = "Admin.html"; // Redirige al login de administrador
+    } else {
+      document.getElementById("bienvenida").textContent = 'Bienvenida, administradora';
+    }
+  };
+
 
   function guardarTabla(idTabla) {
     const tabla = document.getElementById(idTabla);
-    const filas = tabla.querySelectorAll("tbody tr");
+    // Para tablas que usan <thead> y <tbody>, asegúrate de seleccionar solo las filas del tbody
+    const filas = tabla.querySelector("tbody").querySelectorAll("tr"); // Asegura que solo se seleccionan filas del tbody
     const datos = [];
 
     for (let i = 0; i < filas.length; i++) {
       const celdas = filas[i].querySelectorAll("td");
       const fila = [];
       celdas.forEach(td => fila.push(td.textContent.trim()));
-      // Solo guarda filas que tengan algún dato
-      if (fila.some(val => val !== "")) {
+      // Solo guarda filas que tengan algún dato no vacío, no la fila extra si existe
+      if (fila.some(val => val !== "") && !(idTabla === "tablaPedidos" && i === filas.length -1 && !fila.some(val => val !== ""))) {
         datos.push(fila);
       }
     }
@@ -178,13 +236,13 @@
 
     // Verificar si se está escribiendo en la última fila
     if (ultimaFila.contains(e.target)) {
-      // Si la última fila ya tiene algún contenido, agregamos una nueva fila
       const celdas = ultimaFila.querySelectorAll("td");
+      // Si la última fila ya tiene algún contenido en cualquiera de sus celdas, agregamos una nueva fila
       const tieneContenido = Array.from(celdas).some(td => td.textContent.trim() !== "");
 
       if (tieneContenido) {
         const nuevaFila = document.createElement("tr");
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) { // Asumiendo 4 columnas para pedidos
           const td = document.createElement("td");
           td.setAttribute("contenteditable", "true");
           nuevaFila.appendChild(td);
@@ -193,4 +251,43 @@
       }
     }
   });
+
+  // Opcional: Cargar datos guardados localmente al iniciar
+  window.addEventListener('load', () => {
+    cargarTabla('tablaInventario');
+    cargarTabla('tablaPedidos');
+  });
+
+  function cargarTabla(idTabla) {
+    const datosGuardados = localStorage.getItem(idTabla);
+    if (datosGuardados) {
+      const datos = JSON.parse(datosGuardados);
+      const tabla = document.getElementById(idTabla).querySelector('tbody');
+      tabla.innerHTML = ''; // Limpiar filas existentes
+
+      datos.forEach(filaDatos => {
+        const nuevaFila = document.createElement("tr");
+        filaDatos.forEach(celdaDato => {
+          const td = document.createElement("td");
+          td.setAttribute("contenteditable", "true");
+          td.textContent = celdaDato;
+          nuevaFila.appendChild(td);
+        });
+        tabla.appendChild(nuevaFila);
+      });
+      // Asegurarse de que tablaPedidos siempre tenga una fila editable vacía al final si está vacía
+      if (idTabla === "tablaPedidos" && datos.length === 0) {
+          const nuevaFila = document.createElement("tr");
+          for (let i = 0; i < 4; i++) { // Asumiendo 4 columnas para pedidos
+              const td = document.createElement("td");
+              td.setAttribute("contenteditable", "true");
+              nuevaFila.appendChild(td);
+          }
+          tablaPedidos.appendChild(nuevaFila);
+      }
+    }
+  }
 </script>
+
+</body>
+</html>
