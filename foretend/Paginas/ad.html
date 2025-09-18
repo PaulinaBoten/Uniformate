@@ -5,6 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panel de Administración</title>
 <style>
+  .logo {
+  display: flex;  
+  width: 100%;
+  align-items: center;       /* centra verticalmente */
+  justify-content: space-between; /* texto izquierda y botones derecha */
+  background-color: rgb(39, 148, 25);
+  padding: 0.7rem 1.3rem;
+  box-sizing: border-box;
+  border: none;              /* asegura que no tenga borde */
+}
+
+.Letra h1 {
+  margin: 0; /* elimina espacio extra */
+  color: #ffffff;
+  font-size: 1.8rem;
+}
+
+.botones{
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #ffffff;
+    gap: 40px;
+}
+    .botones a{
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      background: #0f5a05;
+      color: #ffffff;
+      border-radius: 6px;
+      font-size: 20px;
+      line-height: 48px;
+      padding: 0 10px;
+      width: 150px;
+      cursor: pointer;
+      margin: 0;
+    }
+
+
   body {
     font-family: 'Segoe UI', sans-serif;
     background: #d3eeaf;
@@ -49,6 +92,16 @@
 </style>
 </head>
 <body>
+
+<div class="logo"> 
+  <div class="Letra">
+    <h1>ADMINISTRAD@R</h1>
+  </div>
+  <nav class="botones">
+    <a href="/foretend/Paginas/registro.html">Registros</a>
+  </nav>
+</div>
+
 
 <h2 id="bienvenida">Panel de Administración</h2>
 <a href="/foretend/Paginas/prin.html">

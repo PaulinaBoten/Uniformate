@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" type="text/css" href="../CSS/uniformes.css"> 
+   <link rel="stylesheet" type="text/css" href="/foretend/Paginas/CSS/uniformes.css"> 
   <title>Catálogo Uniformes</title>
 
   <style>
@@ -181,7 +181,7 @@
 </head>
 <body>
 
-  <div class="logo"> 
+    <div class="logo"> 
     <div class="Letra">
       <h1>UNIFORMATE</h1>
     </div>
@@ -189,9 +189,11 @@
       <a href="/foretend/Paginas/prin.html">Inicio</a>
       <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
       <a href="/foretend/Paginas/inicio.html">Usuarios</a>
-      <a href="/foretend/Paginas/">Administrador</a>
+      <a href="/foretend/Paginas/Admin.html">Administrador</a>
     </nav>
   </div>
+
+  <button onclick="cerrarSesion()" style="background:#12490a; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">Cerrar Sesión</button>
 
   <h1>Catálogo de uniformes CEFA</h1>
 
@@ -354,6 +356,22 @@
     <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
+
+  <script>
+    // 🔹 Verificación de sesión
+    const usuario = sessionStorage.getItem("usuario");
+    if (!usuario) {
+      alert("Acceso denegado. Debes iniciar sesión.");
+      window.location.href = "inicio.html";
+    }
+
+    function cerrarSesion() {
+      sessionStorage.removeItem("usuario");
+      window.location.href = "inicio.html";
+    }
+  </script>
+</body>
+</html>
 
 </body>
 </html>

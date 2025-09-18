@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" type="text/css" href="/foretend/CSS/Admin.css">
+  <link rel="stylesheet" type="text/css" href="/foretend/Paginas/CSS/Admin.css">
   <title>Login Administrador</title>
 </head>
 <body>
@@ -25,31 +25,59 @@
 
 <script>
   const data = {
-    usuario: 'admin',
+    usuario: 'admin',   // credenciales locales
     contrasena: '1234'
   };
 
-  document.getElementById('loginForm').addEventListener('submit', function(e) {
+  document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const identificacion = document.getElementById('usuario').value;
-    const contrasena = document.getElementById('contrasena').value;
+    const usuario = document.getElementById('usuario').value.trim();
+    const contrasena = document.getElementById('contrasena').value.trim();
     const errorMsg = document.getElementById('errorMsg');
+    const mensaje = document.getElementById('mensaje');
 
-    if (identificacion === '' || contrasena === '') {
+    // Validar campos vacíos
+    if (usuario === '' || contrasena === '') {
       errorMsg.textContent = 'Por favor, ingrese su usuario y contraseña.';
+      return;
+    } else {
+      errorMsg.textContent = '';
+    }
+
+    // Validación local primero
+    if (usuario === data.usuario && contrasena === data.contrasena) {
+      sessionStorage.setItem('usuario', 'admin');
+      window.location.href = 'ad.html';
       return;
     }
 
-    if (identificacion === data.usuario && contrasena === data.contrasena) {
-      // Guardar sesión si es necesario
-      sessionStorage.setItem('usuario', 'admin');
-      window.location.href = 'ad.html';
-    } else {
-      errorMsg.textContent = 'Credenciales incorrectas';
+    // Si no coincide con local, probar contra backend
+    try {
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, contrasena })
+      });
+
+      const dataRes = await res.json();
+      console.log(dataRes);
+      mensaje.innerText = dataRes.message;
+
+      if (dataRes.success) {
+        sessionStorage.setItem('usuario', dataRes.data.tipo_usuario);
+        mensaje.style.color = "green";
+        window.location.href = 'Admin.html';
+      } else {
+        mensaje.style.color = "red";
+      }
+    } catch (error) {
+      mensaje.innerText = "Error de conexión con el servidor.";
+      mensaje.style.color = "red";
     }
   });
 </script>
+
 
 </body>
 </html>

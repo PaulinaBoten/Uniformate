@@ -1,109 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="/CSS/inicio.css">
-
-    <!-- Fuentes de Google igual que en prin.html -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cinzel:wght@700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio de sesión</title>
+  <link rel="stylesheet" href="/foretend/Paginas/CSS/inicio.css">
 </head>
 <body>
 
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-    <style>
-        /* Botón flotante de WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s;
-        }
-
-        .whatsapp-float img {
-            width: 65px;
-            height: 65px;
-            object-fit: contain;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            cursor: pointer;
-        }
-    </style>
-    
-   <div class="logo"> 
-        <div class="Letra">
-            <h1>UNIFORMATE</h1>
-        </div>
-        <nav class="botones">
-            <a href="/foretend/Paginas/prin.html">Inicio</a>
-            <a href="/foretend/Paginas/cata.html">Catalogo</a>
-            <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-            <a href="/foretend/Paginas/Admin.html">Administrador</a>
-        </nav>
+  <div class="logo"> 
+    <div class="Letra">
+      <h1>UNIFORMATE</h1>
     </div>
+    <nav class="botones">
+      <a href="/foretend/Paginas/prin.html">Inicio</a>
+      <a href="/foretend/Paginas/cata.html">Catálogo</a>
+      <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
+    </nav>
+  </div>
 
-    <section class="login">
-        <div class="inicio-sesion">
-            <h2>Inicio de sesión</h2>
-            <form action="../Paginas/uniformes.html" >
-                <input class="controls" type="email" name="Email" placeholder="Correo electrónico" required>
-                <input class="controls" minlength="8" type="password" name="Contraseña" placeholder="Contraseña" required>
-                <input class="buttons" type="submit" value="Ingresar">
-            </form>
-        </div>
-    </section>
+  <section class="login">
+    <div class="inicio-sesion">
+      <h2>Inicio de sesión</h2>
+      <form id="loginForm">
+        <input class="controls" type="email" id="email" placeholder="Correo electrónico" required>
+        <input class="controls" minlength="8" type="password" id="password" placeholder="Contraseña" required>
+        <input class="buttons" type="submit" value="Ingresar">
+      </form>
+      <p id="mensaje" style="color: red; font-weight: bold;"></p>
+    </div>
+  </section>
 
-<script>
-  // Datos simulados (puedes agregar más usuarios aquí)
-  const usuarios = [
-    { email: "chochete@correo.com", password: "Chochete123" },
-    { email: "usuario2@correo.com", password: "clave456" }
-  ];
+  <script>
+    // Usuarios predeterminados
+    const usuarios = [
+      { email: "chochete@correo.com", password: "Chochete123" },
+      { email: "usuario2@correo.com", password: "clave456" }
+    ];
 
-  // Interceptar el envío del formulario
-  document.querySelector("form").addEventListener("submit", function (e) {
-    e.preventDefault(); // Evita que se envíe automáticamente
+    // Manejo del login
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    const email = e.target.Email.value;
-    const password = e.target.Contraseña.value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const mensaje = document.getElementById("mensaje");
 
-    const usuarioValido = usuarios.find(
-      u => u.email === email && u.password === password
-    );
+      const usuarioValido = usuarios.find(u => u.email === email && u.password === password);
 
-    if (usuarioValido) {
-      // Redirige al catálogo si el login es válido
-      window.location.href = "uniformes.html";
-    } else {
-      alert("Correo o contraseña incorrectos");
-    }
-  });
-</script>
-
-<a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
-    <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-</a>
-  
+      if (usuarioValido) {
+        sessionStorage.setItem("usuario", email); // 🔹 Clave unificada
+        window.location.href = "Cata.html";  // Redirige al catálogo
+      } else {
+        mensaje.textContent = "Correo o contraseña incorrectos";
+      }
+    });
+  </script>
 </body>
 </html>
