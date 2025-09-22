@@ -72,8 +72,8 @@
       text-align: center;
       font-size: 18px;
       flex-direction: column;
-      height:340px;
-      width: 240px;
+      height:340px; /* Ajustado para que sea consistente */
+      width: 240px; /* Ajustado para que sea consistente */
       margin-left: -20px;
     }
 
@@ -109,6 +109,7 @@
       font-family: 'Segoe UI', sans-serif;
       box-sizing: border-box;
       width: 100%;
+      margin-top: 40px; /* Para separar del contenido principal */
     }
 
     .footer-container {
@@ -148,35 +149,69 @@
     .footer-box i {
       margin-right: 8px;
     }
-.whatsapp-float {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  bottom: 20px;
-  right: 20px;
-  background-color: #25d366;
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  font-size: 30px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s;
-}
+    
+    /* Estilos del header */
+    .logo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color: #279419;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        margin-bottom: 40px;
+    }
 
-.whatsapp-float img {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-}
+    .logo .Letra h1 {
+        margin: 0;
+        color: white;
+        font-family: 'Archivo Black', sans-serif;
+    }
 
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-}
+    .logo .botones a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 18px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .logo .botones a:hover {
+        background-color: #3cb82a;
+    }
+
+    /* Botón flotante de WhatsApp */
+    .whatsapp-float {
+        position: fixed;
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25d366;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s;
+    }
+
+    .whatsapp-float img {
+        width: 65px;
+        height: 65px;
+        object-fit: contain;
+    }
+
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -188,8 +223,10 @@
     <nav class="botones">
       <a href="/foretend/Paginas/prin.html">Inicio</a>
       <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-      <a href="/foretend/Paginas/inicio.html">Usuarios</a>
-      <a href="/foretend/Paginas/">Administrador</a>
+      <!-- Enlaces ocultos por defecto, gestionados por JavaScript -->
+      <a href="/foretend/Paginas/inicio.html" id="enlaceUsuarios" style="display:none;">Usuarios</a> 
+      <a href="/foretend/Paginas/Admin.html" id="enlaceAdmin" style="display:none;">Administrador</a>
+      <a href="#" id="cerrarSesionBtn" style="display:none;">Cerrar sesión</a>
     </nav>
   </div>
 
@@ -199,24 +236,22 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src= "/foretend/Paginas/img/suda.jpeg" alt="Imagen 1">
+        <img src= "/foretend/Paginas/img/suda.jpeg" alt="Sudadera Deportiva">
       </div>
       <div class="flip-card-back">
         <strong>Sudadera Deportiva</strong>
         <p>De tela tipo poliéster o microfibra.
          Color base verde oscuro, con franjas laterales amarillas.
          Letras "CEFA" bordadas en una pierna en color amarillo.
-</p>
+        </p>
       </div>
     </div>
   </div>
 
-  <!-- (Resto de tarjetas igual que antes...) -->
-  <!-- Aquí continúan las demás tarjetas del catálogo -->
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/cami.jpeg" alt="Imagen 2">
+        <img src="/foretend/Paginas/img/cami.jpeg" alt="Camisa Polo Deportiva">
       </div>
       <div class="flip-card-back">
         <strong>Camisa Polo Deportiva</strong>
@@ -224,7 +259,7 @@
        Cuello camisero en verde con borde amarillo.
        Botones al frente, típicos de una polo.
        Letras verticales "CEFA" visibles en el costado (probablemente sigla de la institución).
-</p>
+        </p>
       </div>
     </div>
   </div>
@@ -232,9 +267,10 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/mediasuniformes.webp" alt="Imagen 3">
-      </div><div class="flip-card-back">
-        <strong>Medias Blancas Deporvitas</strong>
+        <img src="/foretend/Paginas/img/mediasuniformes.webp" alt="Medias Blancas Deportivas">
+      </div>
+      <div class="flip-card-back">
+        <strong>Medias Blancas Deportivas</strong>
         <p> Ideal para entrenamientos, uniformes deportivos o actividades que requieren mayor soporte y protección.</p>
       </div>
     </div>
@@ -243,10 +279,10 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/s-l1600.webp" alt="Imagen 4">
+        <img src="/foretend/Paginas/img/s-l1600.webp" alt="Zapatos Deportivos">
       </div>
       <div class="flip-card-back">
-        <strong>Zapatos Deportivas</strong>
+        <strong>Zapatos Deportivos</strong>
         <p> Ideal para entrenamientos, uniformes deportivos o actividades que requieren mayor soporte y protección.</p>
       </div>
     </div>
@@ -255,10 +291,10 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/chaqueta.png" alt="Imagen 5">
+        <img src="/foretend/Paginas/img/chaqueta.png" alt="Chaqueta Impermeable">
       </div>
       <div class="flip-card-back">
-        <strong>Chaqueta impermiable</strong>
+        <strong>Chaqueta Impermeable</strong>
         <p>Color verde oscuro, con cierre frontal.
         Tiene el escudo institucional bordado en el lado izquierdo del pecho.
         Es de manga larga, ideal para clima frío o intermedio.</p>
@@ -269,15 +305,15 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/yumper.png" alt="Imagen 6">
+        <img src="/foretend/Paginas/img/yumper.png" alt="Yumper / Uniforme de Gala">
       </div>
       <div class="flip-card-back">
         <strong>Yumper / Uniforme de Gala</strong>
-        <p>stilo a cuadros pequeños en tonos verde oscuro y beige.
+        <p>Estilo a cuadros pequeños en tonos verde oscuro y beige.
         Falda tableada, lo que da un acabado clásico y ordenado.
         El diseño cubre todo el torso hasta la parte baja de la falda.
         Se lleva encima de una blusa blanca con cuello camisero.
-</p>
+        </p>
       </div>
     </div>
   </div>
@@ -285,7 +321,7 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/medias.uniformeg.jpg" alt="Imagen 7">
+        <img src="/foretend/Paginas/img/medias.uniformeg.jpg" alt="Medias Yumper">
       </div>
       <div class="flip-card-back">
         <strong>Medias Yumper</strong>
@@ -297,7 +333,7 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/zapatosyumper.jpg" alt="Imagen 8">
+        <img src="/foretend/Paginas/img/zapatosyumper.jpg" alt="Zapatos Negros Colegiala">
       </div>
       <div class="flip-card-back">
         <strong>Zapatos Negros Colegiala</strong>
@@ -309,7 +345,7 @@
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/Saco hilo.jpg" alt="Imagen 9">
+        <img src="/foretend/Paginas/img/Saco hilo.jpg" alt="Sueter de Lana">
       </div>
         <div class="flip-card-back">
           <strong>Sueter de Lana</strong>
@@ -355,6 +391,59 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- Script para protección de acceso y cerrar sesión -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = sessionStorage.getItem('token');
+        const userRole = sessionStorage.getItem('userRole');
+
+        const cerrarSesionBtn = document.getElementById('cerrarSesionBtn');
+        const enlaceUsuarios = document.getElementById('enlaceUsuarios');
+        const enlaceAdmin = document.getElementById('enlaceAdmin');
+
+        if (!token) {
+            // Si no hay token, el usuario no ha iniciado sesión
+            alert('Debes iniciar sesión para ver el catálogo.');
+            window.location.href = 'inicio.html'; // Redirige a la página de inicio de sesión
+        } else {
+            // Usuario autenticado:
+            console.log('Usuario autenticado. Rol:', userRole);
+            cerrarSesionBtn.style.display = 'block'; // Mostrar el botón de cerrar sesión
+
+            // Opcional: Mostrar enlaces específicos según el rol
+            // Si quieres que el enlace "Usuarios" se muestre para no-logueados
+            // y desaparezca para logueados (para dar paso a Cerrar Sesión),
+            // la lógica actual lo maneja así:
+            // Si el usuario está logueado, no muestra "Usuarios", muestra "Cerrar Sesión".
+
+            // Si eres administrador, muestra el enlace de Admin.
+            if (userRole === 'administrador') {
+                enlaceAdmin.style.display = 'block';
+            } else { // Rol normal o cualquier otro rol
+                enlaceAdmin.style.display = 'none'; // Oculta el enlace de Admin si no es admin
+            }
+            // Si ya hay token, el enlace "Usuarios" de la nav está oculto por defecto (display:none)
+            // porque la idea es que ya está "usando" el sitio como usuario.
+            enlaceUsuarios.style.display = 'none'; 
+        }
+
+        // Lógica para cerrar sesión
+        if (cerrarSesionBtn) { // Asegurarse de que el botón existe antes de añadir el listener
+            cerrarSesionBtn.addEventListener('click', function(e) {
+                e.preventDefault(); // Evita la navegación por defecto del enlace
+
+                // Eliminar los datos de sesión
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('userRole');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('userEmail');
+
+                alert('Has cerrado sesión exitosamente.');
+                window.location.href = 'inicio.html'; // Redirige a la página de inicio de sesión
+            });
+        }
+    });
+  </script>
 
 </body>
 </html>
