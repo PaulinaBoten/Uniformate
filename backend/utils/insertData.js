@@ -1,28 +1,42 @@
-// utils/insertData.js (CORREGIDO)
+// utils/insertData.js (Modificado para incluir usuario administrador)
 
 const pool = require('../db/pool');
 const bcrypt = require('bcrypt');
 
 const insertData = async (req, res) => {
   try {
-    // Hashea la contraseña '123'
-    const hashedPassword = await bcrypt.hash('123', 10);
+    // Hashea la contraseña para el usuario normal (ej. 'pa@asd.asd')
+    const normalUserPassword = '123';
+    const hashedNormalPassword = await bcrypt.hash(normalUserPassword, 10);
+    const normalUserEmail = 'pa@asd.asd';
 
-    // Definimos el correo y el rol para este usuario de prueba
-    const userEmail = 'pa@asd.asd'; // O cualquier otro correo que quieras usar
-    const userRole = 'normal'; // O 'administrador'
-
-    // Realizar la inserción
+    // Inserta o actualiza el usuario normal
     await pool.query(`
       INSERT INTO usuarios (correo, contrasena, rol)
       VALUES ($1, $2, $3)
-      ON CONFLICT (correo) DO NOTHING; -- Para evitar errores si el correo ya existe
-    `, [userEmail, hashedPassword, userRole]); // Ahora pasamos 3 valores para 3 columnas
+      ON CONFLICT (correo) DO UPDATE SET
+        contrasena = EXCLUDED.contrasena,
+        rol = EXCLUDED.rol;
+    `, [normalUserEmail, hashedNormalPassword, 'normal']);
 
-    res.send('✅ Dato creado correctamente'); // Mensaje corregido
+    // --- NUEVO: Usuario Administrador ---
+    const adminUserPassword = 'adminpassword123'; // ¡Contraseña para el administrador!
+    const hashedAdminPassword = await bcrypt.hash(adminUserPassword, 10);
+    const adminUserEmail = 'admin@uniformate.com'; // Correo del administrador
+
+    // Inserta o actualiza el usuario administrador
+    await pool.query(`
+      INSERT INTO usuarios (correo, contrasena, rol)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (correo) DO UPDATE SET
+        contrasena = EXCLUDED.contrasena,
+        rol = EXCLUDED.rol;
+    `, [adminUserEmail, hashedAdminPassword, 'administrador']); // ¡IMPORTANTE: rol 'administrador'!
+
+    res.send('✅ Datos de usuarios creados/actualizados correctamente');
   } catch (error) {
-    console.error('❌ Error al insertar datos:', error.message); // Mensaje de consola corregido
-    res.status(500).send(`❌ Error al insertar los datos: ${error.message}`); // Mensaje de respuesta corregido
+    console.error('❌ Error al insertar/actualizar datos:', error.message);
+    res.status(500).send(`❌ Error al insertar/actualizar los datos: ${error.message}`);
   }
 };
 

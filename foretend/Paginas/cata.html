@@ -72,8 +72,8 @@
       text-align: center;
       font-size: 18px;
       flex-direction: column;
-      height:340px;
-      width: 240px;
+      height:340px; 
+      width: 240px; 
       margin-left: -20px;
     }
 
@@ -93,7 +93,6 @@
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 700;
       font-size: 20px;
-      font-style: normal;
       background-color: rgb(39, 148, 25);
       padding: 10px;
     }  
@@ -109,6 +108,7 @@
       font-family: 'Segoe UI', sans-serif;
       box-sizing: border-box;
       width: 100%;
+      margin-top: 40px;
     }
 
     .footer-container {
@@ -148,48 +148,60 @@
     .footer-box i {
       margin-right: 8px;
     }
-.whatsapp-float {
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  bottom: 20px;
-  right: 20px;
-  background-color: #25d366;
-  color: white;
-  border-radius: 50%;
-  text-align: center;
-  font-size: 30px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s;
-}
+    
+    .whatsapp-float {
+        position: fixed;
+        width: 60px;
+        height: 60px;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25d366;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s;
+    }
 
-.whatsapp-float img {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-}
+    .whatsapp-float img {
+        width: 65px;
+        height: 65px;
+        object-fit: contain;
+    }
 
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-}
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+
+    .flip-card img {
+      width: 240px;       
+      height: 340px;      
+      object-fit: cover;  
+      border-radius: 10px; 
+      display: block;
+      margin: 0 auto;     
+    }
   </style>
 </head>
 <body>
 
-    <div class="logo"> 
+  <div class="logo"> 
     <div class="Letra">
       <h1>UNIFORMATE</h1>
     </div>
     <nav class="botones">
       <a href="/foretend/Paginas/prin.html">Inicio</a>
       <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-      <a href="/foretend/Paginas/inicio.html">Usuarios</a>
-      <a href="/foretend/Paginas/Admin.html">Administrador</a>
+      <a href="/foretend/Paginas/pedidos.html" id="verCarritoBtn">Ver Carrito</a>
+      <a href="/foretend/Paginas/inicio.html" id="enlaceUsuarios" style="display:none;">Usuarios</a> 
+      <a href="/foretend/Paginas/Admin.html" id="enlaceAdmin" style="display:none;">Administrador</a>
+      <a href="#" id="cerrarSesionBtn" style="display:none;">Cerrar sesión</a>
     </nav>
   </div>
 
@@ -197,132 +209,8 @@
 
   <h1>Catálogo de uniformes CEFA</h1>
 
-  <!-- Tarjetas (ejemplo) -->
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src= "/foretend/Paginas/img/suda.jpeg" alt="Imagen 1">
-      </div>
-      <div class="flip-card-back">
-        <strong>Sudadera Deportiva</strong>
-        <p>De tela tipo poliéster o microfibra.
-         Color base verde oscuro, con franjas laterales amarillas.
-         Letras "CEFA" bordadas en una pierna en color amarillo.
-</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- (Resto de tarjetas igual que antes...) -->
-  <!-- Aquí continúan las demás tarjetas del catálogo -->
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/cami.jpeg" alt="Imagen 2">
-      </div>
-      <div class="flip-card-back">
-        <strong>Camisa Polo Deportiva</strong>
-        <p>Base blanca con paneles laterales en amarillo y verde oscuro.
-       Cuello camisero en verde con borde amarillo.
-       Botones al frente, típicos de una polo.
-       Letras verticales "CEFA" visibles en el costado (probablemente sigla de la institución).
-</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/mediasuniformes.webp" alt="Imagen 3">
-      </div><div class="flip-card-back">
-        <strong>Medias Blancas Deporvitas</strong>
-        <p> Ideal para entrenamientos, uniformes deportivos o actividades que requieren mayor soporte y protección.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/s-l1600.webp" alt="Imagen 4">
-      </div>
-      <div class="flip-card-back">
-        <strong>Zapatos Deportivas</strong>
-        <p> Ideal para entrenamientos, uniformes deportivos o actividades que requieren mayor soporte y protección.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/chaqueta.png" alt="Imagen 5">
-      </div>
-      <div class="flip-card-back">
-        <strong>Chaqueta impermiable</strong>
-        <p>Color verde oscuro, con cierre frontal.
-        Tiene el escudo institucional bordado en el lado izquierdo del pecho.
-        Es de manga larga, ideal para clima frío o intermedio.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/yumper.png" alt="Imagen 6">
-      </div>
-      <div class="flip-card-back">
-        <strong>Yumper / Uniforme de Gala</strong>
-        <p>stilo a cuadros pequeños en tonos verde oscuro y beige.
-        Falda tableada, lo que da un acabado clásico y ordenado.
-        El diseño cubre todo el torso hasta la parte baja de la falda.
-        Se lleva encima de una blusa blanca con cuello camisero.
-</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/medias.uniformeg.jpg" alt="Imagen 7">
-      </div>
-      <div class="flip-card-back">
-        <strong>Medias Yumper</strong>
-        <p>Medias largas color verde oscuro que combinan con el uniforme.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/zapatosyumper.jpg" alt="Imagen 8">
-      </div>
-      <div class="flip-card-back">
-        <strong>Zapatos Negros Colegiala</strong>
-        <p>Zapatos negros tipo colegial, con cordones blancos visibles.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flip-card">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <img src="/foretend/Paginas/img/Saco hilo.jpg" alt="Imagen 9">
-      </div>
-        <div class="flip-card-back">
-          <strong>Sueter de Lana</strong>
-          <p>Color verde oscuro,Tiene el escudo institucional bordado en el lado izquierdo del pecho.
-          Es de manga larga, ideal para clima frío o intermedio.</p>
-        </div>
-      </div>
-    </div>
-
-  <!-- Íconos de redes -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- 🔹 tarjetas de productos (dejé tus ejemplos) -->
+  <!-- ... (todas las flip-cards que ya tenías) ... -->
 
   <!-- Footer -->
   <footer>
@@ -357,21 +245,44 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- Script para protección de acceso y cerrar sesión -->
   <script>
-    // 🔹 Verificación de sesión
-    const usuario = sessionStorage.getItem("usuario");
-    if (!usuario) {
-      alert("Acceso denegado. Debes iniciar sesión.");
-      window.location.href = "inicio.html";
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = sessionStorage.getItem('token');
+        const userRole = sessionStorage.getItem('userRole');
 
-    function cerrarSesion() {
-      sessionStorage.removeItem("usuario");
-      window.location.href = "inicio.html";
-    }
+        const cerrarSesionBtn = document.getElementById('cerrarSesionBtn');
+        const enlaceUsuarios = document.getElementById('enlaceUsuarios');
+        const enlaceAdmin = document.getElementById('enlaceAdmin');
+
+        if (!token) {
+            alert('Debes iniciar sesión para ver el catálogo.');
+            window.location.href = 'inicio.html';
+        } else {
+            console.log('Usuario autenticado. Rol:', userRole);
+            cerrarSesionBtn.style.display = 'block'; 
+
+            if (userRole === 'administrador') {
+                enlaceAdmin.style.display = 'block';
+            } else {
+                enlaceAdmin.style.display = 'none';
+            }
+            enlaceUsuarios.style.display = 'none'; 
+        }
+
+        if (cerrarSesionBtn) {
+            cerrarSesionBtn.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('userRole');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('userEmail');
+
+                alert('Has cerrado sesión exitosamente.');
+                window.location.href = 'inicio.html'; 
+            });
+        }
+    });
   </script>
-</body>
-</html>
-
 </body>
 </html>

@@ -27,12 +27,18 @@ exports.register = async (req, res) => {
 // Login de usuario
 exports.login = async (req, res) => {
   const { correo, contrasena } = req.body;
+  console.log(await pool.query('SELECT * FROM usuarios'));
+  
 
   try {
+    console.log(correo);
     const result = await pool.query('SELECT * FROM usuarios WHERE correo = $1', [correo]);
+    
     if (result.rows.length === 0) return res.status(400).json({ error: 'Usuario no encontrado' });
 
     const user = result.rows[0];
+    console.log(user);
+    
     const match = await bcrypt.compare(contrasena, user.contrasena);
     if (!match) return res.status(401).json({ error: 'Contraseña incorrecta' });
 

@@ -10,22 +10,89 @@
 </head>
 <body>
    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        
+
+    <style>
+        /* Botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+    </style>
+    
   <section class="form-login">
     <div class="registro">
       <h2>Registro</h2>
-      <form action="registro.php" method="POST">
-        <input class="controls" type="text" name="Usuario" placeholder="Usuario" required>
-        <input class="controls" type="email" name="Email" placeholder="Email" required>
-        <input class="controls" type="password" name="Contraseña" placeholder="Contraseña" required>
-        <input class="buttons" type="submit" value="Ingresar">
+      <form id="registerForm">
+        <input class="controls" type="text" id="usuario" placeholder="Usuario" required>
+        <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
+        <input class="controls" type="password" id="contrasena" placeholder="Contraseña" required>
+        <input class="buttons" type="submit" value="Registrar">
+        <div id="mensajeRegistro" style="color:red; margin-top:10px;"></div>
       </form>
     </div>
   </section>
-  <script src="/registro.js"></script>
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const contrasena = document.getElementById("contrasena").value.trim();
+      const mensajeDiv = document.getElementById("mensajeRegistro");
+
+      mensajeDiv.textContent = "";
+
+      if (!usuario || !correo || !contrasena) {
+        mensajeDiv.textContent = "Por favor, complete todos los campos.";
+        mensajeDiv.style.color = "red";
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:3000/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario, correo, contrasena })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          mensajeDiv.textContent = "✅ Registro exitoso. Ahora puede iniciar sesión.";
+          mensajeDiv.style.color = "green";
+          document.getElementById("registerForm").reset();
+        } else {
+          mensajeDiv.textContent = data.error || "Error en el registro.";
+          mensajeDiv.style.color = "red";
+        }
+      } catch (error) {
+        console.error("❌ Error de conexión:", error);
+        mensajeDiv.textContent = "Error de conexión con el servidor. Intente más tarde.";
+        mensajeDiv.style.color = "red";
+      }
+    });
+  </script>
 
   <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
         <i class="fab fa-whatsapp"></i>
-    </a>
+  </a>
 </body>
 </html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realizar Pedido - Uniformes CEFA</title>
+  <link rel="stylesheet" href="/foretend/Paginas/CSS/pedidos.css">
+  <!-- Íconos de Font Awesome para el footer y WhatsApp -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="logo"> 
+    <div class="Letra">
+      <h1>UNIFORMATE</h1>
+    </div>
+    <nav class="botones">
+      <a href="/foretend/Paginas/prin.html">Inicio</a>
+      <a href="/foretend/Paginas/cata.html">Catálogo</a>
+      <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
+      <!-- Enlaces ocultos por defecto, gestionados por JavaScript -->
+      <a href="/foretend/Paginas/inicio.html" id="enlaceUsuarios" style="display:none;">Usuarios</a> 
+      <a href="/foretend/Paginas/Admin.html" id="enlaceAdmin" style="display:none;">Administrador</a>
+      <a href="#" id="cerrarSesionBtn" style="display:none;">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1>Tu Pedido</h1>
+
+    <div class="cart-items" id="cartItems">
+      <!-- Aquí se renderizarán los productos del carrito -->
+      <p class="empty-cart-message" id="emptyCartMessage">No hay productos en tu carrito. Agrega desde el <a href="/foretend/Paginas/cata.html">catálogo</a>.</p>
+    </div>
+
+    <div class="total-section">
+      <h3>Total Estimado: $<span id="cartTotal">0.00</span></h3>
+    </div>
+
+    <div class="form-section">
+      <h2>Completa tus datos para el pedido</h2>
+      <form id="orderForm">
+        <div class="form-group">
+          <label for="fullName">Nombre Completo:</label>
+          <input type="text" id="fullName" name="fullName" required>
+        </div>
+        <div class="form-group">
+          <label for="orderStatus">Estado del Pedido:</label>
+          <select id="orderStatus" name="orderStatus" required>
+            <option value="">Selecciona un estado</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="confirmado">Confirmado</option>
+            <option value="entregado">Entregado</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="orderDetails">Detalles del Pedido:</label>
+          <textarea id="orderDetails" name="orderDetails" rows="5" readonly required></textarea>
+          <small>Este campo se llenará automáticamente con los productos de tu carrito.</small>
+        </div>
+        
+        <button type="submit" class="submit-button">Realizar Pedido</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-box">
+        <h3>📞 Contacto</h3>
+        <p><i class="fas fa-phone-alt"></i> 300 4197922</p>
+        <p><i class="fas fa-map-marker-alt"></i> C 50 #41-55, La Candelaria, Medellín</p>
+      </div>
+
+      <div class="footer-box">
+        <h3>📲 Redes Sociales</h3>
+        <a href="https://www.instagram.com/centroformativodeantioquia/" target="_blank">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://wa.me/qr/NLHKB7NV3GKAI1" target="_blank">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+      </div>
+
+      <div class="footer-box">
+        <h3>🎓 Créditos</h3>
+        <p>Paulina Botero González</p>
+        <p>Valeria Llano Quintero</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+    <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script src="/foretend/Paginas/JS/pedidos.js"></script>
+  <script>
+    // Script para protección de acceso y cerrar sesión (copia del de cata.html)
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = sessionStorage.getItem('token');
+        const userRole = sessionStorage.getItem('userRole');
+
+        const cerrarSesionBtn = document.getElementById('cerrarSesionBtn');
+        const enlaceUsuarios = document.getElementById('enlaceUsuarios');
+        const enlaceAdmin = document.getElementById('enlaceAdmin');
+
+        if (!token) {
+            alert('Debes iniciar sesión para ver tus pedidos.');
+            window.location.href = 'inicio.html'; // Redirige a la página de inicio de sesión
+        } else {
+            console.log('Usuario autenticado. Rol:', userRole);
+            cerrarSesionBtn.style.display = 'block';
+
+            if (userRole === 'administrador') {
+                enlaceAdmin.style.display = 'block';
+            } else {
+                enlaceAdmin.style.display = 'none';
+            }
+            enlaceUsuarios.style.display = 'none'; 
+        }
+
+        if (cerrarSesionBtn) {
+            cerrarSesionBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('userRole');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('userEmail');
+
+                alert('Has cerrado sesión exitosamente.');
+                window.location.href = 'inicio.html';
+            });
+        }
+    });
+  </script>
+</body>
+</html>

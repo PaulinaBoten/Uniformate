@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicio de sesión</title>
-  <link rel="stylesheet" href="/foretend/Paginas/CSS/inicio.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+    <link rel="stylesheet" href="/foretend/Paginas/CSS/inicio.css">
+
+    <!-- Fuentes de Google igual que en prin.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Cinzel:wght@700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -12,49 +18,82 @@
     <div class="Letra">
       <h1>UNIFORMATE</h1>
     </div>
-    <nav class="botones">
-      <a href="/foretend/Paginas/prin.html">Inicio</a>
-      <a href="/foretend/Paginas/cata.html">Catálogo</a>
-      <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-    </nav>
-  </div>
 
-  <section class="login">
-    <div class="inicio-sesion">
-      <h2>Inicio de sesión</h2>
-      <form id="loginForm">
-        <input class="controls" type="email" id="email" placeholder="Correo electrónico" required>
-        <input class="controls" minlength="8" type="password" id="password" placeholder="Contraseña" required>
-        <input class="buttons" type="submit" value="Ingresar">
-      </form>
-      <p id="mensaje" style="color: red; font-weight: bold;"></p>
-    </div>
-  </section>
+    <section class="login">
+        <div class="inicio-sesion">
+            <h2>Inicio de sesión</h2>
+            <!-- !!! CAMBIOS AQUÍ: Añadimos un ID al formulario y a los inputs !!! -->
+            <form id="loginFormUser">
+                <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
+                <input class="controls" minlength="1" type="password" id="contrasena" placeholder="Contraseña" required>
+                <input class="buttons" type="submit" value="Ingresar">
+                <!-- Para mostrar mensajes de error o éxito al usuario -->
+                <div id="mensajeLogin" style="color:red; margin-top: 10px;"></div>
+            </form>
+        </div>
+    </section>
 
-  <script>
-    // Usuarios predeterminados
-    const usuarios = [
-      { email: "chochete@correo.com", password: "Chochete123" },
-      { email: "usuario2@correo.com", password: "clave456" }
-    ];
+<script>
+  // Interceptar el envío del formulario
+  document.getElementById("loginFormUser").addEventListener("submit", async function (e) {
+    e.preventDefault(); // Evita que se envíe automáticamente
 
-    // Manejo del login
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+    // Obtenemos los valores por ID
+    const correo = document.getElementById("correo").value.trim();
+    const contrasena = document.getElementById("contrasena").value.trim();
+    const mensajeLoginDiv = document.getElementById("mensajeLogin");
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const mensaje = document.getElementById("mensaje");
+    mensajeLoginDiv.textContent = ''; // Limpiar mensajes anteriores
 
-      const usuarioValido = usuarios.find(u => u.email === email && u.password === password);
+    if (!correo || !contrasena) {
+      mensajeLoginDiv.textContent = 'Por favor, ingrese su correo electrónico y contraseña.';
+      mensajeLoginDiv.style.color = 'red';
+      return;
+    }
 
-      if (usuarioValido) {
-        sessionStorage.setItem("usuario", email); // 🔹 Clave unificada
-        window.location.href = "Cata.html";  // Redirige al catálogo
-      } else {
-        mensaje.textContent = "Correo o contraseña incorrectos";
+    try {
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // Enviamos el JSON esperado por el backend
+        body: JSON.stringify({ correo, contrasena })
+      });
+
+      const data = await res.json();
+      console.log(data); // Para depuración
+
+      if (res.ok) { // Si la respuesta HTTP es 2xx (éxito)
+        if (data.token && data.user) {
+          // Guardar información del usuario y token en sessionStorage
+          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('userRole', data.user.rol); // 'normal' o 'administrador'
+          sessionStorage.setItem('userId', data.user.id);
+          sessionStorage.setItem('userEmail', data.user.correo);
+
+          mensajeLoginDiv.textContent = '✅ Inicio de sesión exitoso. Redirigiendo...';
+          mensajeLoginDiv.style.color = 'green';
+          // Redirigir al usuario normal a la página de uniformes (o la que corresponda)
+          window.location.href = "cata.html"; // <-- ¡Asegúrate de que esta ruta sea correcta!
+        } else {
+          mensajeLoginDiv.textContent = 'Error inesperado en la respuesta del servidor.';
+          mensajeLoginDiv.style.color = 'red';
+        }
+      } else { 
+        mensajeLoginDiv.textContent = data.error || 'Error en el inicio de sesión. Verifique sus credenciales.';
+        mensajeLoginDiv.style.color = 'red';
       }
-    });
-  </script>
+    } catch (error) {
+      console.error('❌ Error de conexión con el servidor:', error);
+      mensajeLoginDiv.textContent = "Error de conexión con el servidor. Intente de nuevo más tarde.";
+      mensajeLoginDiv.style.color = 'red';
+    }
+  });
+</script>
+
+<a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+    <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+  
 </body>
 </html>

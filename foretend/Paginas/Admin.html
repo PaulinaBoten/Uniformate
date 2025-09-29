@@ -15,7 +15,6 @@
 <div class="login-container">
   <h2>Ingreso Administrador</h2>
   <form id="loginForm">
-    <!-- !!! CAMBIO AQUÍ: id y placeholder para reflejar "correo" !!! -->
     <input type="text" id="correo" placeholder="Correo electrónico" required />
     <input type="password" id="contrasena" placeholder="Contraseña" required />
     <button type="submit">Ingresar</button>
@@ -25,33 +24,56 @@
 </div>
 
 <script>
-  const data = {
-    usuario: 'admin',
-    contrasena: '1234'
-  };
+  document.getElementById('loginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-  document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+    const correo = document.getElementById('correo').value.trim();
+    const contrasena = document.getElementById('contrasena').value.trim();
+    const mensajeDiv = document.getElementById('mensaje');
 
-    const identificacion = document.getElementById('usuario').value;
-    const contrasena = document.getElementById('contrasena').value;
-    const errorMsg = document.getElementById('errorMsg');
+    mensajeDiv.textContent = '';
 
-    if (identificacion === '' || contrasena === '') {
-      errorMsg.textContent = 'Por favor, ingrese su usuario y contraseña.';
+    if (!correo || !contrasena) {
+      mensajeDiv.textContent = 'Por favor, ingrese su correo electrónico y contraseña.';
+      mensajeDiv.style.color = 'red';
       return;
     }
 
-    if (identificacion === data.usuario && contrasena === data.contrasena) {
-      // Guardar sesión si es necesario
-      sessionStorage.setItem('usuario', 'admin');
-      window.location.href = 'ad.html';
-    } else {
-      errorMsg.textContent = 'Credenciales incorrectas';
+    try {
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, contrasena })
+      });
+
+      const data = await res.json();
+      console.log(data);
+
+      if (res.ok) {
+        if (data.token && data.user && data.user.rol === 'administrador') {
+          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('userRole', data.user.rol);
+          sessionStorage.setItem('userId', data.user.id);
+          sessionStorage.setItem('userEmail', data.user.correo);
+
+          mensajeDiv.textContent = '✅ Ingreso de administrador exitoso. Redirigiendo...';
+          mensajeDiv.style.color = 'green';
+          window.location.href = 'ad.html';
+        } else {
+          mensajeDiv.textContent = 'Acceso denegado: Tus credenciales no corresponden a un administrador.';
+          mensajeDiv.style.color = 'red';
+        }
+      } else {
+        mensajeDiv.textContent = data.error || 'Error en el inicio de sesión. Verifique sus credenciales.';
+        mensajeDiv.style.color = 'red';
+      }
+    } catch (error) {
+      console.error('Error de conexión con el servidor:', error);
+      mensajeDiv.textContent = "Error de conexión con el servidor. Intente de nuevo más tarde.";
+      mensajeDiv.style.color = 'red';
     }
   });
 </script>
-
 
 </body>
 </html>

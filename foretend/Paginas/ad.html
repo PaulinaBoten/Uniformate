@@ -1,112 +1,157 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panel de Administración</title>
 <style>
-  .logo {
-  display: flex;  
+ body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #d3eeaf;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Barra superior */
+.logo {
+  display: flex;
+  flex-direction: column;  /* Logo arriba, botones abajo */
+  align-items: flex-start; /* Logo pegado a la izquierda */
   width: 100%;
-  align-items: center;       /* centra verticalmente */
-  justify-content: space-between; /* texto izquierda y botones derecha */
   background-color: rgb(39, 148, 25);
-  padding: 0.7rem 1.3rem;
+  padding: 0.5rem 1rem;
   box-sizing: border-box;
-  border: none;              /* asegura que no tenga borde */
 }
 
+/* Texto del logo */
 .Letra h1 {
-  margin: 0; /* elimina espacio extra */
+  margin: 0;
   color: #ffffff;
-  font-size: 1.8rem;
+  font-size: 2.3rem; /* Más pequeño */
+  font-weight: bold;
+  padding-left: 5px; /* separación ligera */
 }
 
-.botones{
-    
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+/* Botones centrados debajo del logo */
+.botones {
+  display: flex;
+  justify-content: center; /* centrado */
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.botones a {
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  background: #0f5a05;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 44px;
+  padding: 6px 18px;
+  width: 160px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.botones a:hover {
+  background-color: #3cb82a;
+  transform: scale(1.08);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Encabezados */
+h2 {
+  text-align: center;
+  margin: 1.2rem 0;
+  color: #12490a;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+th, td {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background: #279419;
+  color: white;
+  font-weight: bold;
+}
+
+td[contenteditable="true"] {
+  background-color: #f9fff0;
+}
+
+/* Botones generales */
+button {
+  padding: 0.6rem 1rem;
+  background: #12490a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #1d6b13;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsivo */
+@media screen and (max-width: 480px) {
+  .logo {
     align-items: center;
+  }
+
+  .Letra h1 {
+    font-size: 1.1rem;
+    padding-left: 0;
+  }
+
+  .botones {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .botones a {
     width: 100%;
-    color: #ffffff;
-    gap: 40px;
+    max-width: 90%;
+    font-size: 16px;
+  }
 }
-    .botones a{
-      text-align: center;
-      text-decoration: none;
-      border: none;
-      background: #0f5a05;
-      color: #ffffff;
-      border-radius: 6px;
-      font-size: 20px;
-      line-height: 48px;
-      padding: 0 10px;
-      width: 150px;
-      cursor: pointer;
-      margin: 0;
-    }
-
-
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #d3eeaf;
-    padding: 20px;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  th, td {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  th {
-    background: #279419;
-    color: white;
-  }
-  td[contenteditable="true"] {
-    background-color: #f9fff0;
-  }
-  button {
-    padding: 0.6rem 1rem;
-    background: #12490a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  button:hover {
-    background: #1d6b13;
-  }
 </style>
 </head>
 <body>
 
-<div class="logo"> 
-  <div class="Letra">
-    <h1>ADMINISTRAD@R</h1>
+  <div class="logo"> 
+    <div class="Letra">
+      <h1>ADMINISTRAD@R</h1>
+    </div>
+    <nav class="botones">
+      <a href="/foretend/Paginas/registro.html">Registros</a>
+    </nav>
   </div>
-  <nav class="botones">
-    <a href="/foretend/Paginas/registro.html">Registros</a>
-  </nav>
-</div>
-
 
 <h2 id="bienvenida">Panel de Administración</h2>
-<a href="/foretend/Paginas/prin.html">
 <button onclick="cerrarSesion()">Cerrar Sesión</button>
-</a>
 
 <h3>Inventario</h3>
 <table id="tablaInventario">
@@ -133,40 +178,46 @@
     <td contenteditable="true">medias gala</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td contenteditable="true">4</td>
     <td contenteditable="true">zapatos negros colegiala</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td contenteditable="true">5</td>
     <td contenteditable="true">buso tejido</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td contenteditable="true">6</td>
-    <td contenteditable="true">chaqueta impermiable</td>
+    <td contenteditable="true">chaqueta impermeable</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td contenteditable="true">7</td>
     <td contenteditable="true">sudadera deportiva</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td contenteditable="true">8</td>
     <td contenteditable="true">camisa polo</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
-  </tr><tr>
+  </tr>
+  <tr>
     <td contenteditable="true">9</td>
     <td contenteditable="true">medias sudadera</td>
     <td contenteditable="true"></td>
     <td contenteditable="true"></td>
   </tr>
-  <!-- Puedes seguir el mismo patrón para el resto -->
 </table>
 <button onclick="guardarTabla('tablaInventario')">Guardar Cambios Inventario</button>
+
 <h3>Pedidos Recientes</h3>
 <table id="tablaPedidos">
   <thead>
@@ -190,29 +241,35 @@
 
 <script>
   function cerrarSesion() {
-    sessionStorage.removeItem("usuario");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userRole");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("userEmail");
     window.location.href = "Admin.html";
   }
 
-  // Verificación de sesión
-  const usuario = sessionStorage.getItem("usuario");
-  if (!usuario) {
-    alert("Acceso denegado. Inicie sesión primero.");
-    window.location.href = "Admin.html";
-  } else {
-    document.getElementById("bienvenida").textContent = 'Bienvenida, administradora';
-  }
+  window.onload = function() {
+    const userRole = sessionStorage.getItem("userRole");
+    
+    if (userRole !== 'administrador') {
+      alert("Acceso denegado. Inicie sesión como administrador primero.");
+      window.location.href = "Admin.html";
+    } else {
+      document.getElementById("bienvenida").textContent = 'Bienvenida, administradora';
+    }
+  };
 
   function guardarTabla(idTabla) {
     const tabla = document.getElementById(idTabla);
-    const filas = tabla.querySelectorAll("tbody tr");
+    const filas = tabla.querySelector("tbody") 
+      ? tabla.querySelector("tbody").querySelectorAll("tr")
+      : tabla.querySelectorAll("tr");
     const datos = [];
 
     for (let i = 0; i < filas.length; i++) {
       const celdas = filas[i].querySelectorAll("td");
       const fila = [];
       celdas.forEach(td => fila.push(td.textContent.trim()));
-      // Solo guarda filas que tengan algún dato
       if (fila.some(val => val !== "")) {
         datos.push(fila);
       }
@@ -222,16 +279,13 @@
     alert("Cambios guardados localmente.");
   }
 
-  // Autoagrega fila nueva en tablaPedidos cuando se empieza a escribir en la última
   const tablaPedidos = document.getElementById("tablaPedidos").getElementsByTagName("tbody")[0];
 
   tablaPedidos.addEventListener("input", function (e) {
     const filas = tablaPedidos.querySelectorAll("tr");
     const ultimaFila = filas[filas.length - 1];
 
-    // Verificar si se está escribiendo en la última fila
     if (ultimaFila.contains(e.target)) {
-      // Si la última fila ya tiene algún contenido, agregamos una nueva fila
       const celdas = ultimaFila.querySelectorAll("td");
       const tieneContenido = Array.from(celdas).some(td => td.textContent.trim() !== "");
 
@@ -246,4 +300,31 @@
       }
     }
   });
+
+  window.addEventListener('load', () => {
+    cargarTabla('tablaInventario');
+    cargarTabla('tablaPedidos');
+  });
+
+  function cargarTabla(idTabla) {
+    const datosGuardados = localStorage.getItem(idTabla);
+    if (datosGuardados) {
+      const datos = JSON.parse(datosGuardados);
+      const tabla = document.getElementById(idTabla).querySelector('tbody') || document.getElementById(idTabla);
+      tabla.innerHTML = '';
+
+      datos.forEach(filaDatos => {
+        const nuevaFila = document.createElement("tr");
+        filaDatos.forEach(celdaDato => {
+          const td = document.createElement("td");
+          td.setAttribute("contenteditable", "true");
+          td.textContent = celdaDato;
+          nuevaFila.appendChild(td);
+        });
+        tabla.appendChild(nuevaFila);
+      });
+    }
+  }
 </script>
+</body>
+</html>
