@@ -58,10 +58,8 @@
 
           mensajeDiv.textContent = '✅ Ingreso de administrador exitoso. Redirigiendo...';
           mensajeDiv.style.color = 'green';
-          // !!! CAMBIO AQUÍ: Redirige a ad.html si es administrador !!!
           window.location.href = 'ad.html';
         } else {
-          // Si el login fue exitoso pero el rol no es 'administrador'
           mensajeDiv.textContent = 'Acceso denegado: Tus credenciales no corresponden a un administrador.';
           mensajeDiv.style.color = 'red';
         }
