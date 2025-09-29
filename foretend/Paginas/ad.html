@@ -5,34 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panel de Administración</title>
 <style>
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #d3eeaf;
-    padding: 20px;
-  }
-
-.logo {
-  display: flex;  
-  width: 100%;
-  align-items: center;       /* centra verticalmente */
-  justify-content: space-between; /* texto izquierda y botones derecha */
-  background-color: rgb(39, 148, 25);
-  padding: 0.7rem 1.3rem;
-  box-sizing: border-box;
-  border: none;
+ body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #d3eeaf;
+  padding: 20px;
+  margin: 0;
 }
 
+/* Barra superior */
+.logo {
+  display: flex;
+  flex-direction: column;  /* Logo arriba, botones abajo */
+  align-items: flex-start; /* Logo pegado a la izquierda */
+  width: 100%;
+  background-color: rgb(39, 148, 25);
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Texto del logo */
 .Letra h1 {
   margin: 0;
   color: #ffffff;
-  font-size: 1.8rem;
+  font-size: 2.3rem; /* Más pequeño */
+  font-weight: bold;
+  padding-left: 5px; /* separación ligera */
 }
 
+/* Botones centrados debajo del logo */
 .botones {
   display: flex;
-  justify-content: flex-end;  /* 🔹 Alinea a la derecha */
+  justify-content: center; /* centrado */
   align-items: center;
-  gap: 20px; /* separación entre botones */
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .botones a {
@@ -41,50 +48,97 @@
   border: none;
   background: #0f5a05;
   color: #ffffff;
-  border-radius: 6px;
-  font-size: 20px;
-  line-height: 48px;
-  padding: 0 10px;
-  width: 150px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 44px;
+  padding: 6px 18px;
+  width: 160px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-  h2 {
-    text-align: center;
-    margin-bottom: 1rem;
+.botones a:hover {
+  background-color: #3cb82a;
+  transform: scale(1.08);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Encabezados */
+h2 {
+  text-align: center;
+  margin: 1.2rem 0;
+  color: #12490a;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+th, td {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background: #279419;
+  color: white;
+  font-weight: bold;
+}
+
+td[contenteditable="true"] {
+  background-color: #f9fff0;
+}
+
+/* Botones generales */
+button {
+  padding: 0.6rem 1rem;
+  background: #12490a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #1d6b13;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsivo */
+@media screen and (max-width: 480px) {
+  .logo {
+    align-items: center;
   }
-  table {
+
+  .Letra h1 {
+    font-size: 1.1rem;
+    padding-left: 0;
+  }
+
+  .botones {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .botones a {
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
+    max-width: 90%;
+    font-size: 16px;
   }
-  th, td {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  th {
-    background: #279419;
-    color: white;
-  }
-  td[contenteditable="true"] {
-    background-color: #f9fff0;
-  }
-  button {
-    padding: 0.6rem 1rem;
-    background: #12490a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  button:hover {
-    background: #1d6b13;
-  }
+}
+
 </style>
 </head>
 <body>
