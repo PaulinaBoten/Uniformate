@@ -150,37 +150,7 @@
       margin-right: 8px;
     }
     
-    /* Estilos del header */
-    .logo {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        background-color: #279419;
-        padding: 10px 20px;
-        box-sizing: border-box;
-        margin-bottom: 40px;
-    }
-
-    .logo .Letra h1 {
-        margin: 0;
-        color: white;
-        font-family: 'Archivo Black', sans-serif;
-    }
-
-    .logo .botones a {
-        color: white;
-        text-decoration: none;
-        margin-left: 20px;
-        font-size: 18px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    .logo .botones a:hover {
-        background-color: #3cb82a;
-    }
+ 
 
     /* Botón flotante de WhatsApp */
     .whatsapp-float {
@@ -212,6 +182,16 @@
         transform: scale(1.1);
         cursor: pointer;
     }
+
+    .flip-card img {
+  width: 240px;       /* ancho fijo */
+  height: 340px;      /* alto fijo */
+  object-fit: cover;  /* mantiene proporción y recorta el sobrante */
+  border-radius: 10px; /* opcional: bordes redondeados */
+  display: block;
+  margin: 0 auto;     /* centra dentro del contenedor */
+}
+
   </style>
 </head>
 <body>
