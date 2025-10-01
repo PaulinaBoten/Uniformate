@@ -203,7 +203,7 @@
     <nav class="botones">
       <a href="/foretend/Paginas/prin.html">Inicio</a>
       <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-      <!-- Enlaces ocultos por defecto, gestionados por JavaScript -->
+      <a href="/foretend/Paginas/pedidos.html" id="verCarritoBtn">Ver Cesta de Solicitudes</a> <!-- Cambiado el texto del botón -->
       <a href="/foretend/Paginas/inicio.html" id="enlaceUsuarios" style="display:none;">Usuarios</a> 
       <a href="/foretend/Paginas/Admin.html" id="enlaceAdmin" style="display:none;">Administrador</a>
       <a href="#" id="cerrarSesionBtn" style="display:none;">Cerrar sesión</a>
@@ -212,11 +212,11 @@
 
   <h1>Catálogo de uniformes CEFA</h1>
 
-  <!-- Tarjetas (ejemplo) -->
+  <!-- Tarjetas de uniformes con data-talla y data-estado -->
   <div class="flip-card">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src= "/foretend/Paginas/img/suda.jpeg" alt="Sudadera Deportiva">
+        <img src="/foretend/Paginas/img/suda.jpeg" alt="Sudadera Deportiva">
       </div>
       <div class="flip-card-back">
         <strong>Sudadera Deportiva</strong>
@@ -224,6 +224,14 @@
          Color base verde oscuro, con franjas laterales amarillas.
          Letras "CEFA" bordadas en una pierna en color amarillo.
         </p>
+        <button class="add-to-basket-btn"
+                data-id="sudadera-deportiva"
+                data-name="Sudadera Deportiva"
+                data-talla="M"
+                data-estado="Nueva"
+                data-image="/foretend/Paginas/img/suda.jpeg">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -240,6 +248,14 @@
        Botones al frente, típicos de una polo.
        Letras verticales "CEFA" visibles en el costado (probablemente sigla de la institución).
         </p>
+        <button class="add-to-basket-btn"
+                data-id="camisa-polo-deportiva"
+                data-name="Camisa Polo Deportiva"
+                data-talla="S"
+                data-estado="Nueva"
+                data-image="/foretend/Paginas/img/cami.jpeg">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -252,6 +268,14 @@
       <div class="flip-card-back">
         <strong>Medias Blancas Deportivas</strong>
         <p> Ideal para entrenamientos, uniformes deportivos o actividades que requieren mayor soporte y protección.</p>
+        <button class="add-to-basket-btn"
+                data-id="medias-deportivas-blancas"
+                data-name="Medias Blancas Deportivas"
+                data-talla="Única"
+                data-estado="Nueva"
+                data-image="/foretend/Paginas/img/mediasuniformes.webp">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -264,6 +288,14 @@
       <div class="flip-card-back">
         <strong>Zapatos Deportivos</strong>
         <p> Ideal para entrenamientos, uniformes deportivos o actividades que requieren mayor soporte y protección.</p>
+        <button class="add-to-basket-btn"
+                data-id="zapatos-deportivos"
+                data-name="Zapatos Deportivos"
+                data-talla="38"
+                data-estado="Usado Buen Estado"
+                data-image="/foretend/Paginas/img/s-l1600.webp">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -278,6 +310,14 @@
         <p>Color verde oscuro, con cierre frontal.
         Tiene el escudo institucional bordado en el lado izquierdo del pecho.
         Es de manga larga, ideal para clima frío o intermedio.</p>
+        <button class="add-to-basket-btn"
+                data-id="chaqueta-impermeable"
+                data-name="Chaqueta Impermeable"
+                data-talla="L"
+                data-estado="Nueva"
+                data-image="/foretend/Paginas/img/chaqueta.png">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -294,6 +334,14 @@
         El diseño cubre todo el torso hasta la parte baja de la falda.
         Se lleva encima de una blusa blanca con cuello camisero.
         </p>
+        <button class="add-to-basket-btn"
+                data-id="yumper-gala"
+                data-name="Yumper / Uniforme de Gala"
+                data-talla="XS"
+                data-estado="Nueva"
+                data-image="/foretend/Paginas/img/yumper.png">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -306,6 +354,14 @@
       <div class="flip-card-back">
         <strong>Medias Yumper</strong>
         <p>Medias largas color verde oscuro que combinan con el uniforme.</p>
+        <button class="add-to-basket-btn"
+                data-id="medias-yumper"
+                data-name="Medias Yumper"
+                data-talla="Única"
+                data-estado="Nueva"
+                data-image="/foretend/Paginas/img/medias.uniformeg.jpg">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -318,6 +374,14 @@
       <div class="flip-card-back">
         <strong>Zapatos Negros Colegiala</strong>
         <p>Zapatos negros tipo colegial, con cordones blancos visibles.</p>
+        <button class="add-to-basket-btn"
+                data-id="zapatos-colegiala"
+                data-name="Zapatos Negros Colegiala"
+                data-talla="37"
+                data-estado="Usado Excelente"
+                data-image="/foretend/Paginas/img/zapatosyumper.jpg">
+          Solicitar Uniforme
+        </button>
       </div>
     </div>
   </div>
@@ -331,6 +395,14 @@
           <strong>Sueter de Lana</strong>
           <p>Color verde oscuro,Tiene el escudo institucional bordado en el lado izquierdo del pecho.
           Es de manga larga, ideal para clima frío o intermedio.</p>
+          <button class="add-to-basket-btn"
+                  data-id="sueter-lana"
+                  data-name="Sueter de Lana"
+                  data-talla="M"
+                  data-estado="Usado Regular"
+                  data-image="/foretend/Paginas/img/Saco hilo.jpg">
+            Solicitar Uniforme
+          </button>
         </div>
       </div>
     </div>
@@ -371,6 +443,8 @@
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- Script para añadir al carrito -->
+  <script type="module" src="/foretend/Paginas/JS/cata.js"></script>
   <!-- Script para protección de acceso y cerrar sesión -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -390,20 +464,12 @@
             console.log('Usuario autenticado. Rol:', userRole);
             cerrarSesionBtn.style.display = 'block'; // Mostrar el botón de cerrar sesión
 
-            // Opcional: Mostrar enlaces específicos según el rol
-            // Si quieres que el enlace "Usuarios" se muestre para no-logueados
-            // y desaparezca para logueados (para dar paso a Cerrar Sesión),
-            // la lógica actual lo maneja así:
-            // Si el usuario está logueado, no muestra "Usuarios", muestra "Cerrar Sesión".
-
             // Si eres administrador, muestra el enlace de Admin.
             if (userRole === 'administrador') {
                 enlaceAdmin.style.display = 'block';
             } else { // Rol normal o cualquier otro rol
                 enlaceAdmin.style.display = 'none'; // Oculta el enlace de Admin si no es admin
             }
-            // Si ya hay token, el enlace "Usuarios" de la nav está oculto por defecto (display:none)
-            // porque la idea es que ya está "usando" el sitio como usuario.
             enlaceUsuarios.style.display = 'none'; 
         }
 
@@ -417,6 +483,9 @@
                 sessionStorage.removeItem('userRole');
                 sessionStorage.removeItem('userId');
                 sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userFullName'); // Limpiar el nombre completo también
+                sessionStorage.removeItem('uniformBasket'); // Limpiar la cesta al cerrar sesión
+
 
                 alert('Has cerrado sesión exitosamente.');
                 window.location.href = 'inicio.html'; // Redirige a la página de inicio de sesión
