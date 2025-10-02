@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tu Cesta de Solicitudes - Uniformes CEFA</title>
+  <title>Realizar Pedido - Uniformes CEFA</title>
   <link rel="stylesheet" href="/foretend/Paginas/CSS/pedidos.css">
+  <!-- Íconos de Font Awesome para el footer y WhatsApp -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -16,6 +17,7 @@
       <a href="/foretend/Paginas/prin.html">Inicio</a>
       <a href="/foretend/Paginas/cata.html">Catálogo</a>
       <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
+      <!-- Enlaces ocultos por defecto, gestionados por JavaScript -->
       <a href="/foretend/Paginas/inicio.html" id="enlaceUsuarios" style="display:none;">Usuarios</a> 
       <a href="/foretend/Paginas/Admin.html" id="enlaceAdmin" style="display:none;">Administrador</a>
       <a href="#" id="cerrarSesionBtn" style="display:none;">Cerrar sesión</a>
@@ -23,26 +25,42 @@
   </header>
 
   <main class="container">
-    <h1>Tu Cesta de Solicitudes</h1>
+    <h1>Tu Pedido</h1>
 
     <div class="cart-items" id="cartItems">
-      <p class="empty-cart-message" id="emptyCartMessage">No hay uniformes en tu cesta de solicitudes. Agrega desde el <a href="/foretend/Paginas/cata.html">catálogo</a>.</p>
+      <!-- Aquí se renderizarán los productos del carrito -->
+      <p class="empty-cart-message" id="emptyCartMessage">No hay productos en tu carrito. Agrega desde el <a href="/foretend/Paginas/cata.html">catálogo</a>.</p>
+    </div>
+
+    <div class="total-section">
+      <h3>Total Estimado: $<span id="cartTotal">0.00</span></h3>
     </div>
 
     <div class="form-section">
-      <h2>Confirma tus datos para la solicitud</h2>
+      <h2>Completa tus datos para el pedido</h2>
       <form id="orderForm">
         <div class="form-group">
           <label for="fullName">Nombre Completo:</label>
-          <input type="text" id="fullName" name="fullName" required readonly>
+          <input type="text" id="fullName" name="fullName" required>
         </div>
-        
         <div class="form-group">
-          <label for="orderDetails">Uniformes Solicitados:</label>
+          <label for="orderStatus">Estado del Pedido:</label>
+          <select id="orderStatus" name="orderStatus" required>
+            <option value="">Selecciona un estado</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="confirmado">Confirmado</option>
+            <option value="entregado">Entregado</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="orderDetails">Detalles del Pedido:</label>
           <textarea id="orderDetails" name="orderDetails" rows="5" readonly required></textarea>
+          <small>Este campo se llenará automáticamente con los productos de tu carrito.</small>
         </div>
         
-        <button type="submit" class="submit-button">Confirmar Solicitud</button>
+        <button type="submit" class="submit-button">Realizar Pedido</button>
       </form>
     </div>
   </main>
@@ -74,97 +92,44 @@
   <!-- Botón flotante de WhatsApp -->
   <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
     <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
   </a>
 
+  <script src="/foretend/Paginas/JS/pedidos.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', async function() {
+    // Script para protección de acceso y cerrar sesión (copia del de cata.html)
+    document.addEventListener('DOMContentLoaded', function() {
         const token = sessionStorage.getItem('token');
         const userRole = sessionStorage.getItem('userRole');
-        const userId = sessionStorage.getItem('userId');
-        const userFullName = sessionStorage.getItem('userFullName');
 
         const cerrarSesionBtn = document.getElementById('cerrarSesionBtn');
         const enlaceUsuarios = document.getElementById('enlaceUsuarios');
         const enlaceAdmin = document.getElementById('enlaceAdmin');
 
         if (!token) {
-            alert('Debes iniciar sesión para ver tus solicitudes.');
-            window.location.href = 'inicio.html'; 
-            return;
+            alert('Debes iniciar sesión para ver tus pedidos.');
+            window.location.href = 'inicio.html'; // Redirige a la página de inicio de sesión
         } else {
-            if (cerrarSesionBtn) cerrarSesionBtn.style.display = 'block';
+            console.log('Usuario autenticado. Rol:', userRole);
+            cerrarSesionBtn.style.display = 'block';
+
             if (userRole === 'administrador') {
                 enlaceAdmin.style.display = 'block';
             } else {
-                enlaceUsuarios.style.display = 'block';
+                enlaceAdmin.style.display = 'none';
             }
-            // Prellenar nombre
-            document.getElementById('fullName').value = userFullName || "";
+            enlaceUsuarios.style.display = 'none'; 
         }
 
-        // --- Cargar pedidos actuales del backend ---
-        const cartItemsDiv = document.getElementById('cartItems');
-        const emptyMessage = document.getElementById('emptyCartMessage');
-        const orderDetails = document.getElementById('orderDetails');
-
-        try {
-            const res = await fetch(`http://localhost:3000/pedidos/${userId}`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!res.ok) throw new Error("Error al obtener pedidos");
-
-            const pedidos = await res.json();
-
-            if (pedidos.length === 0) {
-                emptyMessage.style.display = 'block';
-            } else {
-                emptyMessage.style.display = 'none';
-                let detalles = "";
-                cartItemsDiv.innerHTML = "";
-                pedidos.forEach(p => {
-                    const item = document.createElement("div");
-                    item.classList.add("cart-item");
-                    item.innerHTML = `<strong>${p.nombre_uniforme}</strong> - ${p.talla} - Cantidad: ${p.cantidad}`;
-                    cartItemsDiv.appendChild(item);
-                    detalles += `${p.nombre_uniforme} - ${p.talla} - Cantidad: ${p.cantidad}\n`;
-                });
-                orderDetails.value = detalles.trim();
-            }
-        } catch (err) {
-            console.error(err);
-            alert("No se pudieron cargar tus pedidos.");
-        }
-
-        // --- Confirmar pedido ---
-        const orderForm = document.getElementById("orderForm");
-        orderForm.addEventListener("submit", async function(e) {
-            e.preventDefault();
-            try {
-                const res = await fetch("http://localhost:3000/pedidos", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        userId,
-                        detalles: orderDetails.value
-                    })
-                });
-                if (!res.ok) throw new Error("Error al enviar pedido");
-                alert("✅ Tu solicitud fue confirmada con éxito.");
-                window.location.href = "prin.html";
-            } catch (err) {
-                console.error(err);
-                alert("❌ No se pudo confirmar la solicitud.");
-            }
-        });
-
-        // --- Cerrar sesión ---
         if (cerrarSesionBtn) {
             cerrarSesionBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                sessionStorage.clear();
+
+                sessionStorage.removeItem('token');
+                sessionStorage.removeItem('userRole');
+                sessionStorage.removeItem('userId');
+                sessionStorage.removeItem('userEmail');
+
                 alert('Has cerrado sesión exitosamente.');
                 window.location.href = 'inicio.html';
             });

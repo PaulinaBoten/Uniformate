@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,51 +14,9 @@
 </head>
 <body>
 
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-    <style>
-        /* Botón flotante de WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 30px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s;
-        }
-
-        .whatsapp-float img {
-            width: 65px;
-            height: 65px;
-            object-fit: contain;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            cursor: pointer;
-        }
-    </style>
-    
-   <div class="logo"> 
-        <div class="Letra">
-            <h1>UNIFORMATE</h1>
-        </div>
-        <nav class="botones">
-            <a href="/foretend/Paginas/prin.html">Inicio</a>
-            <a href="/foretend/Paginas/cata.html">Catalogo</a>
-            <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-            <a href="/foretend/Paginas/Admin.html">Administrador</a>
-        </nav>
+  <div class="logo"> 
+    <div class="Letra">
+      <h1>UNIFORMATE</h1>
     </div>
 
     <section class="login">
@@ -81,7 +38,7 @@
   document.getElementById("loginFormUser").addEventListener("submit", async function (e) {
     e.preventDefault(); // Evita que se envíe automáticamente
 
-    // !!! CAMBIOS AQUÍ: Obtenemos los valores por ID !!!
+    // Obtenemos los valores por ID
     const correo = document.getElementById("correo").value.trim();
     const contrasena = document.getElementById("contrasena").value.trim();
     const mensajeLoginDiv = document.getElementById("mensajeLogin");
@@ -98,7 +55,7 @@
       const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // !!! CAMBIOS AQUÍ: Enviamos el JSON esperado por el backend !!!
+        // Enviamos el JSON esperado por el backend
         body: JSON.stringify({ correo, contrasena })
       });
 
@@ -118,11 +75,10 @@
           // Redirigir al usuario normal a la página de uniformes (o la que corresponda)
           window.location.href = "cata.html"; // <-- ¡Asegúrate de que esta ruta sea correcta!
         } else {
-          // Esto no debería ocurrir si el backend devuelve un token y user en caso de éxito
           mensajeLoginDiv.textContent = 'Error inesperado en la respuesta del servidor.';
           mensajeLoginDiv.style.color = 'red';
         }
-      } else { // Si la respuesta HTTP no es 2xx (ej. 400, 401, 500)
+      } else { 
         mensajeLoginDiv.textContent = data.error || 'Error en el inicio de sesión. Verifique sus credenciales.';
         mensajeLoginDiv.style.color = 'red';
       }
@@ -141,4 +97,3 @@
   
 </body>
 </html>
-
