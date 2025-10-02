@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tu Cesta de Solicitudes - Uniformes CEFA</title> <!-- Título cambiado -->
+  <title>Tu Cesta de Solicitudes - Uniformes CEFA</title>
   <link rel="stylesheet" href="/foretend/Paginas/CSS/pedidos.css">
-  <!-- Íconos de Font Awesome para el footer y WhatsApp -->
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -24,34 +23,26 @@
   </header>
 
   <main class="container">
-    <h1>Tu Cesta de Solicitudes</h1> <!-- Título cambiado -->
+    <h1>Tu Cesta de Solicitudes</h1>
 
     <div class="cart-items" id="cartItems">
-      <!-- Aquí se renderizarán los uniformes solicitados -->
       <p class="empty-cart-message" id="emptyCartMessage">No hay uniformes en tu cesta de solicitudes. Agrega desde el <a href="/foretend/Paginas/cata.html">catálogo</a>.</p>
     </div>
 
-    <!-- Sección de total eliminada, ya que no hay precios para uniformes donados -->
-    <!-- <div class="total-section">
-      <h3>Total Estimado: $<span id="cartTotal">0.00</span></h3>
-    </div> -->
-
     <div class="form-section">
-      <h2>Confirma tus datos para la solicitud</h2> <!-- Título cambiado -->
+      <h2>Confirma tus datos para la solicitud</h2>
       <form id="orderForm">
         <div class="form-group">
           <label for="fullName">Nombre Completo:</label>
-          <input type="text" id="fullName" name="fullName" required readonly> <!-- Campo de solo lectura -->
+          <input type="text" id="fullName" name="fullName" required readonly>
         </div>
-        <!-- Campo de estado del pedido eliminado, ya que el usuario no debe establecerlo -->
         
         <div class="form-group">
-          <label for="orderDetails">Uniformes Solicitados:</label> <!-- Texto cambiado -->
+          <label for="orderDetails">Uniformes Solicitados:</label>
           <textarea id="orderDetails" name="orderDetails" rows="5" readonly required></textarea>
-          <small>Este campo se llenará automáticamente con los uniformes de tu cesta.</small>
         </div>
         
-        <button type="submit" class="submit-button">Confirmar Solicitud</button> <!-- Texto del botón cambiado -->
+        <button type="submit" class="submit-button">Confirmar Solicitud</button>
       </form>
     </div>
   </main>
@@ -63,7 +54,6 @@
         <p><i class="fas fa-phone-alt"></i> 300 4197922</p>
         <p><i class="fas fa-map-marker-alt"></i> C 50 #41-55, La Candelaria, Medellín</p>
       </div>
-
       <div class="footer-box">
         <h3>📲 Redes Sociales</h3>
         <a href="https://www.instagram.com/centroformativodeantioquia/" target="_blank">
@@ -73,7 +63,6 @@
           <i class="fab fa-whatsapp"></i> WhatsApp
         </a>
       </div>
-
       <div class="footer-box">
         <h3>🎓 Créditos</h3>
         <p>Paulina Botero González</p>
@@ -85,16 +74,13 @@
   <!-- Botón flotante de WhatsApp -->
   <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
     <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
-    <i class="fab fa-whatsapp"></i>
   </a>
 
-  <script type="module" src="/foretend/Paginas/JS/pedidos.js"></script>
-  <!-- Script para protección de acceso y cerrar sesión (restaurado) -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
         const token = sessionStorage.getItem('token');
         const userRole = sessionStorage.getItem('userRole');
-        // Aseguramos que userFullName se obtenga si se guarda
+        const userId = sessionStorage.getItem('userId');
         const userFullName = sessionStorage.getItem('userFullName');
 
         const cerrarSesionBtn = document.getElementById('cerrarSesionBtn');
@@ -102,40 +88,83 @@
         const enlaceAdmin = document.getElementById('enlaceAdmin');
 
         if (!token) {
-            alert('Debes iniciar sesión para ver tus solicitudes.'); // Mensaje más coherente
+            alert('Debes iniciar sesión para ver tus solicitudes.');
             window.location.href = 'inicio.html'; 
-            return; // Detener la ejecución si redirigimos
+            return;
         } else {
-            console.log('Usuario autenticado. Rol:', userRole, 'Nombre:', userFullName);
             if (cerrarSesionBtn) cerrarSesionBtn.style.display = 'block';
-
             if (userRole === 'administrador') {
-                if (enlaceAdmin) enlaceAdmin.style.display = 'block';
-                if (enlaceUsuarios) enlaceUsuarios.style.display = 'none'; 
-            } else { // Rol 'estudiante'
-                if (enlaceAdmin) enlaceAdmin.style.display = 'none';
-                // Si quieres que el enlaceUsuarios sea visible para estudiantes, ajusta aquí:
-                // if (enlaceUsuarios) enlaceUsuarios.style.display = 'block';
+                enlaceAdmin.style.display = 'block';
+            } else {
+                enlaceUsuarios.style.display = 'block';
             }
-
-            // Precargar el nombre completo del usuario si está disponible
-            const fullNameInput = document.getElementById('fullName');
-            if (fullNameInput && userFullName) {
-                fullNameInput.value = userFullName;
-            }
+            // Prellenar nombre
+            document.getElementById('fullName').value = userFullName || "";
         }
 
+        // --- Cargar pedidos actuales del backend ---
+        const cartItemsDiv = document.getElementById('cartItems');
+        const emptyMessage = document.getElementById('emptyCartMessage');
+        const orderDetails = document.getElementById('orderDetails');
+
+        try {
+            const res = await fetch(`http://localhost:3000/pedidos/${userId}`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!res.ok) throw new Error("Error al obtener pedidos");
+
+            const pedidos = await res.json();
+
+            if (pedidos.length === 0) {
+                emptyMessage.style.display = 'block';
+            } else {
+                emptyMessage.style.display = 'none';
+                let detalles = "";
+                cartItemsDiv.innerHTML = "";
+                pedidos.forEach(p => {
+                    const item = document.createElement("div");
+                    item.classList.add("cart-item");
+                    item.innerHTML = `<strong>${p.nombre_uniforme}</strong> - ${p.talla} - Cantidad: ${p.cantidad}`;
+                    cartItemsDiv.appendChild(item);
+                    detalles += `${p.nombre_uniforme} - ${p.talla} - Cantidad: ${p.cantidad}\n`;
+                });
+                orderDetails.value = detalles.trim();
+            }
+        } catch (err) {
+            console.error(err);
+            alert("No se pudieron cargar tus pedidos.");
+        }
+
+        // --- Confirmar pedido ---
+        const orderForm = document.getElementById("orderForm");
+        orderForm.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            try {
+                const res = await fetch("http://localhost:3000/pedidos", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        userId,
+                        detalles: orderDetails.value
+                    })
+                });
+                if (!res.ok) throw new Error("Error al enviar pedido");
+                alert("✅ Tu solicitud fue confirmada con éxito.");
+                window.location.href = "prin.html";
+            } catch (err) {
+                console.error(err);
+                alert("❌ No se pudo confirmar la solicitud.");
+            }
+        });
+
+        // --- Cerrar sesión ---
         if (cerrarSesionBtn) {
             cerrarSesionBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-
-                sessionStorage.removeItem('token');
-                sessionStorage.removeItem('userRole');
-                sessionStorage.removeItem('userId');
-                sessionStorage.removeItem('userEmail');
-                sessionStorage.removeItem('userFullName');
-                sessionStorage.removeItem('uniformBasket'); 
-
+                sessionStorage.clear();
                 alert('Has cerrado sesión exitosamente.');
                 window.location.href = 'inicio.html';
             });

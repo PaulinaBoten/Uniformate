@@ -1,8 +1,16 @@
-require('dotenv').config(); // Cargar variables de entorno
-const app = require('./app'); // Importar la app express
+import express from "express";
+import usuariosRoutes from "./routes/usuarios.js";
+import inventarioRoutes from "./routes/inventario.js";
+import pedidosRoutes from "./routes/pedidos.js";
 
-const PORT = process.env.PORT || 3000;
+const app = express();
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+// Rutas
+app.use("/usuarios", usuariosRoutes);
+app.use("/inventario", inventarioRoutes);
+app.use("/pedidos", pedidosRoutes);
+
+app.listen(3000, () => {
+  console.log("🚀 Servidor corriendo en http://localhost:3000");
 });

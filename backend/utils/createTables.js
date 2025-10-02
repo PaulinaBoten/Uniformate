@@ -3,26 +3,39 @@ const pool = require('../db/pool');
 const createTables = async (req, res) => {
   try {
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS usuarios (
-        id SERIAL PRIMARY KEY,
-        correo VARCHAR(100) UNIQUE NOT NULL,
-        contrasena TEXT NOT NULL,
-        rol VARCHAR(20) CHECK (rol IN ('normal', 'administrador')) DEFAULT 'normal'
-      );
+     -- TABLA USUARIOS
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    rol ENUM('admin','estudiante') DEFAULT 'estudiante',
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-      CREATE TABLE IF NOT EXISTS productos (
-        id SERIAL PRIMARY KEY,
-        nombre VARCHAR(100) NOT NULL,
-        descripcion TEXT,
-        talla VARCHAR(10),
-        stock INTEGER DEFAULT 0
-      );
+-- TABLA INVENTARIO
+CREATE TABLE inventario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    cantidad INT DEFAULT 0,
+    talla VARCHAR(10),
+    precio DECIMAL(10,2) DEFAULT 0.00,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-      CREATE TABLE IF NOT EXISTS pedidos (
-        id SERIAL PRIMARY KEY,
-        id_usuario INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-        id_producto INTEGER NOT NULL REFERENCES productos(id) ON DELETE CASCADE
-      );
+-- TABLA PEDIDOS
+CREATE TABLE pedidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,                       -- quién hizo el pedido
+    inventario_id INT NOT NULL,                    -- qué producto pidió
+    cantidad INT NOT NULL,                         -- cuántas unidades pidió
+    estado ENUM('pendiente','aceptado','rechazado') DEFAULT 'pendiente',
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Relaciones
+    CONSTRAINT fk_pedido_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    CONSTRAINT fk_pedido_inventario FOREIGN KEY (inventario_id) REFERENCES inventario(id)
+);
     `);
     res.send('✅ Tablas creadas correctamente');
   } catch (error) {
