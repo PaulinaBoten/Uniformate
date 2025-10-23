@@ -1,43 +1,48 @@
-// utils/insertData.js (Modificado para incluir usuario administrador)
-
-const pool = require('../db/pool');
-const bcrypt = require('bcrypt');
+// utils/insertData.js (Corregido para MySQL y ES Modules)
+import pool from "../db/pool.js";
+import bcrypt from "bcrypt";
 
 const insertData = async (req, res) => {
   try {
-    // Hashea la contraseña para el usuario normal (ej. 'pa@asd.asd')
-    const normalUserPassword = '123';
+    // === Usuario Normal ===
+    const normalUserPassword = "123";
     const hashedNormalPassword = await bcrypt.hash(normalUserPassword, 10);
-    const normalUserEmail = 'pa@asd.asd';
+    const normalUserEmail = "pa@asd.asd";
 
-    // Inserta o actualiza el usuario normal
-    await pool.query(`
+    await pool.query(
+      `
       INSERT INTO usuarios (correo, contrasena, rol)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (correo) DO UPDATE SET
-        contrasena = EXCLUDED.contrasena,
-        rol = EXCLUDED.rol;
-    `, [normalUserEmail, hashedNormalPassword, 'normal']);
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        contrasena = VALUES(contrasena),
+        rol = VALUES(rol);
+      `,
+      [normalUserEmail, hashedNormalPassword, "normal"]
+    );
 
-    // --- NUEVO: Usuario Administrador ---
-    const adminUserPassword = 'adminpassword123'; // ¡Contraseña para el administrador!
+    // === Usuario Administrador ===
+    const adminUserPassword = "adminpassword123";
     const hashedAdminPassword = await bcrypt.hash(adminUserPassword, 10);
-    const adminUserEmail = 'admin@uniformate.com'; // Correo del administrador
+    const adminUserEmail = "admin@uniformate.com";
 
-    // Inserta o actualiza el usuario administrador
-    await pool.query(`
+    await pool.query(
+      `
       INSERT INTO usuarios (correo, contrasena, rol)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (correo) DO UPDATE SET
-        contrasena = EXCLUDED.contrasena,
-        rol = EXCLUDED.rol;
-    `, [adminUserEmail, hashedAdminPassword, 'administrador']); // ¡IMPORTANTE: rol 'administrador'!
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        contrasena = VALUES(contrasena),
+        rol = VALUES(rol);
+      `,
+      [adminUserEmail, hashedAdminPassword, "administrador"]
+    );
 
-    res.send('✅ Datos de usuarios creados/actualizados correctamente');
+    res.send("✅ Usuarios creados o actualizados correctamente.");
   } catch (error) {
-    console.error('❌ Error al insertar/actualizar datos:', error.message);
-    res.status(500).send(`❌ Error al insertar/actualizar los datos: ${error.message}`);
+    console.error("❌ Error al insertar o actualizar datos:", error.message);
+    res
+      .status(500)
+      .send(`❌ Error al insertar o actualizar los datos: ${error.message}`);
   }
 };
 
-module.exports = insertData;
+export default insertData;

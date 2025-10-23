@@ -1,8 +1,9 @@
-const { Pool } = require('pg');
+import pkg from "pg";
+const { Pool } = pkg;
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // importante para Render
+  ssl: { rejectUnauthorized: false } // necesario si usas Render u otro hosting seguro
 });
 
-module.exports = pool;
+export default pool;

@@ -1,3 +1,5 @@
+// backend/routes/inventario.js
+
 import express from "express";
 import { verificarToken, soloAdmin } from "../middleware/auth.js";
 import {
@@ -5,24 +7,64 @@ import {
   obtenerProductos,
   obtenerProductoPorId,
   actualizarProducto,
-  eliminarProducto
+  eliminarProducto,
 } from "../controllers/inventarioController.js";
 
 const router = express.Router();
 
-// Leer todos los productos
-router.get("/", verificarToken, obtenerProductos);
+/**
+ * 📦 Obtener todos los productos
+ */
+router.get("/", verificarToken, async (req, res, next) => {
+  try {
+    await obtenerProductos(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
-// Leer producto por ID
-router.get("/:id", verificarToken, obtenerProductoPorId);
+/**
+ * 🔍 Obtener un producto por su ID
+ */
+router.get("/:id", verificarToken, async (req, res, next) => {
+  try {
+    await obtenerProductoPorId(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
-// Crear producto (solo admin)
-router.post("/", verificarToken, soloAdmin, crearProducto);
+/**
+ * ➕ Crear un producto (solo administradores)
+ */
+router.post("/", verificarToken, soloAdmin, async (req, res, next) => {
+  try {
+    await crearProducto(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
-// Actualizar producto (solo admin)
-router.put("/:id", verificarToken, soloAdmin, actualizarProducto);
+/**
+ * ✏️ Actualizar un producto (solo administradores)
+ */
+router.put("/:id", verificarToken, soloAdmin, async (req, res, next) => {
+  try {
+    await actualizarProducto(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
-// Eliminar producto (solo admin)
-router.delete("/:id", verificarToken, soloAdmin, eliminarProducto);
+/**
+ * 🗑️ Eliminar un producto (solo administradores)
+ */
+router.delete("/:id", verificarToken, soloAdmin, async (req, res, next) => {
+  try {
+    await eliminarProducto(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;
