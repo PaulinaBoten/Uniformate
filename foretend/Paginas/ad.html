@@ -239,7 +239,8 @@ button:hover {
 </table>
 <button onclick="guardarTabla('tablaPedidos')">Guardar Cambios Pedidos</button>
 
-<script>
+<!-- <script>
+let inventario;
   function cerrarSesion() {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("userRole");
@@ -248,7 +249,7 @@ button:hover {
     window.location.href = "Admin.html";
   }
 
-  window.onload = function() {
+  window.onload = async function() {
     const userRole = sessionStorage.getItem("userRole");
     
     if (userRole !== 'administrador') {
@@ -256,6 +257,11 @@ button:hover {
       window.location.href = "Admin.html";
     } else {
       document.getElementById("bienvenida").textContent = 'Bienvenida, administradora';
+      try {
+        const res = await fetch("http://localhost:3000/inventario");
+      } catch (error) {
+        
+      }
     }
   };
 
@@ -325,6 +331,66 @@ button:hover {
       });
     }
   }
+</script> -->
+
+<script>
+  async function cerrarSesion() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userRole");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("userEmail");
+    window.location.href = "Admin.html";
+  }
+
+  window.onload = async function () {
+    const userRole = sessionStorage.getItem("userRole");
+    if (userRole !== "administrador") {
+      alert("Acceso denegado. Inicie sesión como administrador primero.");
+      window.location.href = "Admin.html";
+      return;
+    }
+
+    document.getElementById("bienvenida").textContent = "Bienvenida, administradora";
+
+    try {
+      // 🔹 Obtener inventario desde el backend
+      const res = await fetch("http://localhost:3000/inventario");
+      if (!res.ok) throw new Error("No se pudo obtener el inventario");
+
+      const productos = await res.json();
+
+      // 🔹 Referencia a la tabla
+      const tabla = document.getElementById("tablaInventario");
+      tabla.innerHTML = `
+        <tr>
+          <th>ID</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Tallaje</th>
+        </tr>
+      `;
+
+      // 🔹 Insertar filas dinámicamente
+      productos.forEach((p) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${p.id}</td>
+          <td contenteditable="true">${p.nombre}</td>
+          <td contenteditable="true">${p.cantidad ?? ""}</td>
+          <td contenteditable="true">${p.talla ?? ""}</td>
+        `;
+        tabla.appendChild(fila);
+      });
+    } catch (error) {
+      console.error("❌ Error cargando inventario:", error.message);
+      alert("Error al cargar el inventario desde el servidor.");
+    }
+
+    // 🔹 Cargar los datos guardados localmente
+    cargarTabla("tablaInventario");
+    cargarTabla("tablaPedidos");
+  };
 </script>
+
 </body>
 </html>

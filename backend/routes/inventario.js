@@ -1,7 +1,5 @@
 // backend/routes/inventario.js
-
 import express from "express";
-import { verificarToken, soloAdmin } from "../middleware/auth.js";
 import {
   crearProducto,
   obtenerProductos,
@@ -12,59 +10,19 @@ import {
 
 const router = express.Router();
 
-/**
- * 📦 Obtener todos los productos
- */
-router.get("/", verificarToken, async (req, res, next) => {
-  try {
-    await obtenerProductos(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+// 📦 Obtener todos los productos
+router.get("/", obtenerProductos);
 
-/**
- * 🔍 Obtener un producto por su ID
- */
-router.get("/:id", verificarToken, async (req, res, next) => {
-  try {
-    await obtenerProductoPorId(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+// 🔍 Obtener producto por ID
+router.get("/:id", obtenerProductoPorId);
 
-/**
- * ➕ Crear un producto (solo administradores)
- */
-router.post("/", verificarToken, soloAdmin, async (req, res, next) => {
-  try {
-    await crearProducto(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+// ➕ Crear producto
+router.post("/", crearProducto);
 
-/**
- * ✏️ Actualizar un producto (solo administradores)
- */
-router.put("/:id", verificarToken, soloAdmin, async (req, res, next) => {
-  try {
-    await actualizarProducto(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+// ✏️ Actualizar producto
+router.put("/:id", actualizarProducto);
 
-/**
- * 🗑️ Eliminar un producto (solo administradores)
- */
-router.delete("/:id", verificarToken, soloAdmin, async (req, res, next) => {
-  try {
-    await eliminarProducto(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+// 🗑️ Eliminar producto
+router.delete("/:id", eliminarProducto);
 
 export default router;

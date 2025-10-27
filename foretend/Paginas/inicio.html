@@ -60,15 +60,15 @@
       });
 
       const data = await res.json();
-      console.log(data); // Para depuración
-
+      
       if (res.ok) { // Si la respuesta HTTP es 2xx (éxito)
-        if (data.token && data.user) {
+        if (data.token && data.usuario) {
+          console.log('ACA'); // Para depuración
           // Guardar información del usuario y token en sessionStorage
           sessionStorage.setItem('token', data.token);
-          sessionStorage.setItem('userRole', data.user.rol); // 'normal' o 'administrador'
-          sessionStorage.setItem('userId', data.user.id);
-          sessionStorage.setItem('userEmail', data.user.correo);
+          sessionStorage.setItem('userRole', data.usuario.rol); // 'normal' o 'administrador'
+          sessionStorage.setItem('userId', data.usuario.id);
+          sessionStorage.setItem('userEmail', data.usuario.correo);
 
           mensajeLoginDiv.textContent = '✅ Inicio de sesión exitoso. Redirigiendo...';
           mensajeLoginDiv.style.color = 'green';
