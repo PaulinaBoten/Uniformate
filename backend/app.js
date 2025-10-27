@@ -15,11 +15,12 @@ app.use(express.json());
 
 // 🧭 Rutas principales
 app.use("/auth", authRoutes);
-app.use("/inventario", inventarioRoutes);
+app.use("/inventario", inventarioRoutes);//
 app.use("/reviews", reviewRoutes);
 
 // 🔧 Crear tablas
 app.get("/create-tables", createTables);
+app.get("/insert-data", insertData);
 
 // 🧩 Test de conexión con BD
 app.get("/test-db", async (req, res) => {

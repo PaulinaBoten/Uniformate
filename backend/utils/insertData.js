@@ -1,27 +1,81 @@
-import pool from "../db/pool.js";
-import bcrypt from "bcrypt";
+// import pool from "../db/pool.js";
+// import bcrypt from "bcrypt";
 
-const insertData = async (req, res) => {
+// const insertData = async (req, res) => {
+//   try {
+//     const users = [
+//       { correo: "paa@aasd.asd", pass: "111", rol: "normal" },
+//       { correo: "adn@as.com", pass: "123", rol: "administrador" },
+//     ];
+
+//     for (const user of users) {
+//       const hashed = await bcrypt.hash(user.pass, 10);
+//       await pool.query(
+//         `
+//         INSERT INTO usuarios (correo, contrasena, rol)
+//         VALUES ($1, $2, $3)
+//         ON CONFLICT (correo)
+//         DO UPDATE SET contrasena = EXCLUDED.contrasena, rol = EXCLUDED.rol;
+//         `,
+//         [user.correo, hashed, user.rol]
+//       );
+//     }
+
+//     res.send("✅ Usuarios creados o actualizados correctamente.");
+//   } catch (error) {
+//     console.error("❌ Error al insertar datos:", error);
+//     res.status(500).send(`❌ Error SQL: ${error.message}`);
+//   }
+// };
+
+// export default insertData;
+
+import pool from "../db/pool.js"; // Asegúrate de tener configurada tu conexión
+//import bcrypt from "bcrypt"; // No necesario aquí, pero lo dejo si usas la misma estructura
+
+ const insertData = async (req, res) => {
   try {
-    const users = [
-      { correo: "paa@aasd.asd", pass: "111", rol: "normal" },
-      { correo: "adn@as.com", pass: "123", rol: "administrador" },
+    const productos = [
+      {
+        nombre: "Camiseta básica",
+        descripcion: "Camiseta de algodón color blanco",
+        cantidad: 50,
+        talla: "M",
+        precio: 15.99,
+      },
+      {
+        nombre: "Pantalón jeans",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
     ];
 
-    for (const user of users) {
-      const hashed = await bcrypt.hash(user.pass, 10);
+    for (const producto of productos) {
       await pool.query(
         `
-        INSERT INTO usuarios (correo, contrasena, rol)
-        VALUES ($1, $2, $3)
-        ON CONFLICT (correo)
-        DO UPDATE SET contrasena = EXCLUDED.contrasena, rol = EXCLUDED.rol;
+        INSERT INTO inventario (nombre, descripcion, cantidad, talla, precio)
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT (nombre)
+        DO UPDATE SET 
+          descripcion = EXCLUDED.descripcion,
+          cantidad = EXCLUDED.cantidad,
+          talla = EXCLUDED.talla,
+          precio = EXCLUDED.precio,
+          fecha_actualizacion = CURRENT_TIMESTAMP;
         `,
-        [user.correo, hashed, user.rol]
+        [
+          producto.nombre,
+          producto.descripcion,
+          producto.cantidad,
+          producto.talla,
+          producto.precio,
+        ]
       );
     }
 
-    res.send("✅ Usuarios creados o actualizados correctamente.");
+    res.send("✅ Productos creados o actualizados correctamente.");
   } catch (error) {
     console.error("❌ Error al insertar datos:", error);
     res.status(500).send(`❌ Error SQL: ${error.message}`);

@@ -17,7 +17,7 @@ router.get("/", obtenerProductos);
 router.get("/:id", obtenerProductoPorId);
 
 // ➕ Crear producto
-router.post("/", crearProducto);
+router.post("/", crearProducto);//
 
 // ✏️ Actualizar producto
 router.put("/:id", actualizarProducto);
