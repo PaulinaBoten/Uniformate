@@ -2,34 +2,206 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Mi Pedido</title>
+  <title>🧥 Mi Pedido - UNIFORMATE CEFA</title>
   <style>
-    body { font-family: Arial; background-color: #d3eeaf; padding: 20px; }
-    .producto { background: white; padding: 10px; margin: 10px; border-radius: 8px; }
-    button { background: #279419; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 6px; }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    :root {
+      --verde-oscuro: #124d19;
+      --verde-medio: #2e7d32;
+      --verde-claro: #d3eeaf;
+      --verde-pastel: #e9f7d5;
+      --amarillo: #f5dd5d;
+      --blanco: #ffffff;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--verde-claro);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: var(--verde-oscuro);
+      color: var(--blanco);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 1.5em;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 25px;
+    }
+
+    nav a {
+      color: var(--blanco);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--amarillo);
+    }
+
+    /* ======= CONTENIDO ======= */
+    main {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--verde-medio);
+      margin-bottom: 25px;
+      font-size: 1.8em;
+    }
+
+    #carrito, #listaPedidos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ======= PRODUCTOS ======= */
+    .producto {
+      background: var(--blanco);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .producto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      height: 180px;
+      background: var(--verde-pastel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--verde-oscuro);
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .producto .info {
+      padding: 15px;
+    }
+
+    .producto strong {
+      color: var(--verde-oscuro);
+      font-size: 1.1em;
+    }
+
+    .producto p {
+      color: #555;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    /* ======= BOTONES ======= */
+    .btn {
+      background: var(--verde-medio);
+      color: var(--blanco);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 15px 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      background: var(--verde-oscuro);
+      transform: scale(1.05);
+    }
+
+    /* ======= MENSAJES ======= */
+    .mensaje {
+      background: #f9fbe7;
+      color: var(--verde-oscuro);
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 500;
+      margin: 25px auto;
+      width: fit-content;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    hr {
+      border: none;
+      border-top: 3px dashed var(--verde-medio);
+      margin: 40px auto;
+      width: 70%;
+    }
+
   </style>
 </head>
 <body>
-  <h1>🛍️ Mi Pedido</h1>
-  <div id="carrito"></div>
-  <button id="enviarPedido">Enviar Pedido</button>
-  <hr>
-  <button id="verPedidos">📋 Ver mis pedidos</button>
-  <div id="listaPedidos"></div>
+  <header>
+    <h1>UNIFORMATE CEFA</h1>
+    <nav>
+      <a href="inicio.html">Inicio</a>
+      <a href="cata.html">Catálogo</a>
+      <a href="comunicate.html">Contáctanos</a>
+      <a href="Admin.html">Administrador</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>🧺 Mi Pedido</h2>
+      <div id="carrito"></div>
+      <button class="btn" id="enviarPedido">✅ Enviar Pedido</button>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>📦 Mis pedidos</h2>
+      <button class="btn" id="verPedidos">🔍 Ver mis pedidos</button>
+      <div id="listaPedidos"></div>
+    </section>
+  </main>
 
   <script type="module">
     const carritoContainer = document.getElementById("carrito");
     const listaPedidos = document.getElementById("listaPedidos");
     const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
 
-    // Mostrar carrito actual
+    // Mostrar carrito SIN imágenes externas
     if (carrito.length === 0) {
-      carritoContainer.innerHTML = "<p>No hay productos en el carrito.</p>";
+      carritoContainer.innerHTML = `<div class="mensaje">🛒 No hay productos en el carrito.</div>`;
     } else {
       carritoContainer.innerHTML = carrito.map(p => `
         <div class="producto">
-          <strong>${p.nombre}</strong><br>
-          Cantidad: ${p.cantidad}
+          <div class="img-placeholder">Imagen</div>
+          <div class="info">
+            <strong>${p.nombre}</strong>
+            <p>Cantidad: ${p.cantidad}</p>
+          </div>
         </div>
       `).join("");
     }
@@ -37,44 +209,41 @@
     // Enviar pedido
     document.getElementById("enviarPedido").addEventListener("click", async () => {
       const userId = sessionStorage.getItem("userId");
-
       for (const producto of carrito) {
         const body = {
           usuario_id: userId,
           inventario_id: producto.id,
           cantidad: producto.cantidad
         };
-
-        const res = await fetch("http://localhost:3000/api/pedidos", {
+        await fetch("http://localhost:3000/api/pedidos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });
-
-        const data = await res.json();
-        console.log("Pedido:", data);
       }
-
       alert("✅ Pedido enviado correctamente");
       sessionStorage.removeItem("carrito");
       window.location.href = "prin.html";
     });
 
-    // Ver pedidos del usuario
+    // Ver pedidos SIN imágenes externas
     document.getElementById("verPedidos").addEventListener("click", async () => {
       const userId = sessionStorage.getItem("userId");
       const res = await fetch(`http://localhost:3000/api/pedidos?usuario_id=${userId}`);
       const pedidos = await res.json();
 
       if (pedidos.length === 0) {
-        listaPedidos.innerHTML = "<p>No tienes pedidos aún.</p>";
+        listaPedidos.innerHTML = `<div class="mensaje">😕 No tienes pedidos aún.</div>`;
       } else {
         listaPedidos.innerHTML = pedidos.map(p => `
           <div class="producto">
-            <strong>${p.producto}</strong><br>
-            Cantidad: ${p.cantidad}<br>
-            Estado: ${p.estado}<br>
-            Fecha: ${new Date(p.fecha).toLocaleString()}
+            <div class="img-placeholder">Imagen</div>
+            <div class="info">
+              <strong>${p.producto}</strong>
+              <p>Cantidad: ${p.cantidad}</p>
+              <p>Estado: <b>${p.estado}</b></p>
+              <p>Fecha: ${new Date(p.fecha).toLocaleString()}</p>
+            </div>
           </div>
         `).join("");
       }

@@ -39,18 +39,16 @@ const insertData = async (req, res) => {
   try {
     const productos = [
       {
-        nombre: "Camiseta básica",
+        nombre: "sudadera deportiva",
+        descripcion: "sudadera deportiva impermiable ",
+        cantidad: 30,
+        talla: "L",
+      },
+      { 
+      nombre: "camiseta polo deportivo",
         descripcion: "Camiseta de algodón color blanco",
         cantidad: 50,
         talla: "M",
-        precio: 15.99,
-      },
-      {
-        nombre: "Pantalón jeans",
-        descripcion: "Jeans azul clásico",
-        cantidad: 30,
-        talla: "L",
-        precio: 39.99,
       },
     ];
 
@@ -64,15 +62,15 @@ const insertData = async (req, res) => {
         // actualizar
         await pool.query(
           `UPDATE inventario
-       SET descripcion=$1, cantidad=$2, talla=$3, precio=$4, fecha_actualizacion = CURRENT_TIMESTAMP
-       WHERE id = $5`,
-          [p.descripcion, p.cantidad, p.talla, p.precio, exists.rows[0].id]
+       SET descripcion=$1, cantidad=$2, talla=$3, fecha_actualizacion = CURRENT_TIMESTAMP
+       WHERE id = $4`,
+          [p.descripcion, p.cantidad, p.talla, exists.rows[0].id]
         );
       } else {
         // insertar
         await pool.query(
-          `INSERT INTO inventario (nombre, descripcion, cantidad, talla, precio)
-       VALUES ($1, $2, $3, $4, $5)`,
+          `INSERT INTO inventario (nombre, descripcion, cantidad, talla, )
+       VALUES ($1, $2, $3, $4, )`,
           [p.nombre, p.descripcion, p.cantidad, p.talla, p.precio]
         );
       }

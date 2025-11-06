@@ -14,24 +14,31 @@
 </head>
 <body>
 
-  <div class="logo"> 
-    <div class="Letra">
-      <h1>UNIFORMATE</h1>
-    </div>
+ <header>
+    <h1>UNIFORMATE CEFA</h1>
+    <nav>
+      <a href="prin.html">Inicio</a>
+      <a href="cata.html">Catálogo</a>
+      <a href="comunicate.html">Contáctanos</a>
+      <a href="Admin.html">Administrador</a>
+    </nav>
+</header>
 
-    <section class="login">
-        <div class="inicio-sesion">
-            <h2>Inicio de sesión</h2>
-            <!-- !!! CAMBIOS AQUÍ: Añadimos un ID al formulario y a los inputs !!! -->
-            <form id="loginFormUser">
-                <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
-                <input class="controls" minlength="1" type="password" id="contrasena" placeholder="Contraseña" required>
-                <input class="buttons" type="submit" value="Ingresar">
-                <!-- Para mostrar mensajes de error o éxito al usuario -->
-                <div id="mensajeLogin" style="color:red; margin-top: 10px;"></div>
-            </form>
-        </div>
-    </section>
+    <main>
+        <section class="login">
+            <div class="inicio-sesion">
+                <h2>Inicio de sesión</h2>
+                <!-- !!! CAMBIOS AQUÍ: Añadimos un ID al formulario y a los inputs !!! -->
+                <form id="loginFormUser">
+                    <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
+                    <input class="controls" minlength="1" type="password" id="contrasena" placeholder="Contraseña" required>
+                    <input class="buttons" type="submit" value="Ingresar">
+                    <!-- Para mostrar mensajes de error o éxito al usuario -->
+                    <div id="mensajeLogin" style="color:red; margin-top: 10px;"></div>
+                </form>
+            </div>
+        </section>
+    </main>
 
 <script>
   // Interceptar el envío del formulario

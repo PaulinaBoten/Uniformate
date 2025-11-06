@@ -4,78 +4,168 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panel de Administración</title>
 <style>
- body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #d3eeaf;
-  padding: 20px;
-  margin: 0;
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* ===== PALETA CEFA =====
+Verde principal: #3fa63f
+Verde oscuro:   #215a21
+Verde claro:    #cbe9b0
+Beige crema:    #f8f6e7
+Amarillo suave: #fff9b0
+Blanco puro:    #ffffff
+*/
+:root {
+  --verde-principal:#215a21;
+  --verde-oscuro: #215a21;
+  --verde-claro: #cbe9b0;
+  --beige: #f8f6e7;
+  --amarillo: #fff9b0;
+  --blanco: #ffffff;
 }
 
-/* Barra superior */
+/* ===== GENERAL ===== */
+body {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, var(--beige) 0%, var(--verde-claro) 100%);
+  margin: 0;
+  padding: 20px;
+  color: #2a2a2a;
+}
+
+/* ===== ENCABEZADO ===== */
 .logo {
   display: flex;
-  flex-direction: column;  /* Logo arriba, botones abajo */
-  align-items: flex-start; /* Logo pegado a la izquierda */
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
-  background-color: rgb(39, 148, 25);
-  padding: 0.5rem 1rem;
+  background-color: var(--verde-principal);
+  padding: 0.8rem 1rem;
   box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-bottom: 4px solid var(--verde-oscuro);
 }
 
-/* Texto del logo */
+/* Texto logo */
 .Letra h1 {
   margin: 0;
-  color: #ffffff;
-  font-size: 2.3rem; /* Más pequeño */
-  font-weight: bold;
-  padding-left: 5px; /* separación ligera */
+  color: var(--blanco);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Botones centrados debajo del logo */
+/* ===== BOTONES DE NAVEGACIÓN ===== */
 .botones {
   display: flex;
-  justify-content: center; /* centrado */
+  justify-content: center;
   align-items: center;
   gap: 20px;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .botones a {
-  text-align: center;
+  background: var(--verde-oscuro);
+  color: var(--blanco);
   text-decoration: none;
-  border: none;
-  background: #0f5a05;
-  color: #ffffff;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 18px;
-  line-height: 44px;
-  padding: 6px 18px;
-  width: 160px;
-  cursor: pointer;
+  font-weight: 600;
+  padding: 10px 20px;
   transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
 }
 
 .botones a:hover {
-  background-color: #3cb82a;
+  background-color: var(--verde-principal);
   transform: scale(1.08);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Encabezados */
+/* ===== TITULOS ===== */
 h2 {
   text-align: center;
   margin: 1.2rem 0;
-  color: #12490a;
+  color: var(--verde-oscuro);
+  font-weight: 700;
 }
 
-/* Tablas */
+/* ===== CONTENEDOR LOGIN ===== */
+.login-container {
+  background: var(--blanco);
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 90%;
+  margin: 80px auto;
+  padding: 40px 30px;
+  text-align: center;
+  border: 3px solid var(--verde-principal);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.login-container h2 {
+  color: var(--verde-principal);
+  margin-bottom: 25px;
+}
+
+/* ===== FORMULARIO ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 12px;
+  border: 2px solid var(--verde-claro);
+  border-radius: 10px;
+  font-size: 1em;
+  outline: none;
+  background-color: var(--beige);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: var(--verde-principal);
+  box-shadow: 0 0 8px #3fa63f66;
+}
+
+/* ===== BOTÓN PRINCIPAL ===== */
+button {
+  background: var(--verde-principal);
+  color: var(--blanco);
+  border: none;
+  padding: 12px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: var(--verde-oscuro);
+  transform: scale(1.05);
+}
+
+/* ===== TABLAS ===== */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 1rem;
-  background: white;
-  border-radius: 10px;
+  background: var(--blanco);
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
@@ -87,8 +177,8 @@ th, td {
 }
 
 th {
-  background: #279419;
-  color: white;
+  background: var(--verde-principal);
+  color: var(--blanco);
   font-weight: bold;
 }
 
@@ -96,47 +186,33 @@ td[contenteditable="true"] {
   background-color: #f9fff0;
 }
 
-/* Botones generales */
-button {
-  padding: 0.6rem 1rem;
-  background: #12490a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background: #1d6b13;
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsivo */
+/* ===== RESPONSIVO ===== */
 @media screen and (max-width: 480px) {
   .logo {
     align-items: center;
   }
 
   .Letra h1 {
-    font-size: 1.1rem;
-    padding-left: 0;
+    font-size: 1.4rem;
+    text-align: center;
   }
 
   .botones {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .botones a {
-    width: 100%;
-    max-width: 90%;
+    width: 90%;
     font-size: 16px;
   }
+
+  .login-container {
+    margin-top: 50px;
+    padding: 30px 20px;
+  }
 }
+
 </style>
 </head>
 <body>
