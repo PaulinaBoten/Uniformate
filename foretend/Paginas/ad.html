@@ -348,138 +348,7 @@ let inventario;
 </script> -->
 
 <script>
-    const API_URL = "http://localhost:3000/inventario"; // Base de la URL para el inventario
-
-    async function cerrarSesion() {
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("userRole");
-        sessionStorage.removeItem("userId");
-        sessionStorage.removeItem("userEmail");
-        window.location.href = "Admin.html";
-    }
-
-    // --- NUEVA FUNCIÓN: CREAR PRODUCTO ---
-    async function crearNuevoProducto(event) {
-        event.preventDefault(); // Detiene el envío de formulario estándar
-
-        const form = document.getElementById('formularioCrearProducto');
-        const formData = new FormData(form);
-        const productoData = {};
-
-        // Convertir FormData a un objeto JSON
-        formData.forEach((value, key) => {
-            // Convertir cantidad y precio a números
-            if (key === 'cantidad' || key === 'precio') {
-                productoData[key] = parseFloat(value) || 0;
-            } else {
-                productoData[key] = value.trim();
-            }
-        });
-
-        // Validación básica
-        if (!productoData.nombre || productoData.cantidad === undefined) {
-            alert("El nombre y la cantidad inicial son obligatorios.");
-            return;
-        }
-
-        try {
-            // 🔹 FETCH: Enviar la petición POST al endpoint del backend
-            const res = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Incluye el token si es necesario
-                    // 'Authorization': `Bearer ${sessionStorage.getItem("token")}` 
-                },
-                body: JSON.stringify(productoData)
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                // Manejar errores del servidor
-                throw new Error(data.error || "Error desconocido al crear producto.");
-            }
-
-            alert(`✅ ${data.message} con ID: ${data.id}.`);
-            form.reset(); // Limpiar el formulario
-            // Recargar el inventario para ver el nuevo producto
-            await cargarInventario(); 
-
-        } catch (error) {
-            console.error("❌ Error al crear producto:", error.message);
-            alert(`Error: ${error.message}`);
-        }
-    }
-    
-    // --- FUNCIÓN PARA CARGAR INVENTARIO (Refactorizada para ser llamada fácilmente) ---
-    async function cargarInventario() {
-        try {
-            const res = await fetch(API_URL);
-            if (!res.ok) throw new Error("No se pudo obtener el inventario");
-
-            const productos = await res.json();
-            const tabla = document.getElementById("tablaInventario");
-            
-            // Limpiar tabla (manteniendo la cabecera)
-            let tablaHTML = `
-                <tr>
-                    <th>ID</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Tallaje</th>
-                </tr>
-            `;
-
-            // Insertar filas dinámicamente
-            productos.forEach((p) => {
-                // Se ajusta a los campos de tu base de datos (nombre, cantidad, talla)
-                tablaHTML += `
-                    <tr data-id="${p.id}">
-                        <td>${p.id}</td>
-                        <td contenteditable="true">${p.nombre}</td>
-                        <td contenteditable="true">${p.cantidad ?? "0"}</td>
-                        <td contenteditable="true">${p.talla ?? ""}</td> 
-                    </tr>
-                `;
-            });
-            
-            tabla.innerHTML = tablaHTML;
-
-        } catch (error) {
-            console.error("❌ Error cargando inventario:", error.message);
-            alert("Error al cargar el inventario desde el servidor.");
-        }
-    }
-
-
-    // --- LÓGICA DE INICIALIZACIÓN Y EVENT LISTENERS ---
-    window.onload = async function () {
-        const userRole = sessionStorage.getItem("userRole");
-        if (userRole !== "administrador") {
-            alert("Acceso denegado. Inicie sesión como administrador primero.");
-            window.location.href = "Admin.html";
-            return;
-        }
-
-        document.getElementById("bienvenida").textContent = "Bienvenida, administradora";
-        
-        // Cargar el inventario al inicio
-        await cargarInventario(); 
-
-        // 🔹 NUEVO EVENT LISTENER: Escucha el envío del formulario
-        const formCrearProducto = document.getElementById('formularioCrearProducto');
-        if (formCrearProducto) {
-            formCrearProducto.addEventListener('submit', crearNuevoProducto);
-        }
-
-        // Si usas las funciones de guardado local para Pedidos, mantenlas o adáptalas
-        // Cargar los datos guardados localmente (si persisten)
-        // cargarTabla("tablaPedidos"); 
-    };
-
-    // La función guardarTabla (para actualizar) debe seguir existiendo y apuntando a PUT /inventario/actualizar
-    // ... (debes incluir la función guardarTabla del ejemplo anterior si no la has incluido ya)//
+  const API_URL = "http://localhost:3000/inventario";
 
   async function cerrarSesion() {
     sessionStorage.removeItem("token");
@@ -489,6 +358,131 @@ let inventario;
     window.location.href = "Admin.html";
   }
 
+  // -------------------------------
+  // 📦 CARGAR INVENTARIO
+  // -------------------------------
+  async function cargarInventario() {
+    try {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error(`Error al obtener inventario (${res.status})`);
+
+      const productos = await res.json();
+      const tabla = document.getElementById("tablaInventario");
+
+      // Cabecera fija
+      let tablaHTML = `
+        <tr>
+          <th>ID</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Tallaje</th>
+        </tr>
+      `;
+
+      if (productos.length === 0) {
+        tablaHTML += `<tr><td colspan="4">No hay productos registrados aún.</td></tr>`;
+      } else {
+        productos.forEach((p) => {
+          tablaHTML += `
+            <tr data-id="${p.id}">
+              <td>${p.id}</td>
+              <td contenteditable="true">${p.nombre}</td>
+              <td contenteditable="true">${p.cantidad ?? 0}</td>
+              <td contenteditable="true">${p.talla ?? ""}</td>
+            </tr>
+          `;
+        });
+      }
+
+      tabla.innerHTML = tablaHTML;
+    } catch (error) {
+      console.error("❌ Error al cargar inventario:", error.message);
+      alert("Error al cargar inventario. Revisa la consola.");
+    }
+  }
+
+  // -------------------------------
+  // ➕ CREAR NUEVO PRODUCTO
+  // -------------------------------
+  async function crearNuevoProducto(event) {
+    event.preventDefault();
+
+    const form = document.getElementById("formularioCrearProducto");
+    const formData = new FormData(form);
+    const productoData = {};
+
+    // Convertir a JSON
+    formData.forEach((value, key) => {
+      if (key === "cantidad" || key === "precio") {
+        productoData[key] = parseFloat(value) || 0;
+      } else {
+        productoData[key] = value.trim();
+      }
+    });
+
+    if (!productoData.nombre || productoData.cantidad < 0) {
+      alert("⚠️ El nombre y la cantidad inicial son obligatorios.");
+      return;
+    }
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(productoData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Error al crear el producto.");
+
+      alert(`✅ ${data.message}`);
+      form.reset();
+      await cargarInventario(); // Refrescar la tabla
+
+    } catch (error) {
+      console.error("❌ Error al crear producto:", error.message);
+      alert(`Error: ${error.message}`);
+    }
+  }
+
+  // -------------------------------
+  // 💾 GUARDAR CAMBIOS DE TABLA
+  // -------------------------------
+  async function guardarTabla() {
+    const filas = document.querySelectorAll("#tablaInventario tr[data-id]");
+    const productos = [];
+
+    filas.forEach((fila) => {
+      const celdas = fila.querySelectorAll("td");
+      productos.push({
+        id: parseInt(fila.dataset.id),
+        nombre: celdas[1].textContent.trim(),
+        cantidad: parseInt(celdas[2].textContent.trim()) || 0,
+        talla: celdas[3].textContent.trim(),
+      });
+    });
+
+    try {
+      const res = await fetch(`${API_URL}/actualizar`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productos }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al actualizar inventario");
+
+      alert("✅ Cambios guardados correctamente.");
+    } catch (error) {
+      console.error("❌ Error al guardar cambios:", error.message);
+      alert("Error al guardar cambios.");
+    }
+  }
+
+  // -------------------------------
+  // 🚀 INICIALIZACIÓN
+  // -------------------------------
   window.onload = async function () {
     const userRole = sessionStorage.getItem("userRole");
     if (userRole !== "administrador") {
@@ -496,8 +490,16 @@ let inventario;
       window.location.href = "Admin.html";
       return;
     }
-    }
+
+    document.getElementById("bienvenida").textContent = "Bienvenida, administradora";
+    await cargarInventario();
+
+    // Asignar eventos
+    document.getElementById("formularioCrearProducto").addEventListener("submit", crearNuevoProducto);
+    document.querySelector("button[onclick*='guardarTabla']").onclick = guardarTabla;
+  };
 </script>
+
 
 </body>
 </html>

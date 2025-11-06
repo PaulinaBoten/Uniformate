@@ -6,7 +6,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import createTables from "./utils/createTables.js";
 import pool from "./db/pool.js";
 import insertData from "./utils/insertData.js";
-
+import pedidosRouter from "./routes/pedidos.js";
 const app = express();
 
 // 🌍 Middlewares globales
@@ -17,6 +17,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/inventario", inventarioRoutes);//
 app.use("/reviews", reviewRoutes);
+app.use("/api/pedidos", pedidosRouter);
 
 // 🔧 Crear tablas
 app.get("/create-tables", createTables);

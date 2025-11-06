@@ -5,35 +5,44 @@ import pool from "../db/pool.js";
 const router = express.Router();
 
 /**
- * 🛒 Crear un nuevo pedido (solo estudiantes)
+ * 🛒 Crear un nuevo pedido
  */
 router.post("/", async (req, res) => {
   try {
-    const { usuario_id, inventario_id, cantidad } = req.body;
+    let { usuario_id, inventario_id, cantidad } = req.body;
 
-    // Validaciones básicas
+    // Convertir a número por seguridad
+    usuario_id = Number(usuario_id);
+    inventario_id = Number(inventario_id);
+    cantidad = Number(cantidad);
+
+    console.log("📦 Body recibido:", { usuario_id, inventario_id, cantidad });
+
     if (!usuario_id || !inventario_id || !cantidad || cantidad <= 0) {
       return res.status(400).json({ error: "Datos de pedido inválidos" });
     }
 
     // Verificar que el producto exista
-    const [producto] = await pool.query("SELECT * FROM inventario WHERE id = ?", [inventario_id]);
-    if (producto.length === 0) {
+    const producto = await pool.query("SELECT * FROM inventario WHERE id = $1", [inventario_id]);
+    if (producto.rows.length === 0) {
       return res.status(404).json({ error: "El producto no existe" });
     }
 
-    // Verificar stock suficiente
-    if (producto[0].cantidad < cantidad) {
+    // Verificar stock
+    if (producto.rows[0].cantidad < cantidad) {
       return res.status(400).json({ error: "Stock insuficiente para este pedido" });
     }
 
-    // Insertar pedido
-    const [result] = await pool.query(
-      "INSERT INTO pedidos (usuario_id, inventario_id, cantidad) VALUES (?, ?, ?)",
+    // Insertar pedido en PostgreSQL ✅
+    const result = await pool.query(
+      "INSERT INTO pedidos (usuario_id, inventario_id, cantidad) VALUES ($1, $2, $3) RETURNING id",
       [usuario_id, inventario_id, cantidad]
     );
 
-    res.status(201).json({ message: "✅ Pedido creado correctamente", pedidoId: result.insertId });
+    res.status(201).json({
+      message: "✅ Pedido creado correctamente",
+      pedidoId: result.rows[0].id,
+    });
   } catch (error) {
     console.error("❌ Error al crear pedido:", error.message);
     res.status(500).json({ error: "Error al crear el pedido" });
@@ -41,28 +50,35 @@ router.post("/", async (req, res) => {
 });
 
 /**
- * 📋 Obtener todos los pedidos (solo admin)
+ * 📋 Obtener todos los pedidos (opcional: filtrar por usuario)
  */
 router.get("/", async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT 
-        p.id, 
-        u.correo AS usuario, 
-        i.nombre AS producto, 
-        p.cantidad, 
-        p.estado, 
-        p.fecha
-      FROM pedidos p
-      JOIN usuarios u ON p.usuario_id = u.id
-      JOIN inventario i ON p.inventario_id = i.id
-      ORDER BY p.fecha DESC
-    `);
+  const { usuario_id } = req.query;
+  console.log("🧾 Query GET pedidos usuario_id:", usuario_id);
 
-    res.status(200).json(rows);
+  try {
+    const result = await pool.query(
+      `
+      SELECT 
+        p.id,
+        p.cantidad,
+        p.estado,
+        p.fecha,
+        i.nombre AS producto,
+        u.correo AS usuario
+      FROM pedidos p
+      JOIN inventario i ON p.inventario_id = i.id
+      JOIN usuarios u ON p.usuario_id = u.id
+      WHERE p.usuario_id = $1
+      ORDER BY p.fecha DESC
+      `,
+      [usuario_id]
+    );
+
+    res.json(result.rows);
   } catch (error) {
-    console.error("❌ Error al obtener pedidos:", error.message);
-    res.status(500).json({ error: "Error al obtener los pedidos" });
+    console.error("❌ Error exacto al obtener pedidos:", error);
+    res.status(500).json({ error: "Error al obtener pedidos" });
   }
 });
 
@@ -71,46 +87,48 @@ router.get("/", async (req, res) => {
  */
 router.put("/:id/aceptar", async (req, res) => {
   const { id } = req.params;
+  const client = await pool.connect();
 
-  const connection = await pool.getConnection();
   try {
-    await connection.beginTransaction();
+    await client.query("BEGIN");
 
-    // Obtener el pedido y producto relacionados
-    const [[pedido]] = await connection.query("SELECT * FROM pedidos WHERE id = ?", [id]);
-    if (!pedido) {
-      await connection.rollback();
+    const pedido = await client.query("SELECT * FROM pedidos WHERE id = $1", [id]);
+    if (pedido.rows.length === 0) {
+      await client.query("ROLLBACK");
       return res.status(404).json({ error: "Pedido no encontrado" });
     }
 
-    const [[producto]] = await connection.query("SELECT * FROM inventario WHERE id = ?", [pedido.inventario_id]);
-    if (!producto) {
-      await connection.rollback();
+    const inventario_id = pedido.rows[0].inventario_id;
+    const cantidadPedido = pedido.rows[0].cantidad;
+
+    const producto = await client.query("SELECT * FROM inventario WHERE id = $1", [inventario_id]);
+    if (producto.rows.length === 0) {
+      await client.query("ROLLBACK");
       return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    if (producto.cantidad < pedido.cantidad) {
-      await connection.rollback();
+    if (producto.rows[0].cantidad < cantidadPedido) {
+      await client.query("ROLLBACK");
       return res.status(400).json({ error: "Stock insuficiente para aceptar el pedido" });
     }
 
     // Actualizar estado del pedido
-    await connection.query("UPDATE pedidos SET estado = 'aceptado' WHERE id = ?", [id]);
+    await client.query("UPDATE pedidos SET estado = 'aceptado' WHERE id = $1", [id]);
 
     // Reducir stock
-    await connection.query(
-      "UPDATE inventario SET cantidad = cantidad - ? WHERE id = ?",
-      [pedido.cantidad, pedido.inventario_id]
+    await client.query(
+      "UPDATE inventario SET cantidad = cantidad - $1 WHERE id = $2",
+      [cantidadPedido, inventario_id]
     );
 
-    await connection.commit();
+    await client.query("COMMIT");
     res.json({ message: "✅ Pedido aceptado y stock actualizado" });
   } catch (error) {
-    await connection.rollback();
+    await client.query("ROLLBACK");
     console.error("❌ Error al aceptar pedido:", error.message);
     res.status(500).json({ error: "Error al aceptar el pedido" });
   } finally {
-    connection.release();
+    client.release();
   }
 });
 
@@ -120,10 +138,9 @@ router.put("/:id/aceptar", async (req, res) => {
 router.put("/:id/rechazar", async (req, res) => {
   try {
     const { id } = req.params;
+    const result = await pool.query("UPDATE pedidos SET estado = 'rechazado' WHERE id = $1", [id]);
 
-    const [result] = await pool.query("UPDATE pedidos SET estado = 'rechazado' WHERE id = ?", [id]);
-
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: "Pedido no encontrado" });
     }
 

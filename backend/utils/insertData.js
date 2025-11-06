@@ -33,7 +33,9 @@
 import pool from "../db/pool.js"; // Asegúrate de tener configurada tu conexión
 //import bcrypt from "bcrypt"; // No necesario aquí, pero lo dejo si usas la misma estructura
 
- const insertData = async (req, res) => {
+const insertData = async (req, res) => {
+  console.log("holas");
+
   try {
     const productos = [
       {
@@ -52,27 +54,28 @@ import pool from "../db/pool.js"; // Asegúrate de tener configurada tu conexió
       },
     ];
 
-    for (const producto of productos) {
-      await pool.query(
-        `
-        INSERT INTO inventario (nombre, descripcion, cantidad, talla, precio)
-        VALUES ($1, $2, $3, $4, $5)
-        ON CONFLICT (nombre)
-        DO UPDATE SET 
-          descripcion = EXCLUDED.descripcion,
-          cantidad = EXCLUDED.cantidad,
-          talla = EXCLUDED.talla,
-          precio = EXCLUDED.precio,
-          fecha_actualizacion = CURRENT_TIMESTAMP;
-        `,
-        [
-          producto.nombre,
-          producto.descripcion,
-          producto.cantidad,
-          producto.talla,
-          producto.precio,
-        ]
+    for (const p of productos) {
+      const exists = await pool.query(
+        `SELECT id FROM inventario WHERE nombre = $1 LIMIT 1`,
+        [p.nombre]
       );
+
+      if (exists.rows.length > 0) {
+        // actualizar
+        await pool.query(
+          `UPDATE inventario
+       SET descripcion=$1, cantidad=$2, talla=$3, precio=$4, fecha_actualizacion = CURRENT_TIMESTAMP
+       WHERE id = $5`,
+          [p.descripcion, p.cantidad, p.talla, p.precio, exists.rows[0].id]
+        );
+      } else {
+        // insertar
+        await pool.query(
+          `INSERT INTO inventario (nombre, descripcion, cantidad, talla, precio)
+       VALUES ($1, $2, $3, $4, $5)`,
+          [p.nombre, p.descripcion, p.cantidad, p.talla, p.precio]
+        );
+      }
     }
 
     res.send("✅ Productos creados o actualizados correctamente.");
