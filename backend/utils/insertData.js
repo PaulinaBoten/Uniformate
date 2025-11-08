@@ -1,43 +1,123 @@
-// utils/insertData.js (Modificado para incluir usuario administrador)
+// import pool from "../db/pool.js";
+// import bcrypt from "bcrypt";
 
-const pool = require('../db/pool');
-const bcrypt = require('bcrypt');
+// const insertData = async (req, res) => {
+//   try {
+//     const users = [
+//       { correo: "paa@aasd.asd", pass: "111", rol: "normal" },
+//       { correo: "adn@as.com", pass: "123", rol: "administrador" },
+//     ];
+
+//     for (const user of users) {
+//       const hashed = await bcrypt.hash(user.pass, 10);
+//       await pool.query(
+//         `
+//         INSERT INTO usuarios (correo, contrasena, rol)
+//         VALUES ($1, $2, $3)
+//         ON CONFLICT (correo)
+//         DO UPDATE SET contrasena = EXCLUDED.contrasena, rol = EXCLUDED.rol;
+//         `,
+//         [user.correo, hashed, user.rol]
+//       );
+//     }
+
+//     res.send("✅ Usuarios creados o actualizados correctamente.");
+//   } catch (error) {
+//     console.error("❌ Error al insertar datos:", error);
+//     res.status(500).send(`❌ Error SQL: ${error.message}`);
+//   }
+// };
+
+// export default insertData;
+
+import pool from "../db/pool.js"; // Asegúrate de tener configurada tu conexión
+//import bcrypt from "bcrypt"; // No necesario aquí, pero lo dejo si usas la misma estructura
 
 const insertData = async (req, res) => {
+  console.log("holas");
+
   try {
-    // Hashea la contraseña para el usuario normal (ej. 'pa@asd.asd')
-    const normalUserPassword = '123';
-    const hashedNormalPassword = await bcrypt.hash(normalUserPassword, 10);
-    const normalUserEmail = 'pa@asd.asd';
+        const productos = [
+      {
+        nombre: "Camiseta básica",
+        descripcion: "Camiseta de algodón color blanco",
+        cantidad: 50,
+        talla: "M",
+        precio: 15.99,
+      },
+      {
+        nombre: "Pantalón Deportivo",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
+      {
+        nombre: "Pantalón jeans",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
+      {
+        nombre: "Pantalón jeans",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
+      {
+        nombre: "Pantalón jeans",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
+      {
+        nombre: "Pantalón jeans",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
+      {
+        nombre: "Pantalón jeans",
+        descripcion: "Jeans azul clásico",
+        cantidad: 30,
+        talla: "L",
+        precio: 39.99,
+      },
+    ];
 
-    // Inserta o actualiza el usuario normal
-    await pool.query(`
-      INSERT INTO usuarios (correo, contrasena, rol)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (correo) DO UPDATE SET
-        contrasena = EXCLUDED.contrasena,
-        rol = EXCLUDED.rol;
-    `, [normalUserEmail, hashedNormalPassword, 'normal']);
+        for (const p of productos) {
+      const exists = await pool.query(
+        `SELECT id FROM inventario WHERE nombre = $1 LIMIT 1`,
+        [p.nombre]
+      );
 
-    // --- NUEVO: Usuario Administrador ---
-    const adminUserPassword = 'adminpassword123'; // ¡Contraseña para el administrador!
-    const hashedAdminPassword = await bcrypt.hash(adminUserPassword, 10);
-    const adminUserEmail = 'admin@uniformate.com'; // Correo del administrador
+      if (exists.rows.length > 0) {
+        // actualizar
+        await pool.query(
+          `UPDATE inventario
+       SET descripcion=$1, cantidad=$2, talla=$3, precio=$4, fecha_actualizacion = CURRENT_TIMESTAMP
+       WHERE id = $5`,
+          [p.descripcion, p.cantidad, p.talla, p.precio, exists.rows[0].id]
+        );
+      } else {
+        // insertar
+        await pool.query(
+          `INSERT INTO inventario (nombre, descripcion, cantidad, talla, precio)
+       VALUES ($1, $2, $3, $4, $5)`,
+          [p.nombre, p.descripcion, p.cantidad, p.talla, p.precio]
+        );
+      }
+    }
 
-    // Inserta o actualiza el usuario administrador
-    await pool.query(`
-      INSERT INTO usuarios (correo, contrasena, rol)
-      VALUES ($1, $2, $3)
-      ON CONFLICT (correo) DO UPDATE SET
-        contrasena = EXCLUDED.contrasena,
-        rol = EXCLUDED.rol;
-    `, [adminUserEmail, hashedAdminPassword, 'administrador']); // ¡IMPORTANTE: rol 'administrador'!
-
-    res.send('✅ Datos de usuarios creados/actualizados correctamente');
+    res.send("✅ Productos creados o actualizados correctamente.");
   } catch (error) {
-    console.error('❌ Error al insertar/actualizar datos:', error.message);
-    res.status(500).send(`❌ Error al insertar/actualizar los datos: ${error.message}`);
+    console.error("❌ Error al insertar datos:", error);
+    res.status(500).send(`❌ Error SQL: ${error.message}`);
   }
 };
 
-module.exports = insertData;
+export default insertData;

@@ -1,142 +1,252 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Realizar Pedido - Uniformes CEFA</title>
-  <link rel="stylesheet" href="/foretend/Paginas/CSS/pedidos.css">
-  <!-- Íconos de Font Awesome para el footer y WhatsApp -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <title>🧥 Mi Pedido - UNIFORMATE CEFA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    :root {
+      --verde-oscuro: #124d19;
+      --verde-medio: #2e7d32;
+      --verde-claro: #d3eeaf;
+      --verde-pastel: #e9f7d5;
+      --amarillo: #f5dd5d;
+      --blanco: #ffffff;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--verde-claro);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: var(--verde-oscuro);
+      color: var(--blanco);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: 1.5em;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 25px;
+    }
+
+    nav a {
+      color: var(--blanco);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--amarillo);
+    }
+
+    /* ======= CONTENIDO ======= */
+    main {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--verde-medio);
+      margin-bottom: 25px;
+      font-size: 1.8em;
+    }
+
+    #carrito, #listaPedidos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ======= PRODUCTOS ======= */
+    .producto {
+      background: var(--blanco);
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .producto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .img-placeholder {
+      width: 100%;
+      height: 180px;
+      background: var(--verde-pastel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--verde-oscuro);
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .producto .info {
+      padding: 15px;
+    }
+
+    .producto strong {
+      color: var(--verde-oscuro);
+      font-size: 1.1em;
+    }
+
+    .producto p {
+      color: #555;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    /* ======= BOTONES ======= */
+    .btn {
+      background: var(--verde-medio);
+      color: var(--blanco);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 15px 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      background: var(--verde-oscuro);
+      transform: scale(1.05);
+    }
+
+    /* ======= MENSAJES ======= */
+    .mensaje {
+      background: #f9fbe7;
+      color: var(--verde-oscuro);
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 500;
+      margin: 25px auto;
+      width: fit-content;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    hr {
+      border: none;
+      border-top: 3px dashed var(--verde-medio);
+      margin: 40px auto;
+      width: 70%;
+    }
+
+  </style>
 </head>
 <body>
-  <header class="logo"> 
-    <div class="Letra">
-      <h1>UNIFORMATE</h1>
-    </div>
-    <nav class="botones">
-      <a href="/foretend/Paginas/prin.html">Inicio</a>
-      <a href="/foretend/Paginas/cata.html">Catálogo</a>
-      <a href="/foretend/Paginas/comunicate.html" target="_blank">Contáctanos</a>
-      <!-- Enlaces ocultos por defecto, gestionados por JavaScript -->
-      <a href="/foretend/Paginas/inicio.html" id="enlaceUsuarios" style="display:none;">Usuarios</a> 
-      <a href="/foretend/Paginas/Admin.html" id="enlaceAdmin" style="display:none;">Administrador</a>
-      <a href="#" id="cerrarSesionBtn" style="display:none;">Cerrar sesión</a>
+  <header>
+    <h1>UNIFORMATE CEFA</h1>
+    <nav>
+      <a href="inicio.html">Inicio</a>
+      <a href="cata.html">Catálogo</a>
+      <a href="comunicate.html">Contáctanos</a>
+      <a href="Admin.html">Administrador</a>
     </nav>
   </header>
 
-  <main class="container">
-    <h1>Tu Pedido</h1>
+  <main>
+    <section>
+      <h2>🧺 Mi Pedido</h2>
+      <div id="carrito"></div>
+      <button class="btn" id="enviarPedido">✅ Enviar Pedido</button>
+    </section>
 
-    <div class="cart-items" id="cartItems">
-      <!-- Aquí se renderizarán los productos del carrito -->
-      <p class="empty-cart-message" id="emptyCartMessage">No hay productos en tu carrito. Agrega desde el <a href="/foretend/Paginas/cata.html">catálogo</a>.</p>
-    </div>
+    <hr>
 
-    <div class="total-section">
-      <h3>Total Estimado: $<span id="cartTotal">0.00</span></h3>
-    </div>
-
-    <div class="form-section">
-      <h2>Completa tus datos para el pedido</h2>
-      <form id="orderForm">
-        <div class="form-group">
-          <label for="fullName">Nombre Completo:</label>
-          <input type="text" id="fullName" name="fullName" required>
-        </div>
-        <div class="form-group">
-          <label for="orderStatus">Estado del Pedido:</label>
-          <select id="orderStatus" name="orderStatus" required>
-            <option value="">Selecciona un estado</option>
-            <option value="nuevo">Nuevo</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="confirmado">Confirmado</option>
-            <option value="entregado">Entregado</option>
-            <option value="cancelado">Cancelado</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="orderDetails">Detalles del Pedido:</label>
-          <textarea id="orderDetails" name="orderDetails" rows="5" readonly required></textarea>
-          <small>Este campo se llenará automáticamente con los productos de tu carrito.</small>
-        </div>
-        
-        <button type="submit" class="submit-button">Realizar Pedido</button>
-      </form>
-    </div>
+    <section>
+      <h2>📦 Mis pedidos</h2>
+      <button class="btn" id="verPedidos">🔍 Ver mis pedidos</button>
+      <div id="listaPedidos"></div>
+    </section>
   </main>
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-box">
-        <h3>📞 Contacto</h3>
-        <p><i class="fas fa-phone-alt"></i> 300 4197922</p>
-        <p><i class="fas fa-map-marker-alt"></i> C 50 #41-55, La Candelaria, Medellín</p>
-      </div>
+<script type="module">
+import { addToPedidos, getPedidos } from "./JS/pedidosManager.js";
 
-      <div class="footer-box">
-        <h3>📲 Redes Sociales</h3>
-        <a href="https://www.instagram.com/centroformativodeantioquia/" target="_blank">
-          <i class="fab fa-instagram"></i> Instagram
-        </a>
-        <a href="https://wa.me/qr/NLHKB7NV3GKAI1" target="_blank">
-          <i class="fab fa-whatsapp"></i> WhatsApp
-        </a>
-      </div>
+// === BOTÓN ENVIAR PEDIDO ===
+document.getElementById("enviarPedido").addEventListener("click", async () => {
+  const userId = sessionStorage.getItem("userId");
+  const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
 
-      <div class="footer-box">
-        <h3>🎓 Créditos</h3>
-        <p>Paulina Botero González</p>
-        <p>Valeria Llano Quintero</p>
-      </div>
-    </div>
-  </footer>
+  if (!userId) {
+    alert("Debes iniciar sesión.");
+    return;
+  }
 
-  <!-- Botón flotante de WhatsApp -->
-  <a href="https://wa.me/qr/NLHKB7NV3GKAI1" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
-    <img src="/foretend/Paginas/img/whatsapp-white-icon.png" alt="WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
+  if (carrito.length === 0) {
+    alert("No hay productos en el carrito.");
+    return;
+  }
 
-  <script src="/foretend/Paginas/JS/pedidos.js"></script>
-  <script>
-    // Script para protección de acceso y cerrar sesión (copia del de cata.html)
-    document.addEventListener('DOMContentLoaded', function() {
-        const token = sessionStorage.getItem('token');
-        const userRole = sessionStorage.getItem('userRole');
+  for (const item of carrito) {
+    await addToPedidos(item.inventario_id, item.cantidad, userId);
+  }
 
-        const cerrarSesionBtn = document.getElementById('cerrarSesionBtn');
-        const enlaceUsuarios = document.getElementById('enlaceUsuarios');
-        const enlaceAdmin = document.getElementById('enlaceAdmin');
+  alert("✅ Pedido enviado con éxito.");
+  sessionStorage.removeItem("carrito");
+  window.location.reload();
+});
 
-        if (!token) {
-            alert('Debes iniciar sesión para ver tus pedidos.');
-            window.location.href = 'inicio.html'; // Redirige a la página de inicio de sesión
-        } else {
-            console.log('Usuario autenticado. Rol:', userRole);
-            cerrarSesionBtn.style.display = 'block';
 
-            if (userRole === 'administrador') {
-                enlaceAdmin.style.display = 'block';
-            } else {
-                enlaceAdmin.style.display = 'none';
-            }
-            enlaceUsuarios.style.display = 'none'; 
-        }
+// === BOTÓN VER PEDIDOS ===
+document.getElementById("verPedidos").addEventListener("click", async () => {
+  const userId = sessionStorage.getItem("userId");
+  const listaPedidos = document.getElementById("listaPedidos");
+  listaPedidos.innerHTML = "<p class='mensaje'>Cargando pedidos...</p>";
 
-        if (cerrarSesionBtn) {
-            cerrarSesionBtn.addEventListener('click', function(e) {
-                e.preventDefault();
+  try {
+    // Llamamos a la API con el userId
+    const response = await fetch(`http://localhost:3000/api/pedidos?usuario_id=${userId}`);
+    const pedidos = await response.json();
 
-                sessionStorage.removeItem('token');
-                sessionStorage.removeItem('userRole');
-                sessionStorage.removeItem('userId');
-                sessionStorage.removeItem('userEmail');
+    if (!pedidos || pedidos.length === 0) {
+      listaPedidos.innerHTML = "<p class='mensaje'>No tienes pedidos realizados aún.</p>";
+      return;
+    }
 
-                alert('Has cerrado sesión exitosamente.');
-                window.location.href = 'inicio.html';
-            });
-        }
-    });
-  </script>
+    listaPedidos.innerHTML = pedidos
+      .map(p => `
+        <div class="producto">
+          <div class="info">
+            <strong>${p.nombre_uniforme || "Uniforme"}</strong>
+            <p>Cantidad: ${p.cantidad}</p>
+            <p>Estado: ${p.estado || "Pendiente"}</p>
+          </div>
+        </div>
+      `)
+      .join("");
+  } catch (error) {
+    console.error("Error al cargar pedidos:", error);
+    listaPedidos.innerHTML = "<p class='mensaje'>Error al cargar pedidos.</p>";
+  }
+});
+</script>
+
 </body>
 </html>

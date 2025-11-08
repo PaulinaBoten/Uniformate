@@ -1,58 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-/* HEADER */
-.logo {
-  display: flex;
-  flex-direction: column;  /* Logo arriba, botones abajo */
-  align-items: flex-start; /* Logo pegado a la izquierda */
-  width: 100%;
-  background-color: rgb(39, 148, 25);
-  padding: 0.5rem 1rem;
-  box-sizing: border-box;
+:root {
+  --verde-oscuro: #124d19;
+  --verde-medio: #2e7d32;
+  --verde-claro: #d3eeaf;
+  --verde-pastel: #e9f7d5;
+  --amarillo: #f5dd5d;
+  --blanco: #ffffff;
 }
 
-/* Texto del logo más pequeño */
-.Letra h1 {
-  color: #ffffff;
-  font-size: 2.3rem; /* Más pequeño */
-  font-weight: bold;
+body {
   margin: 0;
-  padding-left: 5px; /* Ligera separación del borde */
+  padding: 0;
+  background-color: var(--verde-claro); /* Usando la variable */
+  font-family: 'Poppins', sans-serif; /* Usando Poppins consistentemente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* Asegura que el body ocupe toda la altura */
 }
 
-/* Botones abajo centrados */
+/* HEADER - Unificado y correcto */
+header {
+  background: var(--verde-oscuro);
+  color: var(--blanco);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  width: 100%; /* El header debe ocupar todo el ancho */
+  height: 65px;
+}
+
+header h1 {
+  font-size: 1.5em;
+  letter-spacing: 1px;
+  margin-left: 20px;
+}
+
+nav {
+  display: flex;
+  gap: 25px;
+  margin-right: 10px;
+}
+
+nav a {
+  color: var(--blanco);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--amarillo);
+}
+
+/* Catálogo */
+.catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 30px;
+  justify-items: center;
+  width: 90%;
+  max-width: 1200px;
+  margin-top: 40px; /* Espacio para que el catálogo no choque con el header */
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 230px;
+  height: 340px;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.flip-card-front {
+  background-color: var(--blanco); /* Usando la variable */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flip-card-back {
+  background-color: var(--verde-medio); /* Usando la variable */
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  text-align: center;
+}
+
+.flip-card-back p {
+  font-size: 0.9em;
+  margin: 10px 0;
+}
+
+.add-to-basket-btn {
+  background-color: var(--verde-oscuro); /* Usando la variable */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9em;
+}
+
+.add-to-basket-btn:hover {
+  background-color: #1f7013; /* Un verde intermedio */
+}
+
+/* Footer */
+footer {
+  background-color: var(--verde-medio); /* Usando la variable */
+  color: var(--blanco);
+  width: 100%;
+  padding: 30px 20px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.footer-box h3 {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.footer-box a {
+  color: var(--blanco);
+  text-decoration: none;
+}
+
+.footer-box a:hover {
+  text-decoration: underline;
+}
+
+/* WhatsApp Float Button */
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25d366;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 30px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.whatsapp-float img {
+  width: 65px; /* Un poco más grande para que se vea bien */
+  height: 65px;
+}
+
+/* Si los "botones" son para otra sección y no para el header principal,
+   los mantendría aquí con la clase .botones. Si son para el header,
+   entonces deberían integrarse en el nav. Asumo que son para otro lado. */
 .botones {
   display: flex;
-  justify-content: center; /* Centrado horizontal */
+  justify-content: center;
   gap: 20px;
   width: 100%;
-  margin-top: 10px; /* Espacio entre logo y botones */
-  }
+  margin-top: 20px; /* Espacio para separar de otros elementos */
+  padding: 10px 0;
+}
 
-
-  .botones a {
+.botones a {
   text-align: center;
   text-decoration: none;
   border: none;
-  background: #0f5a05;
-  color: #ffffff;
+  background: var(--verde-oscuro); /* Usando la variable */
+  color: var(--blanco);
   border-radius: 8px;
-  font-size: 18px;       /* Tamaño de texto más grande */
-  line-height: 42px;     /* Más alto */
-  padding: 6px 18px;     /* Más relleno */
-  width: 160px;          /* Más anchos */
+  font-size: 18px;
+  line-height: 42px;
+  padding: 6px 18px;
+  width: 160px;
   cursor: pointer;
-/* Animación suave */
   transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Añadida una sombra por defecto */
 }
 
 .botones a:hover {
-  background-color: #3cb82a;
-  transform: scale(1.08); /* Zoom suave */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Sombra elegante */
+  background-color: var(--verde-medio); /* Un verde intermedio al pasar el ratón */
+  transform: scale(1.08);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
+/* Media Queries */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 15px;
+  }
 
-.botones a:hover {
-  background-color: #3cb82a;
+  nav {
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    padding-left: 0;
+  }
+
+  .catalogo {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Ajustar para pantallas más pequeñas */
+    width: 95%;
+  }
+
+  .flip-card {
+    width: 180px;
+    height: 280px;
+  }
+
+  footer .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-box {
+    margin-bottom: 20px;
+  }
 }
 
+@media (max-width: 480px) {
+  header {
+    padding: 10px;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+  }
+
+  .catalogo {
+    grid-template-columns: 1fr; /* Una columna en móviles */
+    width: 90%;
+  }
+
+  .flip-card {
+    width: 90%; /* Ocupa casi todo el ancho disponible */
+    max-width: 250px; /* Límite para que no sea demasiado grande */
+    height: 320px;
+  }
+}

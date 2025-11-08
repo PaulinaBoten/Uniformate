@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --verde-oscuro: #124d19;
+  --verde-medio: #2e7d32;
+  --verde-claro: #d3eeaf;
+  --verde-pastel: #e9f7d5;
+  --amarillo: #f5dd5d;
+  --blanco: #ffffff;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,166 +16,259 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #d3eeaf;
+  font-family: 'Poppins', sans-serif;
+  background: var(--verde-claro);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* HEADER */
-.logo {
-  display: flex;  
+.topbar {
+  background: linear-gradient(90deg, var(--verde-oscuro), var(--verde-medio));
+  color: var(--blanco);
+  padding: 18px 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
-  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  background: var(--bg-color);
-  padding: 0px 5%;
-  background-color:rgb(39, 148, 25);
-  background-size: cover;
-  display: inline-block;
-  padding: 0.7rem 1.3rem;
+  justify-content: center; /* Centramos verticalmente el contenido de main */
+  text-align: center;
+  min-height: calc(100vh - 80px); /* Asegura que main ocupe la altura restante */
+  padding-top: 80px; /* Espacio por la barra */
 }
 
-.Letra h1 {
-  color: #ffffff;
-  font-size: 2.3rem; /* Más pequeño */
-  font-weight: bold;
-  margin: 0;
-  padding-left: 5px; /* Para separarlo un poquito del borde */
+.inicio-text {
+  background-color: var(--verde-medio);
+  color: var(--blanco);
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+.Bienvenida,
+.Cont {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: var(--verde-oscuro);
+  text-align: center;
+  margin-top: 10px;
+}
+
+.Bienvenida {
+  font-size: 1.6rem;
+}
+
+.Cont {
+  font-size: 1.9rem;
+}
+
+.login {
+  width: 400px;
+  background: var(--blanco);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+  margin: 0 auto; /* Centrado horizontal */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centrado vertical del contenido interno */
+}
+
+.login:hover {
+  transform: translateY(-4px);
+}
+
+.login h2 {
+  color: var(--verde-medio);
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  border-bottom: 2px dashed var(--verde-pastel);
+  padding-bottom: 10px;
+}
+
+.controls {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: border 0.3s;
+}
+
+.controls:focus {
+  border-color: var(--verde-medio);
+  outline: none;
+}
+
+.buttons,
+.registrar {
+  width: 100%;
+  border: none;
+  border-radius: 30px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--blanco);
+  background: var(--verde-medio);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
+
+.buttons:hover,
+.registrar:hover {
+  background: var(--verde-oscuro);
+  transform: scale(1.03);
+}
+
+.login p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.login a {
+  color: var(--verde-medio);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login a:hover {
+  text-decoration: underline;
+  color: var(--verde-oscuro);
+}
 
 .botones {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  color: #ffffff;
-  gap: 40px;
+  gap: 25px;
+  padding: 30px;
+  margin-top: 30px;
 }
 
 .botones a {
-  text-align: center;
   text-decoration: none;
-  border: none;
-  background: #0f5a05;
-  color: #ffffff;
-  border-radius: 6px;
-  font-size: 20px;
-  line-height: 48px;
-  padding: 0 10px;
-  width: 150px;
-  cursor: pointer;
-  margin: 0;
-/* Animación suave */
+  background: var(--verde-medio);
+  color: var(--blanco);
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .botones a:hover {
-  background-color: #3cb82a;
-  transform: scale(1.08); /* Zoom suave */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25); /* Sombra elegante */
+  background: var(--verde-oscuro);
+  transform: scale(1.05);
 }
 
-@media screen and (max-width: 480px) {
+.whatsapp-float {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 65px;
+  height: 65px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  z-index: 999;
+}
+
+.whatsapp-float img {
+  width: 60%;
+  height: auto;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 480px) {
+  .login {
+    width: 90%;
+    padding: 25px;
+  }
+
+  .Bienvenida {
+    font-size: 1.3rem;
+  }
+
+  .Cont {
+    font-size: 1.6rem;
+  }
+
+  .botones {
+    flex-direction: column;
+  }
+
   .botones a {
     width: 100%;
-    max-width: 300%;
-    font-size: 20px;
+    max-width: 300px;
   }
 }
 
-/* TEXTOS COMO EN prin.css */
-.inicio-text {
-  color: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  font-style: normal;
-  background-color: rgb(39, 148, 25);
-  padding: 10px;
+/* El header que tenías al final, ahora lo he añadido también */
+header {
+  background: var(--verde-oscuro);
+  color: var(--blanco);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; /* O fixed si quieres que siempre esté visible */
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.Bienvenida {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 25px; 
-  font-weight: 400;
-  color: #ffffff;
+header h1 {
+  font-size: 1.5em;
+  letter-spacing: 1px;
 }
 
-.Cont {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 30px; 
-  font-weight: 400;
-  color: #ffffff;
+nav {
+  display: flex;
+  gap: 25px;
 }
 
-/* LOGIN */
-.login {
-  width: 400px;
-  height: 340px;
-  background: #ffffff;
-  margin: auto;
-  margin-top: 180px;
-  box-shadow: 7px 13px 37px rgba(39, 148, 25, 0.5);
-  padding: 20px 30px;
-}
-
-.login h2 {
-  margin: 0;
-  text-align: center;
-  height: 40px;
-  margin-bottom: 30px;
-  border-bottom: 1px solid;
-  font-size: 20px;
-}
-
-.registrar {
-  width: 100%;
-  height: 40px;
-  background: rgb(22, 80, 14);
-  color: #ffffff;
-  margin-bottom: 16px;
-  border: 1px solid #787272;
-  padding: 11px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  border-bottom: 1px solid;
+nav a {
+  color: var(--blanco);
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
 }
 
-.controls {
-  width: 100%;
-  border: 1px solid #787272;
-  margin-bottom: 15px;
-  padding: 11px 10px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.buttons {
-  width: 100%;
-  height: 40px;
-  background: #0f5a05;
-  color: #ffffff;
-  margin-bottom: 16px;
-  font-weight: bold;
-  border: 1px solid #787272;
-}
-
-.login p {
-  height: 40px;
-  text-align: center;
-  border-bottom: 1px solid;
-}
-
-.login a {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.login a:hover {
-  text-decoration: underline;
+nav a:hover {
+  color: var(--amarillo);
 }

@@ -1,46 +1,41 @@
-const express = require('express');
-const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
-const reviewRoutes = require('./routes/reviewRoutes');
-const createTables = require('./utils/createTables');
-const pool = require('./db/pool');
-const insertData = require('./utils/insertData');
-
+import express from "express";
+import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
+import inventarioRoutes from "./routes/inventario.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
+import createTables from "./utils/createTables.js";
+import pool from "./db/pool.js";
+import insertData from "./utils/insertData.js";
+import pedidosRouter from "./routes/pedidos.js";
 const app = express();
 
-// Middlewares globales
+// 🌍 Middlewares globales
 app.use(cors());
 app.use(express.json());
 
-// Rutas principales
-app.use('/auth', authRoutes);
-app.use('/reviews', reviewRoutes);
+// 🧭 Rutas principales
+app.use("/auth", authRoutes);
+app.use("/inventario", inventarioRoutes);//
+app.use("/reviews", reviewRoutes);
+app.use("/api/pedidos", pedidosRouter);
 
-app.get('/insert-user', insertData);
-// Ruta para crear las tablas (solo en desarrollo)
-app.get('/create-tables', createTables);
+// 🔧 Crear tablas
+app.get("/create-tables", createTables);
+app.get("/insert-data", insertData);
 
-
-// Ruta para probar conexión con la base de datos
-app.get('/test-db', async (req, res) => {
+// 🧩 Test de conexión con BD
+app.get("/test-db", async (req, res) => {
   try {
-    const result = await pool.query('SELECT NOW()');
-    res.json(result.rows[0]);
+    const result = await pool.query("SELECT NOW() AS now");
+    res.json({ db_time: result.rows[0].now });
   } catch (error) {
-    console.error('❌ Error al conectar con la BD:', error.message);
-    res.status(500).json({ error: 'Error de conexión a la BD' });
+    console.error("❌ Error al conectar con la BD:", error.message);
+    res.status(500).json({ error: "Error de conexión a la BD" });
   }
 });
 
-// Ruta opcional para eliminar tabla de reviews
-app.get('/drop-reviews', async (req, res) => {
-  try {
-    await pool.query('DROP TABLE IF EXISTS reviews CASCADE;');
-    res.send('🗑 Tabla reviews eliminada correctamente.');
-  } catch (error) {
-    console.error('❌ Error al eliminar tabla reviews:', error.message);
-    res.status(500).send('Error al eliminar tabla');
-  }
-});
+// 🚀 Iniciar servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Servidor corriendo en http://localhost:${PORT}`));
 
-module.exports = app;
+export default app;

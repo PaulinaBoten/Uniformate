@@ -9,7 +9,7 @@
 <body>
 
 <header>
-  <a href="../Paginas/prin.html">Regresar</a>
+  <a href="../Paginas/index.html">Regresar</a>
 </header>
 
 <div class="login-container">
@@ -50,11 +50,11 @@
       console.log(data);
 
       if (res.ok) {
-        if (data.token && data.user && data.user.rol === 'administrador') {
+        if (data.token && data.usuario && data.usuario.rol === 'administrador') {
           sessionStorage.setItem('token', data.token);
-          sessionStorage.setItem('userRole', data.user.rol);
-          sessionStorage.setItem('userId', data.user.id);
-          sessionStorage.setItem('userEmail', data.user.correo);
+          sessionStorage.setItem('userRole', data.usuario.rol);
+          sessionStorage.setItem('userId', data.usuario.id);
+          sessionStorage.setItem('userEmail', data.usuario.correo);
 
           mensajeDiv.textContent = '✅ Ingreso de administrador exitoso. Redirigiendo...';
           mensajeDiv.style.color = 'green';

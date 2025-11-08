@@ -1,3 +1,12 @@
+:root {
+  --verde-oscuro: #124d19;
+  --verde-medio: #2e7d32;
+  --verde-claro: #d3eeaf;
+  --verde-pastel: #e9f7d5;
+  --amarillo: #f5dd5d;
+  --blanco: #ffffff;
+}
+
 .logo {
   display: flex;  
   width: 100%;
@@ -6,7 +15,7 @@
   justify-content: space-between;
   background: var(--bg-color);
   padding: 0px 5%;
-  background-color:rgb(39, 148, 25);
+  background-color:#215a21;
   background-size: cover;
   display: inline-block;
   padding: 0.7rem 1.3rem;
@@ -16,33 +25,40 @@
   font-size: large;
 }
 
-
-
-.botones{
-    
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    color: #ffffff;
-    gap: 40px;
+header {
+  background: var(--verde-oscuro);
+  color: var(--blanco);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  height: 65px;
 }
-    .botones a{
-      text-align: center;
-      text-decoration: none;
-      border: none;
-      background: #0f5a05;
-      color: #ffffff;
-      border-radius: 6px;
-      font-size: 20px;
-      line-height: 48px;
-      padding: 0 10px;
-      width: 150px;
-      cursor: pointer;
-      margin: 0;
-    }
 
+header h1 {
+  font-size: 1.5em;
+  letter-spacing: 1px;
+}
+
+nav {
+  display: flex;
+  gap: 25px;
+}
+
+nav a {
+  color: var(--blanco);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--amarillo);
+}
 @media screen and (max-width:480px) {
   .botones a{
     width: 100%;
@@ -58,7 +74,7 @@
         font-weight: 700;
         font-size: 20px;
         font-style: normal;
-        background-color: rgb(39, 148, 25);
+        background-color: #215a21;
         padding: 10px;
       }
 

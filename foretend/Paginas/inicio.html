@@ -14,24 +14,31 @@
 </head>
 <body>
 
-  <div class="logo"> 
-    <div class="Letra">
-      <h1>UNIFORMATE</h1>
-    </div>
+ <header>
+    <h1>UNIFORMATE CEFA</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="cata.html">Catálogo</a>
+      <a href="comunicate.html">Contáctanos</a>
+      <a href="Admin.html">Administrador</a>
+    </nav>
+</header>
 
-    <section class="login">
-        <div class="inicio-sesion">
-            <h2>Inicio de sesión</h2>
-            <!-- !!! CAMBIOS AQUÍ: Añadimos un ID al formulario y a los inputs !!! -->
-            <form id="loginFormUser">
-                <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
-                <input class="controls" minlength="1" type="password" id="contrasena" placeholder="Contraseña" required>
-                <input class="buttons" type="submit" value="Ingresar">
-                <!-- Para mostrar mensajes de error o éxito al usuario -->
-                <div id="mensajeLogin" style="color:red; margin-top: 10px;"></div>
-            </form>
-        </div>
-    </section>
+    <main>
+        <section class="login">
+            <div class="inicio-sesion">
+                <h2>Inicio de sesión</h2>
+                <!-- !!! CAMBIOS AQUÍ: Añadimos un ID al formulario y a los inputs !!! -->
+                <form id="loginFormUser">
+                    <input class="controls" type="email" id="correo" placeholder="Correo electrónico" required>
+                    <input class="controls" minlength="1" type="password" id="contrasena" placeholder="Contraseña" required>
+                    <input class="buttons" type="submit" value="Ingresar">
+                    <!-- Para mostrar mensajes de error o éxito al usuario -->
+                    <div id="mensajeLogin" style="color:red; margin-top: 10px;"></div>
+                </form>
+            </div>
+        </section>
+    </main>
 
 <script>
   // Interceptar el envío del formulario
@@ -60,15 +67,15 @@
       });
 
       const data = await res.json();
-      console.log(data); // Para depuración
-
+      
       if (res.ok) { // Si la respuesta HTTP es 2xx (éxito)
-        if (data.token && data.user) {
+        if (data.token && data.usuario) {
+          console.log('ACA'); // Para depuración
           // Guardar información del usuario y token en sessionStorage
           sessionStorage.setItem('token', data.token);
-          sessionStorage.setItem('userRole', data.user.rol); // 'normal' o 'administrador'
-          sessionStorage.setItem('userId', data.user.id);
-          sessionStorage.setItem('userEmail', data.user.correo);
+          sessionStorage.setItem('userRole', data.usuario.rol); // 'normal' o 'administrador'
+          sessionStorage.setItem('userId', data.usuario.id);
+          sessionStorage.setItem('userEmail', data.usuario.correo);
 
           mensajeLoginDiv.textContent = '✅ Inicio de sesión exitoso. Redirigiendo...';
           mensajeLoginDiv.style.color = 'green';
