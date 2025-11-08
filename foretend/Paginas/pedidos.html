@@ -222,7 +222,7 @@ document.getElementById("verPedidos").addEventListener("click", async () => {
 
   try {
     // Llamamos a la API con el userId
-    const response = await fetch(`http://localhost:3000/api/pedidos?usuario_id=${userId}`);
+    const response = await fetch(`https://uniformate.onrender.com/api/pedidos?usuario_id=${userId}`);
     const pedidos = await response.json();
 
     if (!pedidos || pedidos.length === 0) {

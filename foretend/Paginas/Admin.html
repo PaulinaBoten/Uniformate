@@ -9,7 +9,7 @@
 <body>
 
 <header>
-  <a href="../Paginas/index.html">Regresar</a>
+  <a href="../../index.html">Regresar</a>
 </header>
 
 <div class="login-container">
@@ -40,7 +40,7 @@
     }
 
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("https://uniformate.onrender.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ correo, contrasena })

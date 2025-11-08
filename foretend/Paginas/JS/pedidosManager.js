@@ -1,5 +1,5 @@
 // URL base de la API (ajústala a tu backend)
-const API_URL = "http://localhost:3000/api/pedidos";
+const API_URL = "https://uniformate.onrender.com/api/pedidos";
 
 // 🟢 Obtener pedidos del backend (para estudiantes muestra los suyos, para admin muestra todos)
 export async function getPedidos() {
