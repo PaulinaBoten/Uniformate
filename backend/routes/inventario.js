@@ -1,6 +1,6 @@
 // backend/routes/inventario.js
 import express from "express";
-import pool from "../db/pool.js"; // 👈 Necesario para la actualización múltiple
+import pool from "../db/pool.js";
 import {
   crearProducto,
   obtenerProductos,
@@ -13,18 +13,6 @@ const router = express.Router();
 
 // 📦 Obtener todos los productos
 router.get("/", obtenerProductos);
-
-// 🔍 Obtener producto por ID
-router.get("/:id", obtenerProductoPorId);
-
-// ➕ Crear producto
-router.post("/", crearProducto);
-
-// ✏️ Actualizar producto por ID
-router.put("/:id", actualizarProducto);
-
-// 🗑️ Eliminar producto
-router.delete("/:id", eliminarProducto);
 
 // 🔄 Actualizar múltiples productos (usado por Admin.html)
 router.put("/actualizar", async (req, res) => {
@@ -50,5 +38,17 @@ router.put("/actualizar", async (req, res) => {
     res.status(500).json({ error: "Error al actualizar múltiples productos" });
   }
 });
+
+// 🔍 Obtener producto por ID
+router.get("/:id", obtenerProductoPorId);
+
+// ➕ Crear producto
+router.post("/", crearProducto);
+
+// ✏️ Actualizar producto por ID
+router.put("/:id", actualizarProducto);
+
+// 🗑️ Eliminar producto
+router.delete("/:id", eliminarProducto);
 
 export default router;

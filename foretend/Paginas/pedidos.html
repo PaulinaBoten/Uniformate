@@ -186,68 +186,67 @@
     </section>
   </main>
 
-  <script type="module">
-    const carritoContainer = document.getElementById("carrito");
-    const listaPedidos = document.getElementById("listaPedidos");
-    const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
+<script type="module">
+import { addToPedidos, getPedidos } from "./JS/pedidosManager.js";
 
-    // Mostrar carrito SIN imágenes externas
-    if (carrito.length === 0) {
-      carritoContainer.innerHTML = `<div class="mensaje">🛒 No hay productos en el carrito.</div>`;
-    } else {
-      carritoContainer.innerHTML = carrito.map(p => `
-        <div class="producto">
-          <div class="img-placeholder">Imagen</div>
-          <div class="info">
-            <strong>${p.nombre}</strong>
-            <p>Cantidad: ${p.cantidad}</p>
-          </div>
-        </div>
-      `).join("");
+// === BOTÓN ENVIAR PEDIDO ===
+document.getElementById("enviarPedido").addEventListener("click", async () => {
+  const userId = sessionStorage.getItem("userId");
+  const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
+
+  if (!userId) {
+    alert("Debes iniciar sesión.");
+    return;
+  }
+
+  if (carrito.length === 0) {
+    alert("No hay productos en el carrito.");
+    return;
+  }
+
+  for (const item of carrito) {
+    await addToPedidos(item.inventario_id, item.cantidad, userId);
+  }
+
+  alert("✅ Pedido enviado con éxito.");
+  sessionStorage.removeItem("carrito");
+  window.location.reload();
+});
+
+
+// === BOTÓN VER PEDIDOS ===
+document.getElementById("verPedidos").addEventListener("click", async () => {
+  const userId = sessionStorage.getItem("userId");
+  const listaPedidos = document.getElementById("listaPedidos");
+  listaPedidos.innerHTML = "<p class='mensaje'>Cargando pedidos...</p>";
+
+  try {
+    // Llamamos a la API con el userId
+    const response = await fetch(`http://localhost:3000/api/pedidos?usuario_id=${userId}`);
+    const pedidos = await response.json();
+
+    if (!pedidos || pedidos.length === 0) {
+      listaPedidos.innerHTML = "<p class='mensaje'>No tienes pedidos realizados aún.</p>";
+      return;
     }
 
-    // Enviar pedido
-    document.getElementById("enviarPedido").addEventListener("click", async () => {
-      const userId = sessionStorage.getItem("userId");
-      for (const producto of carrito) {
-        const body = {
-          usuario_id: userId,
-          inventario_id: producto.id,
-          cantidad: producto.cantidad
-        };
-        await fetch("http://localhost:3000/api/pedidos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
-      }
-      alert("✅ Pedido enviado correctamente");
-      sessionStorage.removeItem("carrito");
-      window.location.href = "prin.html";
-    });
-
-    // Ver pedidos SIN imágenes externas
-    document.getElementById("verPedidos").addEventListener("click", async () => {
-      const userId = sessionStorage.getItem("userId");
-      const res = await fetch(`http://localhost:3000/api/pedidos?usuario_id=${userId}`);
-      const pedidos = await res.json();
-
-      if (pedidos.length === 0) {
-        listaPedidos.innerHTML = `<div class="mensaje">😕 No tienes pedidos aún.</div>`;
-      } else {
-        listaPedidos.innerHTML = pedidos.map(p => `
-          <div class="producto">
-            <div class="img-placeholder">Imagen</div>
-            <div class="info">
-              <strong>${p.producto}</strong>
-              <p>Cantidad: ${p.cantidad}</p>
-              <p>Estado: <b>${p.estado}</b></p>
-              <p>Fecha: ${new Date(p.fecha).toLocaleString()}</p>
-            </div>
+    listaPedidos.innerHTML = pedidos
+      .map(p => `
+        <div class="producto">
+          <div class="info">
+            <strong>${p.nombre_uniforme || "Uniforme"}</strong>
+            <p>Cantidad: ${p.cantidad}</p>
+            <p>Estado: ${p.estado || "Pendiente"}</p>
           </div>
-        `).join("");
-      }
-    });
-  </script>
+        </div>
+      `)
+      .join("");
+  } catch (error) {
+    console.error("Error al cargar pedidos:", error);
+    listaPedidos.innerHTML = "<p class='mensaje'>Error al cargar pedidos.</p>";
+  }
+});
+</script>
+
 </body>
 </html>

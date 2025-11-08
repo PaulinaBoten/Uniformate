@@ -1,5 +1,3 @@
-import { addToPedidos } from "./pedidosManager.js";
-
 document.addEventListener("DOMContentLoaded", () => {
   const userId = sessionStorage.getItem("userId");
 
@@ -12,24 +10,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const botones = document.querySelectorAll(".add-to-basket-btn");
 
   botones.forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const uniformeId = btn.dataset.id;
-      const cantidad = 1;
+    btn.addEventListener("click", () => {
+      const uniformeId = parseInt(btn.dataset.id);
       const nombre = btn.dataset.name;
+      const cantidad = 1;
 
-      try {
-        const result = await addToPedidos(uniformeId, cantidad, userId);
+      const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
 
-        if (result) {
-          alert(`✅ Pedido de "${nombre}" creado con éxito.`);
-          window.location.href = "pedidos.html";
-        } else {
-          alert("❌ Error al crear el pedido. Intenta nuevamente.");
-        }
-      } catch (error) {
-        console.error("Error al crear pedido:", error);
-        alert("⚠️ Ocurrió un error inesperado.");
+      const existente = carrito.find(item => item.inventario_id === uniformeId);
+      if (existente) {
+        existente.cantidad += 1;
+      } else {
+        carrito.push({ inventario_id: uniformeId, nombre, cantidad });
       }
+
+      sessionStorage.setItem("carrito", JSON.stringify(carrito));
+      alert(`✅ "${nombre}" agregado al carrito.`);
     });
   });
 });

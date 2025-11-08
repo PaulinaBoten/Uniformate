@@ -4,14 +4,13 @@ import pool from "../db/pool.js";
 
 const router = express.Router();
 
-/**
- * 🛒 Crear un nuevo pedido
- */
+/* ============================================================
+   🟢 Crear un nuevo pedido
+============================================================ */
 router.post("/", async (req, res) => {
   try {
     let { usuario_id, inventario_id, cantidad } = req.body;
 
-    // Convertir a número por seguridad
     usuario_id = Number(usuario_id);
     inventario_id = Number(inventario_id);
     cantidad = Number(cantidad);
@@ -22,18 +21,18 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Datos de pedido inválidos" });
     }
 
-    // Verificar que el producto exista
+    // Verificar existencia del producto
     const producto = await pool.query("SELECT * FROM inventario WHERE id = $1", [inventario_id]);
     if (producto.rows.length === 0) {
       return res.status(404).json({ error: "El producto no existe" });
     }
 
-    // Verificar stock
+    // Verificar stock suficiente
     if (producto.rows[0].cantidad < cantidad) {
       return res.status(400).json({ error: "Stock insuficiente para este pedido" });
     }
 
-    // Insertar pedido en PostgreSQL ✅
+    // Insertar pedido
     const result = await pool.query(
       "INSERT INTO pedidos (usuario_id, inventario_id, cantidad) VALUES ($1, $2, $3) RETURNING id",
       [usuario_id, inventario_id, cantidad]
@@ -49,32 +48,52 @@ router.post("/", async (req, res) => {
   }
 });
 
-/**
- * 📋 Obtener todos los pedidos (opcional: filtrar por usuario)
- */
+/* ============================================================
+   📋 Obtener pedidos (por usuario o todos)
+============================================================ */
 router.get("/", async (req, res) => {
-  const { usuario_id } = req.query;
-  console.log("🧾 Query GET pedidos usuario_id:", usuario_id);
+  const { usuario_id } = req.query; // si se pasa, se filtra; si no, se devuelven todos
+  console.log("🧾 Consultando pedidos. usuario_id =", usuario_id || "TODOS");
 
   try {
-    const result = await pool.query(
-      `
-      SELECT 
-        p.id,
-        p.cantidad,
-        p.estado,
-        p.fecha,
-        i.nombre AS producto,
-        u.correo AS usuario
-      FROM pedidos p
-      JOIN inventario i ON p.inventario_id = i.id
-      JOIN usuarios u ON p.usuario_id = u.id
-      WHERE p.usuario_id = $1
-      ORDER BY p.fecha DESC
-      `,
-      [usuario_id]
-    );
+    let query;
+    let params = [];
 
+    if (usuario_id) {
+      // Solo pedidos de un usuario específico
+      query = `
+        SELECT 
+          p.id,
+          p.cantidad,
+          p.estado,
+          p.fecha,
+          i.nombre AS producto,
+          u.correo AS usuario
+        FROM pedidos p
+        JOIN inventario i ON p.inventario_id = i.id
+        JOIN usuarios u ON p.usuario_id = u.id
+        WHERE p.usuario_id = $1
+        ORDER BY p.fecha DESC
+      `;
+      params = [usuario_id];
+    } else {
+      // Todos los pedidos (modo admin)
+      query = `
+        SELECT 
+          p.id,
+          p.cantidad,
+          p.estado,
+          p.fecha,
+          i.nombre AS producto,
+          u.correo AS usuario
+        FROM pedidos p
+        JOIN inventario i ON p.inventario_id = i.id
+        JOIN usuarios u ON p.usuario_id = u.id
+        ORDER BY p.fecha DESC
+      `;
+    }
+
+    const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (error) {
     console.error("❌ Error exacto al obtener pedidos:", error);
@@ -82,9 +101,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-/**
- * ✅ Aceptar pedido y actualizar inventario
- */
+/* ============================================================
+   ✅ Aceptar pedido y actualizar inventario
+============================================================ */
 router.put("/:id/aceptar", async (req, res) => {
   const { id } = req.params;
   const client = await pool.connect();
@@ -115,7 +134,7 @@ router.put("/:id/aceptar", async (req, res) => {
     // Actualizar estado del pedido
     await client.query("UPDATE pedidos SET estado = 'aceptado' WHERE id = $1", [id]);
 
-    // Reducir stock
+    // Reducir stock del inventario
     await client.query(
       "UPDATE inventario SET cantidad = cantidad - $1 WHERE id = $2",
       [cantidadPedido, inventario_id]
@@ -132,13 +151,16 @@ router.put("/:id/aceptar", async (req, res) => {
   }
 });
 
-/**
- * ❌ Rechazar pedido
- */
+/* ============================================================
+   ❌ Rechazar pedido
+============================================================ */
 router.put("/:id/rechazar", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query("UPDATE pedidos SET estado = 'rechazado' WHERE id = $1", [id]);
+    const result = await pool.query(
+      "UPDATE pedidos SET estado = 'rechazado' WHERE id = $1",
+      [id]
+    );
 
     if (result.rowCount === 0) {
       return res.status(404).json({ error: "Pedido no encontrado" });
@@ -148,6 +170,25 @@ router.put("/:id/rechazar", async (req, res) => {
   } catch (error) {
     console.error("❌ Error al rechazar pedido:", error.message);
     res.status(500).json({ error: "Error al rechazar el pedido" });
+  }
+});
+
+/* ============================================================
+   🗑️ Eliminar pedido (solo admin)
+============================================================ */
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query("DELETE FROM pedidos WHERE id = $1", [id]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Pedido no encontrado" });
+    }
+
+    res.json({ message: "🗑️ Pedido eliminado correctamente" });
+  } catch (error) {
+    console.error("❌ Error al eliminar pedido:", error.message);
+    res.status(500).json({ error: "Error al eliminar el pedido" });
   }
 });
 

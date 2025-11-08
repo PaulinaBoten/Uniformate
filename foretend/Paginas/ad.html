@@ -424,28 +424,28 @@ let inventario;
 </script> -->
 
 <script>
-  const API_URL = "http://localhost:3000/inventario";
+  const API_INVENTARIO = "http://localhost:3000/inventario";
+  const API_PEDIDOS = "http://localhost:3000/api/pedidos";
 
-  async function cerrarSesion() {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userRole");
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("userEmail");
+  // -------------------------------
+  // 🚪 Cerrar sesión
+  // -------------------------------
+  function cerrarSesion() {
+    sessionStorage.clear();
     window.location.href = "Admin.html";
   }
 
   // -------------------------------
-  // 📦 CARGAR INVENTARIO
+  // 📦 Cargar inventario
   // -------------------------------
   async function cargarInventario() {
     try {
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error(`Error al obtener inventario (${res.status})`);
+      const res = await fetch(API_INVENTARIO);
+      if (!res.ok) throw new Error("Error al obtener inventario");
 
       const productos = await res.json();
       const tabla = document.getElementById("tablaInventario");
 
-      // Cabecera fija
       let tablaHTML = `
         <tr>
           <th>ID</th>
@@ -455,126 +455,173 @@ let inventario;
         </tr>
       `;
 
-      if (productos.length === 0) {
-        tablaHTML += `<tr><td colspan="4">No hay productos registrados aún.</td></tr>`;
-      } else {
-        productos.forEach((p) => {
-          tablaHTML += `
-            <tr data-id="${p.id}">
-              <td>${p.id}</td>
-              <td contenteditable="true">${p.nombre}</td>
-              <td contenteditable="true">${p.cantidad ?? 0}</td>
-              <td contenteditable="true">${p.talla ?? ""}</td>
-            </tr>
-          `;
-        });
-      }
+      productos.forEach(p => {
+        tablaHTML += `
+          <tr data-id="${p.id}">
+            <td>${p.id}</td>
+            <td contenteditable="true">${p.nombre}</td>
+            <td contenteditable="true">${p.cantidad ?? 0}</td>
+            <td contenteditable="true">${p.talla ?? ""}</td>
+          </tr>
+        `;
+      });
 
       tabla.innerHTML = tablaHTML;
     } catch (error) {
-      console.error("❌ Error al cargar inventario:", error.message);
-      alert("Error al cargar inventario. Revisa la consola.");
+      console.error("❌ Error al cargar inventario:", error);
+      alert("Error al cargar inventario.");
     }
   }
 
   // -------------------------------
-  // ➕ CREAR NUEVO PRODUCTO
-  // -------------------------------
-  async function crearNuevoProducto(event) {
-    event.preventDefault();
-
-    const form = document.getElementById("formularioCrearProducto");
-    const formData = new FormData(form);
-    const productoData = {};
-
-    // Convertir a JSON
-    formData.forEach((value, key) => {
-      if (key === "cantidad" || key === "precio") {
-        productoData[key] = parseFloat(value) || 0;
-      } else {
-        productoData[key] = value.trim();
-      }
-    });
-
-    if (!productoData.nombre || productoData.cantidad < 0) {
-      alert("⚠️ El nombre y la cantidad inicial son obligatorios.");
-      return;
-    }
-
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(productoData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error || "Error al crear el producto.");
-
-      alert(`✅ ${data.message}`);
-      form.reset();
-      await cargarInventario(); // Refrescar la tabla
-
-    } catch (error) {
-      console.error("❌ Error al crear producto:", error.message);
-      alert(`Error: ${error.message}`);
-    }
-  }
-
-  // -------------------------------
-  // 💾 GUARDAR CAMBIOS DE TABLA
+  // 💾 Guardar cambios inventario
   // -------------------------------
   async function guardarTabla() {
     const filas = document.querySelectorAll("#tablaInventario tr[data-id]");
     const productos = [];
 
-    filas.forEach((fila) => {
+    filas.forEach(fila => {
       const celdas = fila.querySelectorAll("td");
       productos.push({
-        id: parseInt(fila.dataset.id),
+        id: Number(fila.dataset.id),
         nombre: celdas[1].textContent.trim(),
-        cantidad: parseInt(celdas[2].textContent.trim()) || 0,
-        talla: celdas[3].textContent.trim(),
+        cantidad: Number(celdas[2].textContent.trim()) || 0,
+        talla: celdas[3].textContent.trim()
       });
     });
 
     try {
-      const res = await fetch(`${API_URL}/actualizar`, {
+      const res = await fetch(`${API_INVENTARIO}/actualizar`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productos }),
+        body: JSON.stringify({ productos })
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al actualizar inventario");
-
-      alert("✅ Cambios guardados correctamente.");
+      if (!res.ok) throw new Error(data.error);
+      alert("✅ Inventario actualizado correctamente");
     } catch (error) {
-      console.error("❌ Error al guardar cambios:", error.message);
-      alert("Error al guardar cambios.");
+      console.error("❌ Error al guardar inventario:", error);
+      alert("Error al guardar inventario");
     }
   }
 
   // -------------------------------
-  // 🚀 INICIALIZACIÓN
+  // ➕ Crear nuevo producto
   // -------------------------------
-  window.onload = async function () {
-    const userRole = sessionStorage.getItem("userRole");
-    if (userRole !== "administrador") {
-      alert("Acceso denegado. Inicie sesión como administrador primero.");
+  async function crearNuevoProducto(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const producto = Object.fromEntries(formData.entries());
+    producto.cantidad = Number(producto.cantidad || 0);
+    producto.precio = Number(producto.precio || 0);
+
+    try {
+      const res = await fetch(API_INVENTARIO, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(producto)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      alert("✅ Producto agregado");
+      form.reset();
+      await cargarInventario();
+    } catch (error) {
+      alert("Error al crear producto: " + error.message);
+    }
+  }
+
+  // -------------------------------
+  // 🧾 Cargar pedidos
+  // -------------------------------
+  async function cargarPedidos() {
+    try {
+      const res = await fetch(API_PEDIDOS);
+      if (!res.ok) throw new Error("Error al obtener pedidos");
+      const pedidos = await res.json();
+
+      const tbody = document.querySelector("#tablaPedidos tbody");
+      tbody.innerHTML = "";
+
+      if (pedidos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5">No hay pedidos registrados</td></tr>`;
+        return;
+      }
+
+      pedidos.forEach(p => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.usuario}</td>
+          <td>${p.producto}</td>
+          <td>${p.estado}</td>
+          <td>
+            <button onclick="aceptarPedido(${p.id})" style="background:#3fa63f;color:white;border:none;padding:5px 10px;border-radius:5px;">Aceptar</button>
+            <button onclick="rechazarPedido(${p.id})" style="background:#c0392b;color:white;border:none;padding:5px 10px;border-radius:5px;">Rechazar</button>
+          </td>
+        `;
+        tbody.appendChild(fila);
+      });
+    } catch (error) {
+      console.error("❌ Error al cargar pedidos:", error);
+    }
+  }
+
+  // -------------------------------
+  // ✅ Aceptar pedido
+  // -------------------------------
+  async function aceptarPedido(id) {
+    if (!confirm("¿Aceptar este pedido?")) return;
+
+    try {
+      const res = await fetch(`${API_PEDIDOS}/${id}/aceptar`, { method: "PUT" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      alert(data.message);
+      await cargarInventario();
+      await cargarPedidos();
+    } catch (error) {
+      alert("Error al aceptar pedido: " + error.message);
+    }
+  }
+
+  // -------------------------------
+  // ❌ Rechazar pedido
+  // -------------------------------
+  async function rechazarPedido(id) {
+    if (!confirm("¿Rechazar este pedido?")) return;
+
+    try {
+      const res = await fetch(`${API_PEDIDOS}/${id}/rechazar`, { method: "PUT" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      alert(data.message);
+      await cargarPedidos();
+    } catch (error) {
+      alert("Error al rechazar pedido: " + error.message);
+    }
+  }
+
+  // -------------------------------
+  // 🚀 Inicialización
+  // -------------------------------
+  window.onload = async () => {
+    const role = sessionStorage.getItem("userRole");
+    if (role !== "administrador") {
+      alert("Acceso denegado");
       window.location.href = "Admin.html";
       return;
     }
 
-    document.getElementById("bienvenida").textContent = "Bienvenida, administradora";
     await cargarInventario();
+    await cargarPedidos();
 
-    // Asignar eventos
     document.getElementById("formularioCrearProducto").addEventListener("submit", crearNuevoProducto);
-    document.querySelector("button[onclick*='guardarTabla']").onclick = guardarTabla;
   };
 </script>
+
 
 
 </body>
