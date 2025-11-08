@@ -17,7 +17,7 @@
  <header>
     <h1>UNIFORMATE CEFA</h1>
     <nav>
-      <a href="index.html">Inicio</a>
+      <a href="../../index.html">Inicio</a>
       <a href="cata.html">Catálogo</a>
       <a href="comunicate.html">Contáctanos</a>
       <a href="Admin.html">Administrador</a>
@@ -59,7 +59,7 @@
     }
 
     try {
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("https://uniformate.onrender.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Enviamos el JSON esperado por el backend
